@@ -12,8 +12,9 @@ import {
   Tooltip,
   MenuItem
 } from '@mui/material';
-import { Menu as MenuIcon, Adb } from '@mui/icons-material';
+import { Menu as MenuIcon } from '@mui/icons-material';
 import './style/header.css'
+import { useNavigate } from 'react-router';
 
 const pages = ['Dashbord', 'Expense', 'Status'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -22,9 +23,11 @@ const Header = () => {
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
+    console.log(anchorElNav);
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -38,17 +41,22 @@ const Header = () => {
     setAnchorElUser(null);
   };
 
+  const handleNavigation = (page) => {
+    navigate(`/${page.toLowerCase()}`);
+  }
+
+
   return (
     <>
       <AppBar position="static">
-        <Container maxWidth="xl">
+        <Container maxWidth="xl" sx={{ boxShadow: '-1px 3px 10px 0px rgb(0 0 0 / 70%)' }}>
           <Toolbar disableGutters sx={{ minHeight: 64, height: 64 }}>
             <Box className='logo-container' sx={{ display: "flex", alignItems: "center", mr: 2 }}>
               <img
                 src="Expense-logo.png"
                 alt="Logo"
                 style={{
-                  width: '15%', 
+                  width: '15%',
                 }}
               />
             </Box>
@@ -80,7 +88,10 @@ const Header = () => {
                 sx={{ flexGrow: 1, display: { xs: 'block', md: 'none' } }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <MenuItem key={page} onClick={() => {
+                    handleNavigation(page);
+                    handleCloseNavMenu;
+                  }}>
                     <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
                   </MenuItem>
                 ))}
@@ -90,7 +101,7 @@ const Header = () => {
               <img
                 src="Expense-logo.png"
                 alt="Logo"
-                style={{ width: '35%'}}
+                style={{ width: '35%' }}
               />
             </Box>
 
@@ -98,7 +109,7 @@ const Header = () => {
               {pages.map((page) => (
                 <Button
                   key={page}
-                  onClick={handleCloseNavMenu}
+                  onClick={() => handleNavigation(page)}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   {page}
@@ -128,7 +139,10 @@ const Header = () => {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <MenuItem key={setting} onClick={() => {
+
+                    handleCloseUserMenu;
+                  }}>
                     <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                   </MenuItem>
                 ))}
