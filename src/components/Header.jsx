@@ -17,7 +17,7 @@ import './style/header.css'
 import { useNavigate } from 'react-router';
 
 const pages = ['Dashboard', 'Expense', 'Status'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Account', 'Logout'];
 
 const Header = () => {
 
@@ -42,7 +42,14 @@ const Header = () => {
   };
 
   const handleNavigation = (page) => {
-    navigate(`/${page.toLowerCase()}`);
+    navigate(`/main/${page.toLowerCase()}`);
+  }
+
+  const handleUserNavigation = (setting) => {
+    if (setting == 'Logout') {
+      localStorage.removeItem("user");
+      navigate("/");
+    }
   }
 
 
@@ -140,7 +147,7 @@ const Header = () => {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={() => {
-
+                    handleUserNavigation(setting)
                     handleCloseUserMenu;
                   }}>
                     <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>

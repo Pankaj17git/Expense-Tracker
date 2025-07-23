@@ -2,7 +2,7 @@
 * {
   box-sizing: border-box;
 }
-body {
+.auth-body {
   background: #f6f6f6;
   display: flex;
   justify-content: center;
@@ -58,7 +58,7 @@ button.ghost {
   border-color: #fff;
   color: white;
 }
-form {
+.auth-form {
   background-color: #fff;
   display: flex;
   align-items: center;

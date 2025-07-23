@@ -5,6 +5,41 @@
       "name": "Pankaj",
       "email": "Pankaj@gmail.com",
       "password": "123456"
+    },
+    {
+      "id": "112a",
+      "name": "Shanu",
+      "email": "shanu@gmail.com",
+      "password": "123456"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "1555",
+      "category": "Salary",
+      "type": "Income",
+      "date": "2025-07-23",
+      "amount": 500000,
+      "description": "hgfdsghjk",
+      "userId": "7b18"
+    },
+    {
+      "id": "bb29",
+      "category": "Investments",
+      "type": "Income",
+      "date": "2025-07-27",
+      "amount": 22218,
+      "description": "jhgfdxcgvhbjnm",
+      "userId": "7b18"
+    },
+    {
+      "id": "0ebf",
+      "category": "Shopping",
+      "type": "Expense",
+      "date": "2025-07-27",
+      "amount": 100000,
+      "description": "hjgfdsa",
+      "userId": "7b18"
     }
   ]
 }

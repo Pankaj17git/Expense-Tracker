@@ -12,7 +12,10 @@ import {
   Paper
 } from '@mui/material';
 import './style/expense-form.css'
-import Header from './Header';
+import axios from 'axios';
+
+const incomeCategories = ["Salary", "Freelancing", "Investments", "Gifts"];
+const expenseCategories = ["Food", "Travel", "Shopping", "Miscellaneous", "Utilities"];
 
 const ExpenseForm = () => {
 
@@ -24,19 +27,45 @@ const ExpenseForm = () => {
     description: ''
   });
 
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Submitted:', formData);
+
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    const newTransaction = {
+      ...formData,
+      userId: user.id,
+      amount: parseFloat(formData.amount),
+      date: new Date(formData.date).toISOString().split("T")[0]
+    };
+
+    try {
+      await axios.post('http://localhost:4001/transactions', newTransaction)
+      alert('Transaction added successfully!')
+      setFormData({
+        category: '',
+        type: '',
+        date: '',
+        amount: '',
+        description: ''
+      })
+    } catch (error) {
+      console.error('Error adding tarnsition:', error);
+      alert('failed to add transition.')
+    }
   };
 
   return (
     <>
-      <Box elevation={3}
+      <Paper elevation={3}
         sx={{
           p: 3,
           maxWidth: 750,
@@ -49,38 +78,7 @@ const ExpenseForm = () => {
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit}>
-          <Grid className='form-container'>
-            {/* Category */}
-            <Grid item sx={{ flexGrow: 6 }}>
-              <FormControl fullWidth variant="standard">
-                <InputLabel>Category</InputLabel>
-                <Select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                >
-                  <MenuItem value="Food">Food</MenuItem>
-                  <MenuItem value="Travel">Travel</MenuItem>
-                  <MenuItem value="Shopping">Shopping</MenuItem>
-                  <MenuItem value="Mis">Mis</MenuItem>
-                  <MenuItem value="Utilities">Utilities</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-
-            {/* Date */}
-            <Grid item xs={6}>
-              <TextField
-                name="date"
-                label="Date"
-                type="date"
-                variant="standard"
-                fullWidth
-                value={formData.date}
-                onChange={handleChange}
-              />
-            </Grid>
-
+          <Grid>
             {/* Type */}
             <Grid item xs={6}>
               <FormControl fullWidth variant="standard">
@@ -90,10 +88,45 @@ const ExpenseForm = () => {
                   value={formData.type}
                   onChange={handleChange}
                 >
-                  <MenuItem value="Debit">Debit</MenuItem>
-                  <MenuItem value="Credit">Credit</MenuItem>
+                  <MenuItem value="Expense">Expense</MenuItem>
+                  <MenuItem value="Income">Income</MenuItem>
                 </Select>
               </FormControl>
+            </Grid>
+
+            {/* Category */}
+            {formData.type && (
+              <Grid item sx={{ flexGrow: 6 }}>
+                <FormControl fullWidth variant="standard">
+                  <InputLabel>Category</InputLabel>
+                  <Select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                  >
+                    {formData.type.toLowerCase() === 'income' ? (
+                      incomeCategories.map((cat) => <MenuItem key={cat} value={cat}>{cat}</MenuItem>)
+                    ) : (
+                      expenseCategories.map((cat) => <MenuItem key={cat} value={cat}>{cat}</MenuItem>)
+                    )}
+                  </Select>
+                </FormControl>
+              </Grid>
+            )}
+
+
+            {/* Date */}
+            <Grid item xs={6}>
+              <TextField
+                name="date"
+                label="Date"
+                type="date"
+                variant="standard"
+                InputLabelProps={{ shrink: true }}
+                fullWidth
+                value={formData.date}
+                onChange={handleChange}
+              />
             </Grid>
 
             {/* Amount */}
@@ -135,7 +168,7 @@ const ExpenseForm = () => {
             </Grid>
           </Grid>
         </Box>
-      </Box>
+      </Paper>
     </>
   );
 
