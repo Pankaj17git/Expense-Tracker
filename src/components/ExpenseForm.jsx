@@ -75,7 +75,6 @@ const ExpenseForm = () => {
                 type="date"
                 variant="standard"
                 fullWidth
-                InputLabelProps={{ shrink: true }}
                 value={formData.date}
                 onChange={handleChange}
               />

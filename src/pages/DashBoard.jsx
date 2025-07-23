@@ -3,13 +3,12 @@ import { Box, Paper, Grid, Typography } from '@mui/material'
 import ExpenseForm from '../components/ExpenseForm'
 import DonutChart from '../components/PieChart'
 import BarsDataset from '../components/BarChart'
-import Header from '../components/Header'
+
 
 const DashBoard = () => {
 
   return (
     <>
-      <Header/>
       <Box sx={{ flexGrow: 1, padding: 1, background: '#e3e3e3' }}>
         <Grid container spacing={1}>
           <Grid size={6} sx={{ margin: 0 }}>

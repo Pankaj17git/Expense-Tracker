@@ -5,6 +5,7 @@ import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import ExpenseList from './pages/ExpenseList'
 import Status from './pages/Status'
+import MainLayout from './layout/MainLayout'
 
 function App() {
 
@@ -12,9 +13,12 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<DashBoard/>}/>
-          <Route path='/expense' element={<ExpenseList/>}/>
-          <Route path='/status' element={<Status/>}/>
+          <Route path='/' element={<MainLayout/>}>
+            <Route index element={<DashBoard />} /> 
+            <Route path='dashboard' element={<DashBoard/>}/>
+            <Route path='expense' element={<ExpenseList/>}/>
+            <Route path='status' element={<Status/>}/>
+          </Route>
         </Routes>
       </BrowserRouter>
     </>
