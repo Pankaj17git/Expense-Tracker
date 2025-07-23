@@ -12,6 +12,7 @@ import {
   Paper
 } from '@mui/material';
 import './style/expense-form.css'
+import Header from './Header';
 
 const ExpenseForm = () => {
 
@@ -35,7 +36,7 @@ const ExpenseForm = () => {
 
   return (
     <>
-      <Paper elevation={3}
+      <Box elevation={3}
         sx={{
           p: 3,
           maxWidth: 750,
@@ -50,7 +51,7 @@ const ExpenseForm = () => {
         <Box component="form" onSubmit={handleSubmit}>
           <Grid className='form-container'>
             {/* Category */}
-            <Grid  item sx={{ flexGrow: 6 }}>
+            <Grid item sx={{ flexGrow: 6 }}>
               <FormControl fullWidth variant="standard">
                 <InputLabel>Category</InputLabel>
                 <Select
@@ -134,7 +135,7 @@ const ExpenseForm = () => {
             </Grid>
           </Grid>
         </Box>
-      </Paper>
+      </Box>
     </>
   );
 
