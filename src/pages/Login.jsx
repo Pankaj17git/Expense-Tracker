@@ -56,7 +56,9 @@ const AuthForm = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+    debugger;
     try {
+      
       const response = await axios.get(`http://localhost:4001/users`, {
         params: {
           email: user.email,
@@ -75,6 +77,8 @@ const AuthForm = () => {
         };
 
         localStorage.setItem("user", JSON.stringify(loggedInUser));
+        console.log(loggedInUser);
+        
         navigate('/main');
       } else {
         alert("Invalid email or password.");
@@ -116,7 +120,7 @@ const AuthForm = () => {
                 <IconButton><LinkedInIcon /></IconButton>
               </Box>
               <span>or use your account</span>
-              <TextField fullWidth margin="normal" type="email" placeholder="Email" name="name" value={user.name} onChange={handleChange} />
+              <TextField fullWidth margin="normal" type="email" placeholder="Email" name="email" value={user.email} onChange={handleChange} />
               <TextField fullWidth margin="normal" type="password" placeholder="Password" name="password" value={user.password} onChange={handleChange} />
               <Button variant="contained" type="submit">Sign In</Button>
             </Box>

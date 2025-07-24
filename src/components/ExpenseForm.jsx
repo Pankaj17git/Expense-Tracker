@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import './style/expense-form.css'
 import axios from 'axios';
+import { useUserContext } from '../context/UserContext';
 
 const incomeCategories = ["Salary", "Freelancing", "Investments", "Gifts"];
 const expenseCategories = ["Food", "Travel", "Shopping", "Miscellaneous", "Utilities"];
@@ -27,7 +28,7 @@ const ExpenseForm = () => {
     description: ''
   });
 
-
+  const {updateBalance} = useUserContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,7 +50,7 @@ const ExpenseForm = () => {
 
     try {
       await axios.post('http://localhost:4001/transactions', newTransaction)
-      alert('Transaction added successfully!')
+      updateBalance();
       setFormData({
         category: '',
         type: '',

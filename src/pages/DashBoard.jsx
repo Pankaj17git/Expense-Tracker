@@ -3,10 +3,11 @@ import { Box, Paper, Grid, Typography } from '@mui/material'
 import ExpenseForm from '../components/ExpenseForm'
 import DonutChart from '../components/PieChart'
 import BarsDataset from '../components/BarChart'
+import { useUserContext } from '../context/UserContext'
 
 
 const DashBoard = () => {
-
+  const {totalExpense, totalBalance} = useUserContext();
   return (
     <>
       <Box sx={{ flexGrow: 1, padding: 1, background: '#e3e3e3' }}>
@@ -30,11 +31,11 @@ const DashBoard = () => {
               <Grid container sx={{ justifyContent: 'space-evenly' }}>
                 <Box>
                   <Typography variant='h5'>Total</Typography>
-                  <Typography>&#8377;64649</Typography>
+                  <Typography>&#8377;{totalBalance}</Typography>
                 </Box>
                 <Box>
                   <Typography variant='h5'>Spent</Typography>
-                  <Typography>&#8377;644</Typography>
+                  <Typography>&#8377;{totalExpense}</Typography>
                 </Box>
               </Grid>
             </Paper>

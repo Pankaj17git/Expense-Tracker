@@ -18,7 +18,7 @@ function App() {
           <Route path='/' element={<AuthForm />} />
           <Route path='/main' element={<PrivateRoute>
             <MainLayout />
-          </PrivateRoute>}>
+            </PrivateRoute>}>
             <Route index element={<DashBoard />} />
             <Route path='dashboard' element={<DashBoard />} />
             <Route path='expense' element={<ExpenseList />} />
