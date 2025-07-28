@@ -11,135 +11,33 @@
       "name": "Shanu",
       "email": "shanu@gmail.com",
       "password": "123456"
+    },
+    {
+      "id": "411c",
+      "name": "Sachin",
+      "email": "sachin@gmail.com",
+      "password": "123456"
+    },
+    {
+      "id": "fac7",
+      "name": "Honey",
+      "email": "honey@gmail.com",
+      "password": "654321"
+    },
+    {
+      "id": "6099",
+      "name": "Akhil",
+      "email": "akhil@gmail.com",
+      "password": "123456"
+    },
+    {
+      "id": "08ed",
+      "name": "Sunny ",
+      "email": "sunny@gmail.com",
+      "password": "123456"
     }
   ],
   "transactions": [
-    {
-      "id": "1555",
-      "category": "Salary",
-      "type": "Income",
-      "date": "2025-07-23",
-      "amount": 500000,
-      "description": "hgfdsghjk",
-      "userId": "7b18"
-    },
-    {
-      "id": "bb29",
-      "category": "Investments",
-      "type": "Income",
-      "date": "2025-07-27",
-      "amount": 22218,
-      "description": "jhgfdxcgvhbjnm",
-      "userId": "7b18"
-    },
-    {
-      "id": "0ebf",
-      "category": "Shopping",
-      "type": "Expense",
-      "date": "2025-07-27",
-      "amount": 100000,
-      "description": "hjgfdsa",
-      "userId": "7b18"
-    },
-    {
-      "id": "967d",
-      "category": "Salary",
-      "type": "Income",
-      "date": "2025-07-27",
-      "amount": 499995,
-      "description": "hnvhgcvhgc",
-      "userId": "7b18"
-    },
-    {
-      "id": "bdd6",
-      "category": "Shopping",
-      "type": "Expense",
-      "date": "2025-07-27",
-      "amount": 500000,
-      "description": "fdssfs",
-      "userId": "7b18"
-    },
-    {
-      "id": "af51",
-      "category": "Freelancing",
-      "type": "Income",
-      "date": "0131-03-11",
-      "amount": 1164654,
-      "description": "nbvcx",
-      "userId": "7b18"
-    },
-    {
-      "id": "04e1",
-      "category": "Food",
-      "type": "Expense",
-      "date": "0212-01-02",
-      "amount": 464464,
-      "description": "ygufyf",
-      "userId": "7b18"
-    },
-    {
-      "id": "709f",
-      "category": "Salary",
-      "type": "Income",
-      "date": "+046464-05-05",
-      "amount": 876767,
-      "description": "bjvjvj",
-      "userId": "7b18"
-    },
-    {
-      "id": "e00e",
-      "category": "Freelancing",
-      "type": "Income",
-      "date": "4564-03-13",
-      "amount": 98765,
-      "description": "tryu",
-      "userId": "7b18"
-    },
-    {
-      "id": "1e82",
-      "category": "Travel",
-      "type": "Expense",
-      "date": "0003-12-23",
-      "amount": 98767,
-      "description": "dgdg",
-      "userId": "7b18"
-    },
-    {
-      "id": "d562",
-      "category": "Miscellaneous",
-      "type": "Expense",
-      "date": "6879-04-05",
-      "amount": 987657,
-      "description": "kjhgf",
-      "userId": "7b18"
-    },
-    {
-      "id": "aa12",
-      "category": "Salary",
-      "type": "Income",
-      "date": "0056-06-04",
-      "amount": 8765,
-      "description": "hjgf",
-      "userId": "7b18"
-    },
-    {
-      "id": "d813",
-      "category": "Salary",
-      "type": "Income",
-      "date": "0431-05-06",
-      "amount": 9876780987,
-      "description": "kjhg",
-      "userId": "7b18"
-    },
-    {
-      "id": "2a30",
-      "category": "Salary",
-      "type": "Income",
-      "date": "0045-05-05",
-      "amount": 87657890,
-      "description": "klhgfhjk",
-      "userId": "7b18"
-    },
     {
       "id": "ab31",
       "category": "Salary",
@@ -211,6 +109,150 @@
       "amount": 67895,
       "description": "njhg",
       "userId": "e861"
+    },
+    {
+      "id": "745b",
+      "category": "Freelancing",
+      "type": "Income",
+      "date": "0012-04-05",
+      "amount": 6539,
+      "description": "srrt",
+      "userId": "411c"
+    },
+    {
+      "id": "d625",
+      "category": "Shopping",
+      "type": "Expense",
+      "date": "0120-04-05",
+      "amount": 3765,
+      "description": "jhgf",
+      "userId": "411c"
+    },
+    {
+      "id": "0f50",
+      "category": "Freelancing",
+      "type": "Income",
+      "date": "0005-12-05",
+      "amount": 9876,
+      "description": "lkjhgfds",
+      "userId": "fac7"
+    },
+    {
+      "id": "25d0",
+      "category": "Shopping",
+      "type": "Expense",
+      "date": "0005-04-05",
+      "amount": 6436,
+      "description": "njhgf",
+      "userId": "fac7"
+    },
+    {
+      "id": "7aa8",
+      "category": "Salary",
+      "type": "Income",
+      "date": "0452-08-07",
+      "amount": 876,
+      "description": "kjhgf",
+      "userId": "fac7"
+    },
+    {
+      "id": "02f0",
+      "category": "Salary",
+      "type": "Income",
+      "date": "+045312-08-06",
+      "amount": 2345665,
+      "description": "dfghj",
+      "userId": "6099"
+    },
+    {
+      "id": "c2cc",
+      "category": "Miscellaneous",
+      "type": "Expense",
+      "date": "0005-02-05",
+      "amount": 987688,
+      "description": "oiuygf",
+      "userId": "6099"
+    },
+    {
+      "id": "a592",
+      "category": "Travel",
+      "type": "Expense",
+      "date": "0123-05-04",
+      "amount": 987666,
+      "description": "uiygtfygui",
+      "userId": "112a"
+    },
+    {
+      "id": "1746",
+      "category": "Salary",
+      "type": "Income",
+      "date": "2025-07-26",
+      "amount": 100000,
+      "description": "hjhkhkhkhk",
+      "userId": "7b18"
+    },
+    {
+      "id": "f5ce",
+      "category": "Food",
+      "type": "Expense",
+      "date": "2025-07-07",
+      "amount": 10000,
+      "description": "nkkhi",
+      "userId": "7b18"
+    },
+    {
+      "id": "b887",
+      "category": "Travel",
+      "type": "Expense",
+      "date": "2025-07-26",
+      "amount": 9997,
+      "description": "huiihi",
+      "userId": "7b18"
+    },
+    {
+      "id": "5c7c",
+      "category": "Miscellaneous",
+      "type": "Expense",
+      "date": "0003-02-05",
+      "amount": 65454,
+      "description": "ddfdgd",
+      "userId": "7b18"
+    },
+    {
+      "id": "c2d3",
+      "category": "Utilities",
+      "type": "Expense",
+      "date": "0001-05-04",
+      "amount": 50000,
+      "description": "kjhg",
+      "userId": "7b18"
+    },
+    {
+      "id": "17f3",
+      "category": "Shopping",
+      "type": "Expense",
+      "date": "0007-07-05",
+      "amount": 60000,
+      "description": "ihgf",
+      "userId": "7b18"
+    },
+    {
+      "id": "2ce1",
+      "category": "Salary",
+      "type": "Income",
+      "date": "0005-12-12",
+      "amount": 1234567,
+      "description": "dsfgh",
+      "userId": "08ed"
+    },
+    {
+      "id": "420c",
+      "category": "Freelancing",
+      "type": "Income",
+      "date": "0056-05-04",
+      "amount": 98765,
+      "description": "kjhgf",
+      "userId": "7b18"
     }
   ]
 }

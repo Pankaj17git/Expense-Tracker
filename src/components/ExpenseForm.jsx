@@ -37,7 +37,6 @@ const ExpenseForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted:', formData);
 
     const user = JSON.parse(localStorage.getItem('user'));
 

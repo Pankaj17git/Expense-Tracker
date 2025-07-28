@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Box, Paper, Grid, Typography } from '@mui/material'
 import ExpenseForm from '../components/ExpenseForm'
 import DonutChart from '../components/PieChart'
@@ -7,7 +7,31 @@ import { useUserContext } from '../context/UserContext'
 
 
 const DashBoard = () => {
-  const {totalExpense, totalBalance} = useUserContext();
+  const { totalExpense, totalBalance, totalIncome, getTotalByCategory, totalTransactions, getTotalTransactions } = useUserContext();
+  const categories = ["Food", "Travel", "Shopping", "Miscellaneous", "Utilities"];
+  const balanceChartData = useMemo(() => ([
+    { label: 'Spent', value: totalExpense, color: '#ff6384' },
+    { label: 'Remaining', value: totalBalance, color: '#36a2eb' },
+  ]), [totalBalance, totalExpense]);
+
+  const categoryColorMap = {
+    Food: '#ff6384',
+    Travel: '#bacf66ff',
+    Shopping: '#ffcd56',
+    Miscellaneous: '#4bc0c0',
+    Utilities: '#9966ff',
+  };
+
+  useEffect(() => {
+    getTotalTransactions();
+  }, [totalIncome, totalExpense]);
+
+  console.log(totalTransactions);
+
+
+  const getColorForCategory = (category) => categoryColorMap[category] || '#888';
+
+  console.log(categories)
   return (
     <>
       <Box sx={{ flexGrow: 1, padding: 1, background: '#e3e3e3' }}>
@@ -27,10 +51,14 @@ const DashBoard = () => {
               <Typography variant="h6" sx={{ color: '#007bff', mb: 5, borderBottom: '1px solid gray' }}>
                 Budget (Current Month)
               </Typography>
-              <DonutChart />
+              <DonutChart data={balanceChartData} title="Monthely Expenses" />
               <Grid container sx={{ justifyContent: 'space-evenly' }}>
                 <Box>
                   <Typography variant='h5'>Total</Typography>
+                  <Typography>&#8377;{totalIncome}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant='h5'>Remaining</Typography>
                   <Typography>&#8377;{totalBalance}</Typography>
                 </Box>
                 <Box>
@@ -52,26 +80,25 @@ const DashBoard = () => {
                 Budget (Current Month)
               </Typography>
               <Grid container sx={{ justifyContent: 'space-evenly' }}>
-                <Box>
-                  <Typography sx={{ marginBottom: 2, textAlign: 'center' }}>General Expenses</Typography>
-                  <DonutChart />
-                </Box>
-                <Box>
-                  <Typography sx={{ marginBottom: 2, textAlign: 'center' }}>Misc</Typography>
-                  <DonutChart />
-                </Box>
-                <Box>
-                  <Typography sx={{ marginBottom: 2, textAlign: 'center' }}>Shopping</Typography>
-                  <DonutChart />
-                </Box>
-                <Box>
-                  <Typography sx={{ marginBottom: 2, textAlign: 'center' }}>Travel</Typography>
-                  <DonutChart />
-                </Box>
-                <Box>
-                  <Typography sx={{ marginBottom: 2, textAlign: 'center' }}>Utils</Typography>
-                  <DonutChart />
-                </Box>
+                {categories.map((item, index) => (
+                  <Box key={index}>
+                    <DonutChart
+                      title={`${item} Breakdown`}
+                      data={[
+                        {
+                          label: 'Income',
+                          value: totalIncome,
+                          color: '#d3d3d3ff',
+                        },
+                        {
+                          label: item,
+                          value: getTotalByCategory(totalTransactions, 'Expense', item),
+                          color: getColorForCategory(item),
+                        },
+                      ]}
+                    />
+                  </Box>
+                ))}
               </Grid>
             </Paper>
           </Grid>

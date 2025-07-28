@@ -14,9 +14,6 @@ const UserContextProvider = ({ children }) => {
   const [totalBalance, setTotalBalance] = useState(0);
   const [totalTransactions, setTotalTransaction] = useState([])
 
-  useEffect(() => {
-    console.log('Updated transactions:', totalTransactions);
-  }, [totalTransactions]);
 
   const TURL = import.meta.env.VITE_USER_TRANSACTIONS;
 
@@ -28,16 +25,19 @@ const UserContextProvider = ({ children }) => {
         params: { userId: user.id }
       });
 
-      console.log("Fetched transactions:", res.data);
-
       setTotalTransaction(res.data); 
-
-
     } catch (error) {
       console.error('Failed to fetch Transaction:', error);
     }
-
   };
+
+
+  const getTotalByCategory = (data, type, category) => {
+    return data
+    .filter(txn => txn.type === type && txn.category === category)
+    .reduce((sum, txn) => sum + txn.amount, 0);
+  };
+
 
 
   const updateBalance = async () => {
@@ -79,7 +79,7 @@ const UserContextProvider = ({ children }) => {
     <UserContext
       value={{
         user, setUser,totalTransactions,
-        totalBalance, totalExpense,
+        totalBalance, totalExpense,getTotalByCategory,
         totalIncome, updateBalance, getTotalTransactions
       }}
     >
@@ -90,4 +90,5 @@ const UserContextProvider = ({ children }) => {
 
 const useUserContext = () => useContext(UserContext);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { UserContextProvider, useUserContext }

@@ -23,27 +23,46 @@ const AuthForm = () => {
     email: '',
     password: ''
   })
+
+  const UserUrl = import.meta.env.VITE_REGISTERED_USER;
   const navigate = useNavigate();
 
   useEffect(() => {
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-  
-  if (storedUser?.token) {
-    navigate("/main");
-  }
-}, []);
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (storedUser?.token) {
+      navigate("/main");
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSignUn = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
 
+    const res = await axios.get(UserUrl, {
+      params: {
+        email: user.email,
+      }
+    });
+
+    if (res.data.length > 0) {
+      alert('Please enter different email')
+      return;
+    }
+
     try {
-      const response = await axios.post('http://localhost:4001/users', user);
+      const response = await axios.post(UserUrl, user);
       console.log(response.data);
+      alert('user registeration successfull')
+      setUser({
+        name: '',
+        email: '',
+        password: ''
+      });
     } catch (error) {
       console.error('Sign in error:', error);
     }
@@ -56,10 +75,9 @@ const AuthForm = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    debugger;
     try {
-      
-      const response = await axios.get(`http://localhost:4001/users`, {
+
+      const response = await axios.get(UserUrl, {
         params: {
           email: user.email,
           password: user.password
@@ -78,7 +96,7 @@ const AuthForm = () => {
 
         localStorage.setItem("user", JSON.stringify(loggedInUser));
         console.log(loggedInUser);
-        
+
         navigate('/main');
       } else {
         alert("Invalid email or password.");
@@ -91,11 +109,20 @@ const AuthForm = () => {
 
   return (
     <>
-      <Container className="auth-body">
+      <Box
+        className="auth-body"
+        sx={{
+          backgroundImage: "url('/background-budget.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          minHeight: '100vh',
+        }}
+      >
         <Box className={`container ${isSignUpActive ? 'right-panel-active' : ''}`} id="container">
           {/* Sign Up Form */}
           <Box className="form-container sign-up-container">
-            <Box className="auth-form" component='form' onSubmit={handleSignUn}>
+            <Box className="auth-form" component='form' onSubmit={handleSignUp}>
               <Typography variant="h4">Create Account</Typography>
               <Box className="social-container">
                 <IconButton><FacebookIcon /></IconButton>
@@ -134,7 +161,7 @@ const AuthForm = () => {
                 <Typography>
                   Please login to your <strong>BudgetBuddy!</strong> account with your personal info
                 </Typography>
-                <Button className="ghost" variant="outlined" onClick={() => setIsSignUpActive(false)}>
+                <Button sx={{ marginTop: 4 }} className="ghost" variant="outlined" onClick={() => setIsSignUpActive(false)}>
                   Sign In
                 </Button>
               </Box>
@@ -143,14 +170,14 @@ const AuthForm = () => {
                 <Typography>
                   Enter your personal details to create a <strong>BudgetBuddy</strong> account
                 </Typography>
-                <Button className="ghost" variant="outlined" onClick={() => setIsSignUpActive(true)}>
+                <Button sx={{ marginTop: 4 }} className="ghost" variant="outlined" onClick={() => setIsSignUpActive(true)}>
                   Sign Up
                 </Button>
               </Box>
             </Box>
           </Box>
         </Box>
-      </Container>
+      </Box>
     </>
   );
 };

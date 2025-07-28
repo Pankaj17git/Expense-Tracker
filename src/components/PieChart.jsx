@@ -1,8 +1,5 @@
-
 import { PieChart } from '@mui/x-charts/PieChart';
-import { useEffect, useState } from 'react';
-import { useUserContext } from '../context/UserContext';
-
+import { Typography, Box } from '@mui/material';
 
 const settings = {
   margin: { right: 5 },
@@ -11,31 +8,17 @@ const settings = {
   hideLegend: true,
 };
 
-const DonutChart = () => {
-  const [chartData, setChartData] = useState([])
-  const { totalBalance, totalExpense } = useUserContext();
-
-  useEffect(() => {
-    setChartData([
-      {
-        label: 'Spent',
-        value: totalExpense,
-        color: '#ff6384',
-      },
-      {
-        label: 'Remaining',
-        value: totalBalance,
-        color: '#36a2eb',
-      },
-    ]);
-  }, [totalBalance, totalExpense]);
-
+const DonutChart = ({ data = [], title = '' }) => {
   return (
-    <PieChart sx={{ marginBottom: 4 }}
-      series={[{ innerRadius: 50, outerRadius: 100, data: chartData, }]}
-      {...settings}
-    />
+    <Box sx={{ textAlign: 'center', mb: 4 }}>
+      <Typography variant="subtitle1" sx={{ mb: 1 }}>{title}</Typography>
+      <PieChart
+        sx={{ marginBottom: 2 }}
+        series={[{ innerRadius: 50, outerRadius: 100, data }]}
+        {...settings}
+      />
+    </Box>
   );
-}
+};
 
 export default DonutChart;
