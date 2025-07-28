@@ -14,6 +14,7 @@ import {
 import './style/expense-form.css'
 import axios from 'axios';
 import { useUserContext } from '../context/UserContext';
+import dayjs from 'dayjs';
 
 const incomeCategories = ["Salary", "Freelancing", "Investments", "Gifts"];
 const expenseCategories = ["Food", "Travel", "Shopping", "Miscellaneous", "Utilities"];
@@ -27,24 +28,52 @@ const ExpenseForm = () => {
     amount: '',
     description: ''
   });
+  const [errors, setErrors] = useState({});
 
-  const {updateBalance} = useUserContext();
+  const { updateBalance } = useUserContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors({ ...errors, [e.target.name]: '' });
   };
+
+  const validate = () => {
+    const newErrors = {};
+    const today = dayjs();
+    const selectedDate = dayjs(formData.date);
+
+    if (!formData.date) {
+      newErrors.date = 'Date is required';
+    } else if (selectedDate.isAfter(today)) {
+      newErrors.date = 'Future dates are not allowed';
+    } else if (!selectedDate.isSame(today, 'month')){
+      newErrors.date = 'Only current month is allowed';
+    }
+
+    if (!formData.amount || Number(formData.amount) <= 0) {
+      newErrors.amount = 'Enter a valid amount';
+    }
+
+    setErrors(newErrors);    
+    return Object.keys(newErrors).length === 0;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const user = JSON.parse(localStorage.getItem('user'));
 
+    if (!validate()) {
+      return;
+    };
+
     const newTransaction = {
       ...formData,
       userId: user.id,
       amount: parseFloat(formData.amount),
-      date: new Date(formData.date).toISOString().split("T")[0]
+      date: new Date(formData.date).toISOString().split("T")[0],
+      createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
     };
 
     try {
@@ -80,7 +109,7 @@ const ExpenseForm = () => {
         <Box component="form" onSubmit={handleSubmit}>
           <Grid>
             {/* Type */}
-            <Grid item xs={6}>
+            <Grid>
               <FormControl fullWidth variant="standard">
                 <InputLabel>Type</InputLabel>
                 <Select
@@ -96,7 +125,7 @@ const ExpenseForm = () => {
 
             {/* Category */}
             {formData.type && (
-              <Grid item sx={{ flexGrow: 6 }}>
+              <Grid>
                 <FormControl fullWidth variant="standard">
                   <InputLabel>Category</InputLabel>
                   <Select
@@ -116,7 +145,7 @@ const ExpenseForm = () => {
 
 
             {/* Date */}
-            <Grid item xs={6}>
+            <Grid>
               <TextField
                 name="date"
                 label="Date"
@@ -130,7 +159,7 @@ const ExpenseForm = () => {
             </Grid>
 
             {/* Amount */}
-            <Grid item xs={6}>
+            <Grid>
               <TextField
                 name="amount"
                 label="Amount"
@@ -143,7 +172,7 @@ const ExpenseForm = () => {
             </Grid>
 
             {/* Description */}
-            <Grid item xs={12}>
+            <Grid>
               <TextField
                 name="description"
                 label="Description"
@@ -157,7 +186,7 @@ const ExpenseForm = () => {
             </Grid>
 
             {/* Submit */}
-            <Grid item xs={12} textAlign="center" mt={2}>
+            <Grid textAlign="center" mt={2}>
               <Button
                 type="submit"
                 variant="outlined"

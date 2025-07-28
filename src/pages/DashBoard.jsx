@@ -26,12 +26,8 @@ const DashBoard = () => {
     getTotalTransactions();
   }, [totalIncome, totalExpense]);
 
-  console.log(totalTransactions);
-
-
   const getColorForCategory = (category) => categoryColorMap[category] || '#888';
 
-  console.log(categories)
   return (
     <>
       <Box sx={{ flexGrow: 1, padding: 1, background: '#e3e3e3' }}>

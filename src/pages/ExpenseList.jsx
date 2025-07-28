@@ -14,7 +14,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useUserContext } from '../context/UserContext';
 import { useEffect, useState } from 'react';
-
+import { filterDateByTimeFrame, sortByDateDesc } from '../utils/dateFilters';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -101,8 +101,15 @@ const ExpenseList = () => {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - totalTransactions.length) : 0;
 
   useEffect(() => {
-    getTotalTransactions()
+    getTotalTransactions();
   }, []);
+
+  const filtered = filterDateByTimeFrame(totalTransactions, 'weekly');
+  const sorted = sortByDateDesc(filtered);
+  console.log(sorted);
+  
+ 
+  
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -178,6 +185,7 @@ const ExpenseList = () => {
             </TableFooter>
           </Table>
         </Paper>
+       
       </Box>
     </>
   )
