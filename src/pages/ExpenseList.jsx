@@ -7,9 +7,14 @@ import {
   IconButton,
   TableFooter,
   TablePagination,
+  Grid,
+  Tooltip,
+  Avatar,
+  Menu,
 } from '@mui/material';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useUserContext } from '../context/UserContext';
@@ -35,6 +40,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+const filter = ['monthly', 'weekly', 'yearly'];
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -93,6 +99,8 @@ function TablePaginationActions(props) {
 
 const ExpenseList = () => {
   const [page, setPage] = useState(0);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [selectedFilter, setSelectedFilter] = useState('monthly')
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const { getTotalTransactions, totalTransactions } = useUserContext()
 
@@ -104,12 +112,23 @@ const ExpenseList = () => {
     getTotalTransactions();
   }, []);
 
-  const filtered = filterDateByTimeFrame(totalTransactions, 'weekly');
+  const filtered = filterDateByTimeFrame(totalTransactions, selectedFilter);
   const sorted = sortByDateDesc(filtered);
-  console.log(sorted);
-  
- 
-  
+
+
+  const handleFilter = (filterType) => {
+    setSelectedFilter(filterType)
+    console.log(selectedFilter);
+
+  }
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -124,9 +143,40 @@ const ExpenseList = () => {
     <>
       <Box sx={{ height: '100vh', padding: 5, background: '#eae8e8' }}>
         <Paper sx={{ paddingTop: 0.5 }}>
-          <Typography variant="h6" sx={{ color: '#007bff', m: 2 }}>
-            Transactions
-          </Typography>
+          <Grid display={'flex'} flexDirection={'row'}>
+            <Typography variant="h6" sx={{ color: '#007bff', m: 2 }}>
+              Transactions
+            </Typography>
+            <Typography variant="h6" sx={{ color: '#000000ff', m: 2 }} flex={1} textAlign={'right'}>
+              {/* <IconButton>
+                <FilterListIcon/>
+              </IconButton> */}
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <FilterListIcon />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                  keepMounted
+                  transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {filter.map((filterType) => (
+                    <Box key={filterType} onClick={() => handleFilter(filterType)} sx={{ px: 2, py: 1, cursor: 'pointer' }}>
+                      <Typography sx={{ textAlign: 'center' }}>{filterType}</Typography>
+                    </Box>
+                  ))}
+                </Menu>
+
+              </Box>
+            </Typography>
+          </Grid>
           <Table sx={{ minWidth: 700, boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }} aria-label="customized table">
             <TableHead>
               <TableRow>
@@ -140,8 +190,8 @@ const ExpenseList = () => {
             </TableHead>
             <TableBody>
               {(rowsPerPage > 0
-                ? totalTransactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                : totalTransactions
+                ? sorted.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                : sorted
               ).map((row, id) => (
                 <StyledTableRow key={id}>
                   <StyledTableCell component="th" scope="row">
@@ -185,7 +235,7 @@ const ExpenseList = () => {
             </TableFooter>
           </Table>
         </Paper>
-       
+
       </Box>
     </>
   )

@@ -30,7 +30,7 @@ const ExpenseForm = () => {
   });
   const [errors, setErrors] = useState({});
 
-  const { updateBalance } = useUserContext();
+  const { updateBalance, totalBalance } = useUserContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,6 +42,12 @@ const ExpenseForm = () => {
     const newErrors = {};
     const today = dayjs();
     const selectedDate = dayjs(formData.date);
+
+    
+    if (formData.type === 'Expense' && formData.amount >= totalBalance) {
+      alert('Insufficient balance');
+      return;
+    }
 
     if (!formData.date) {
       newErrors.date = 'Date is required';

@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import BarsDataset from '../components/BarChart'
 import { useUserContext } from '../context/UserContext';
+import ExpensePieChart from '../components/RechartPie';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -39,30 +40,8 @@ const Status = () => {
 
   return (
     <>
-      {/* <Box sx={{ flexGrow: 1, padding: 1, background: '#e3e3e3' }}>
-        <Grid container spacing={1}>
-          <Grid size={12} sx={{ margin: 0, background: 'red'}}>
-            <Grid></Grid>
-            <Grid></Grid>
-            <Grid></Grid>
-            <Grid></Grid>
-          </Grid>
-          <Grid size={12} sx={{ margin: 0, background: 'blue'}}>
-            ujg
-          </Grid>
-          <Grid size={12} sx={{ margin: 0, background: 'yellow'}}>
-            hg
-          </Grid>
-          <Grid size={12} sx={{ mt: 1 , background: 'green'}}>
-            hjg
-          </Grid>
-        </Grid>
-      </Box> */}
-
-
-
-
-      <Box p={3}>
+   
+      <Box p={3} sx={{ flexGrow: 1, background: '#e3e3e3' }}>
         {/* Top Cards */}
         <Grid container spacing={2} mb={3}>
           <Grid item xs={3}>
@@ -92,9 +71,116 @@ const Status = () => {
         </Grid>
 
         {/* Table and Chart */}
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{
+            p: 3,
+            background: 'white',
+            borderRadius: 1,
+            mb: 2,
+            boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+          }}>
           <Grid item xs={6}>
             <Typography variant="h6" mb={1}>Expenses Breakdown</Typography>
+            <Box display="flex" alignItems="center" mb={2}>
+              <Typography variant="subtitle1" mr={1}>Year</Typography>
+              <Select value={year} onChange={(e) => setYear(e.target.value)} size="small">
+                {years.map((y) => (
+                  <MenuItem key={y} value={y}>{y}</MenuItem>
+                ))}
+              </Select>
+            </Box>
+            <TableContainer component={Paper}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Category</TableCell>
+                    <TableCell>Date</TableCell>
+                    <TableCell>Value</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {totalTransactions.map((row, id) => (
+                    <StyledTableRow key={id}>
+                      <StyledTableCell component="th" scope="row">
+                        &#8377;{row.amount}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">{row.date}</StyledTableCell>
+                      <StyledTableCell align="right">{row.category}</StyledTableCell>
+                      <StyledTableCell align="right">{row.type}</StyledTableCell>
+                      <StyledTableCell align="right">{row.description}</StyledTableCell>
+                      <StyledTableCell align="right">action</StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+
+          {/* Chart */}
+          <Grid item xs={6}>
+            <BarsDataset />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={2} sx={{
+            p: 3,
+            background: 'white',
+            borderRadius: 1,
+            mb: 2,
+            boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+          }}>
+          <Grid>
+            <Typography variant="h6" mb={1}>Category Breakdown</Typography>
+            <Box display="flex" alignItems="center" mb={2}>
+              <Typography variant="subtitle1" mr={1}>Year</Typography>
+              <Select value={year} onChange={(e) => setYear(e.target.value)} size="small">
+                {years.map((y) => (
+                  <MenuItem key={y} value={y}>{y}</MenuItem>
+                ))}
+              </Select>
+            </Box>
+            <TableContainer component={Paper}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Category</TableCell>
+                    <TableCell>Date</TableCell>
+                    <TableCell>Value</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {totalTransactions.map((row, id) => (
+                    <StyledTableRow key={id}>
+                      <StyledTableCell component="th" scope="row">
+                        &#8377;{row.amount}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">{row.date}</StyledTableCell>
+                      <StyledTableCell align="right">{row.category}</StyledTableCell>
+                      <StyledTableCell align="right">{row.type}</StyledTableCell>
+                      <StyledTableCell align="right">{row.description}</StyledTableCell>
+                      <StyledTableCell align="right">action</StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+
+          {/* Chart */}
+          <Grid display={'flex'} sx={{justifyContent: 'center', alignItems: 'center'}} flex={1}>
+           
+           <ExpensePieChart/>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={2} sx={{
+          p: 3,
+          background: 'white',
+          borderRadius: 1,
+          mb: 2,
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+        }}>
+          <Grid item xs={6}>
+            <Typography variant="h6" mb={1}>Type Breakdown</Typography>
             <Box display="flex" alignItems="center" mb={2}>
               <Typography variant="subtitle1" mr={1}>Year</Typography>
               <Select value={year} onChange={(e) => setYear(e.target.value)} size="small">

@@ -88,105 +88,115 @@
       "userId": "112a",
       "createdAt": "2025-07-28 12:10:11"
     },
-     {
-    "id": "a1b2",
-    "category": "Salary",
-    "type": "Income",
-    "date": "2025-07-01",
-    "amount": 100000,
-    "description": "Monthly salary",
-    "userId": "112a",
-    "createdAt": "2025-07-01 09:12:43"
-  },
-  {
-    "id": "c3d4",
-    "category": "Groceries",
-    "type": "Expense",
-    "date": "2025-07-02",
-    "amount": 2500,
-    "description": "Walmart groceries",
-    "userId": "112a",
-    "createdAt": "2025-07-02 18:32:11"
-  },
-  {
-    "id": "e5f6",
-    "category": "Rent",
-    "type": "Expense",
-    "date": "2025-07-03",
-    "amount": 20000,
-    "description": "Monthly rent payment",
-    "userId": "112a",
-    "createdAt": "2025-07-03 10:15:22"
-  },
-  {
-    "id": "g7h8",
-    "category": "Freelance",
-    "type": "Income",
-    "date": "2025-07-04",
-    "amount": 8000,
-    "description": "Freelance project",
-    "userId": "112a",
-    "createdAt": "2025-07-04 13:40:19"
-  },
-  {
-    "id": "i9j0",
-    "category": "Dining",
-    "type": "Expense",
-    "date": "2025-07-05",
-    "amount": 1800,
-    "description": "Dinner out",
-    "userId": "112a",
-    "createdAt": "2025-07-05 20:11:08"
-  },
-  {
-    "id": "k1l2",
-    "category": "Utilities",
-    "type": "Expense",
-    "date": "2025-07-06",
-    "amount": 3500,
-    "description": "Electricity bill",
-    "userId": "112a",
-    "createdAt": "2025-07-06 15:33:27"
-  },
-  {
-    "id": "m3n4",
-    "category": "Investment",
-    "type": "Income",
-    "date": "2025-07-07",
-    "amount": 12000,
-    "description": "Stock dividend",
-    "userId": "112a",
-    "createdAt": "2025-07-07 10:22:44"
-  },
-  {
-    "id": "o5p6",
-    "category": "Transport",
-    "type": "Expense",
-    "date": "2025-07-08",
-    "amount": 600,
-    "description": "Metro card recharge",
-    "userId": "112a",
-    "createdAt": "2025-07-08 08:55:10"
-  },
-  {
-    "id": "q7r8",
-    "category": "Entertainment",
-    "type": "Expense",
-    "date": "2025-07-09",
-    "amount": 1500,
-    "description": "Movie night",
-    "userId": "112a",
-    "createdAt": "2025-07-09 21:45:02"
-  },
-  {
-    "id": "s9t0",
-    "category": "Bonus",
-    "type": "Income",
-    "date": "2025-07-10",
-    "amount": 5000,
-    "description": "Performance bonus",
-    "userId": "112a",
-    "createdAt": "2025-07-10 16:29:55"
-  }
+    {
+      "id": "a1b2",
+      "category": "Salary",
+      "type": "Income",
+      "date": "2025-07-01",
+      "amount": 100000,
+      "description": "Monthly salary",
+      "userId": "112a",
+      "createdAt": "2025-07-01 09:12:43"
+    },
+    {
+      "id": "c3d4",
+      "category": "Groceries",
+      "type": "Expense",
+      "date": "2025-07-02",
+      "amount": 2500,
+      "description": "Walmart groceries",
+      "userId": "112a",
+      "createdAt": "2025-07-02 18:32:11"
+    },
+    {
+      "id": "e5f6",
+      "category": "Rent",
+      "type": "Expense",
+      "date": "2025-07-03",
+      "amount": 20000,
+      "description": "Monthly rent payment",
+      "userId": "112a",
+      "createdAt": "2025-07-03 10:15:22"
+    },
+    {
+      "id": "g7h8",
+      "category": "Freelance",
+      "type": "Income",
+      "date": "2025-07-04",
+      "amount": 8000,
+      "description": "Freelance project",
+      "userId": "112a",
+      "createdAt": "2025-07-04 13:40:19"
+    },
+    {
+      "id": "i9j0",
+      "category": "Dining",
+      "type": "Expense",
+      "date": "2025-07-05",
+      "amount": 1800,
+      "description": "Dinner out",
+      "userId": "112a",
+      "createdAt": "2025-07-05 20:11:08"
+    },
+    {
+      "id": "k1l2",
+      "category": "Utilities",
+      "type": "Expense",
+      "date": "2025-07-06",
+      "amount": 3500,
+      "description": "Electricity bill",
+      "userId": "112a",
+      "createdAt": "2025-07-06 15:33:27"
+    },
+    {
+      "id": "m3n4",
+      "category": "Investment",
+      "type": "Income",
+      "date": "2025-07-07",
+      "amount": 12000,
+      "description": "Stock dividend",
+      "userId": "112a",
+      "createdAt": "2025-07-07 10:22:44"
+    },
+    {
+      "id": "o5p6",
+      "category": "Transport",
+      "type": "Expense",
+      "date": "2025-07-08",
+      "amount": 600,
+      "description": "Metro card recharge",
+      "userId": "112a",
+      "createdAt": "2025-07-08 08:55:10"
+    },
+    {
+      "id": "q7r8",
+      "category": "Entertainment",
+      "type": "Expense",
+      "date": "2025-07-09",
+      "amount": 1500,
+      "description": "Movie night",
+      "userId": "112a",
+      "createdAt": "2025-07-09 21:45:02"
+    },
+    {
+      "id": "s9t0",
+      "category": "Bonus",
+      "type": "Income",
+      "date": "2025-07-10",
+      "amount": 5000,
+      "description": "Performance bonus",
+      "userId": "112a",
+      "createdAt": "2025-07-10 16:29:55"
+    },
+    {
+      "id": "15c1",
+      "category": "Travel",
+      "type": "Expense",
+      "date": "2025-07-28",
+      "amount": 10000,
+      "description": "jhg",
+      "userId": "112a",
+      "createdAt": "2025-07-28 14:52:09"
+    }
   ]
 }
