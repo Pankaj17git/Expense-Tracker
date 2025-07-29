@@ -18,12 +18,13 @@ import dayjs from 'dayjs';
 
 const incomeCategories = ["Salary", "Freelancing", "Investments", "Gifts"];
 const expenseCategories = ["Food", "Travel", "Shopping", "Miscellaneous", "Utilities"];
-
+const expenseMedium = ['Debit Card', 'Credit Card', 'Cheque', 'Cash'];
 const ExpenseForm = () => {
 
   const [formData, setFormData] = useState({
     category: '',
     type: '',
+    medium: '',
     date: '',
     amount: '',
     description: ''
@@ -43,7 +44,7 @@ const ExpenseForm = () => {
     const today = dayjs();
     const selectedDate = dayjs(formData.date);
 
-    
+
     if (formData.type === 'Expense' && formData.amount >= totalBalance) {
       alert('Insufficient balance');
       return;
@@ -53,7 +54,7 @@ const ExpenseForm = () => {
       newErrors.date = 'Date is required';
     } else if (selectedDate.isAfter(today)) {
       newErrors.date = 'Future dates are not allowed';
-    } else if (!selectedDate.isSame(today, 'month')){
+    } else if (!selectedDate.isSame(today, 'month')) {
       newErrors.date = 'Only current month is allowed';
     }
 
@@ -61,7 +62,7 @@ const ExpenseForm = () => {
       newErrors.amount = 'Enter a valid amount';
     }
 
-    setErrors(newErrors);    
+    setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
 
@@ -89,6 +90,7 @@ const ExpenseForm = () => {
         category: '',
         type: '',
         date: '',
+        medium: '',
         amount: '',
         description: ''
       })
@@ -130,25 +132,41 @@ const ExpenseForm = () => {
             </Grid>
 
             {/* Category */}
-            {formData.type && (
+
+            <Grid>
+              <FormControl fullWidth variant="standard">
+                <InputLabel>Category</InputLabel>
+                <Select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                >
+                  {formData.type.toLowerCase() === 'income' ? (
+                    incomeCategories.map((cat) => <MenuItem key={cat} value={cat}>{cat}</MenuItem>)
+                  ) : (
+                    expenseCategories.map((cat) => <MenuItem key={cat} value={cat}>{cat}</MenuItem>)
+                  )}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            {/* Expense Medium */}
+            {formData.type === 'Expense' && (
               <Grid>
                 <FormControl fullWidth variant="standard">
-                  <InputLabel>Category</InputLabel>
+                  <InputLabel>Medium</InputLabel>
                   <Select
-                    name="category"
-                    value={formData.category}
+                    name="medium"
+                    value={formData.medium}
                     onChange={handleChange}
                   >
-                    {formData.type.toLowerCase() === 'income' ? (
-                      incomeCategories.map((cat) => <MenuItem key={cat} value={cat}>{cat}</MenuItem>)
-                    ) : (
-                      expenseCategories.map((cat) => <MenuItem key={cat} value={cat}>{cat}</MenuItem>)
-                    )}
+                    {
+                      expenseMedium.map((cat) => <MenuItem key={cat} value={cat}>{cat}</MenuItem>)
+                    }
                   </Select>
                 </FormControl>
-              </Grid>
+              </Grid> 
             )}
-
 
             {/* Date */}
             <Grid>

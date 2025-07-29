@@ -1,3 +1,4 @@
+import React from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { Typography, Box } from '@mui/material';
 
@@ -45,4 +46,4 @@ const DonutChart = ({ data = [], title = '' }) => {
 };
 
 
-export default DonutChart;
+export default React.memo(DonutChart);

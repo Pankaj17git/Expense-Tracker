@@ -148,14 +148,12 @@ const ExpenseList = () => {
               Transactions
             </Typography>
             <Typography variant="h6" sx={{ color: '#000000ff', m: 2 }} flex={1} textAlign={'right'}>
-              {/* <IconButton>
-                <FilterListIcon/>
-              </IconButton> */}
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <FilterListIcon />
-                  </IconButton>
+                    <Typography>{selectedFilter}</Typography>
+                  </IconButton> 
                 </Tooltip>
                 <Menu
                   sx={{ mt: '45px' }}

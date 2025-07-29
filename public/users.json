@@ -197,6 +197,92 @@
       "description": "jhg",
       "userId": "112a",
       "createdAt": "2025-07-28 14:52:09"
+    },
+    {
+      "id": "6ad1",
+      "category": "Food",
+      "type": "Expense",
+      "date": "2025-07-29",
+      "amount": 10000,
+      "description": "on birthday party",
+      "userId": "112a",
+      "createdAt": "2025-07-29 12:10:07"
+    },
+    {
+      "id": "e139",
+      "category": "Shopping",
+      "type": "Expense",
+      "date": "2025-07-28",
+      "amount": 10000,
+      "description": "jdfjslfjlf",
+      "userId": "112a",
+      "createdAt": "2025-07-29 12:18:34"
+    },
+    {
+      "id": "abc6",
+      "category": "Food",
+      "type": "Expense",
+      "medium": "Cash",
+      "date": "2025-07-28",
+      "amount": 1000,
+      "description": "jhgfdgh",
+      "userId": "112a",
+      "createdAt": "2025-07-29 12:49:57"
+    },
+    {
+      "id": "f94d",
+      "category": "Gifts",
+      "type": "Income",
+      "date": "2025-07-28",
+      "medium": "",
+      "amount": 10,
+      "description": "kjhgf",
+      "userId": "112a",
+      "createdAt": "2025-07-29 12:59:50"
+    },
+    {
+      "id": "075d",
+      "category": "Food",
+      "type": "Expense",
+      "medium": "Cash",
+      "date": "2025-07-29",
+      "amount": 2000,
+      "description": "jhgfd",
+      "userId": "112a",
+      "createdAt": "2025-07-29 13:52:28"
+    },
+    {
+      "id": "269b",
+      "category": "Shopping",
+      "type": "Expense",
+      "medium": "Debit Card",
+      "date": "2025-07-25",
+      "amount": 8778,
+      "description": "kjhg",
+      "userId": "112a",
+      "createdAt": "2025-07-29 15:09:22"
+    },
+    {
+      "id": "d760",
+      "category": "Shopping",
+      "type": "Expense",
+      "medium": "Debit Card",
+      "date": "2025-07-02",
+      "amount": 78787,
+      "description": "kjhbnj",
+      "userId": "112a",
+      "createdAt": "2025-07-29 15:10:24"
+    },
+    {
+      "id": "c176",
+      "category": "Salary",
+      "type": "Income",
+      "medium": "",
+      "date": "2025-07-20",
+      "amount": 50000,
+      "description": "jhgf",
+      "userId": "112a",
+      "createdAt": "2025-07-29 15:36:57"
     }
   ]
 }

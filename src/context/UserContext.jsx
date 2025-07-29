@@ -17,6 +17,26 @@ const UserContextProvider = ({ children }) => {
 
   const TURL = import.meta.env.VITE_USER_TRANSACTIONS;
 
+
+  const updateBalance = async (data = totalTransactions) => {
+
+    let income = 0;
+    let expense = 0;
+
+    data.forEach(txn => {
+      if (txn.type.toLowerCase() === 'income') {
+        income += txn.amount ?? 0;
+      } else {
+        expense += txn.amount ?? 0;
+      }
+    });
+
+    setTotalIncome(income);
+    setTotalExpense(expense);
+    setTotalBalance(income - expense);
+  }
+
+
   const getTotalTransactions = async () => {
     if (!user) return;
 
@@ -25,7 +45,8 @@ const UserContextProvider = ({ children }) => {
         params: { userId: user.id }
       });
 
-      setTotalTransaction(res.data); 
+      setTotalTransaction(res.data);
+      updateBalance(res.data);
     } catch (error) {
       console.error('Failed to fetch Transaction:', error);
     }
@@ -34,52 +55,21 @@ const UserContextProvider = ({ children }) => {
 
   const getTotalByCategory = (data, type, category) => {
     return data
-    .filter(txn => txn.type === type && txn.category === category)
-    .reduce((sum, txn) => sum + txn.amount, 0);
+      .filter(txn => txn.type === type && txn.category === category)
+      .reduce((sum, txn) => sum + txn.amount, 0);
   };
-
-
-
-  const updateBalance = async () => {
-    if (!user) return;
-
-    try {
-      const res = await axios.get(TURL, {
-        params: { userId: user.id }
-      });
-
-      let income = 0;
-      let expense = 0;
-
-      res.data.forEach(txn => {
-        if (txn.type.toLowerCase() === 'income') {
-          income += txn.amount;
-        } else {
-          expense += txn.amount;
-        }
-      });
-
-      setTotalIncome(income);
-      setTotalExpense(expense);
-      setTotalBalance(income - expense);
-    } catch (error) {
-      console.error('Failed to fetch Transaction:', error);
-    }
-  }
 
   useEffect(() => {
     if (user) {
-      updateBalance()
+      getTotalTransactions();
     }
   }, [user]);
-
-
 
   return (
     <UserContext
       value={{
-        user, setUser,totalTransactions,
-        totalBalance, totalExpense,getTotalByCategory,
+        user, setUser, totalTransactions,
+        totalBalance, totalExpense, getTotalByCategory,
         totalIncome, updateBalance, getTotalTransactions
       }}
     >

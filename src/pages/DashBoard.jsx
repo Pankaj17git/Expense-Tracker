@@ -4,6 +4,7 @@ import ExpenseForm from '../components/ExpenseForm'
 import DonutChart from '../components/PieChart'
 import BarsDataset from '../components/BarChart'
 import { useUserContext } from '../context/UserContext'
+import ExpensePieChart from '../components/RechartPie'
 
 
 const DashBoard = () => {
@@ -13,6 +14,14 @@ const DashBoard = () => {
     { label: 'Spent', value: totalExpense, color: '#ff6384' },
     { label: 'Remaining', value: totalBalance, color: '#36a2eb' },
   ]), [totalBalance, totalExpense]);
+
+  const totalByCategory = useMemo(() => {
+    const result = {};
+    categories.forEach((cat) => {
+      result[cat] = getTotalByCategory(totalTransactions, 'Expense', cat)
+    });
+    return result;
+  }, [totalTransactions])
 
   const categoryColorMap = {
     Food: '#ff6384',
@@ -24,7 +33,7 @@ const DashBoard = () => {
 
   useEffect(() => {
     getTotalTransactions();
-  }, [totalIncome, totalExpense]);
+  }, [ ]);
 
   const getColorForCategory = (category) => categoryColorMap[category] || '#888';
 
@@ -88,7 +97,7 @@ const DashBoard = () => {
                         },
                         {
                           label: item,
-                          value: getTotalByCategory(totalTransactions, 'Expense', item),
+                          value: totalByCategory[item],
                           color: getColorForCategory(item),
                         },
                       ]}
@@ -109,19 +118,19 @@ const DashBoard = () => {
               <Typography variant="h6" sx={{ color: '#007bff', mb: 5, borderBottom: '1px solid gray' }}>
                 Breakdown (Current Year)
               </Typography>
-              <Grid container sx={{ justifyContent: 'space-evenly' }}>
+              <Grid container sx={{ justifyContent: 'space-evenly' }} display={'flex'}>
                 <Box sx={{ width: '50%' }}>
                   <Typography variant="h6" sx={{ textAlign: 'center' }}>
                     Expenses
                   </Typography>
                   <BarsDataset />
                 </Box>
-                <Box>
+                <Grid display={'flex'} sx={{ justifyContent: 'center', alignItems: 'center' }} flex={1}>
                   <Typography variant="h6" sx={{ textAlign: 'center', mb: 10 }}>
                     Catagories
                   </Typography>
-                  <DonutChart />
-                </Box>
+                  <ExpensePieChart />
+                </Grid>
               </Grid>
             </Paper>
           </Grid>
