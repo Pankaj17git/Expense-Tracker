@@ -6,7 +6,6 @@ import {
   TextField,
   Typography,
   IconButton,
-  Container,
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -96,8 +95,7 @@ const AuthForm = () => {
 
         localStorage.setItem("user", JSON.stringify(loggedInUser));
         console.log(loggedInUser);
-
-        navigate('/main');
+        window.location.href = '/main';
       } else {
         alert("Invalid email or password.");
       }

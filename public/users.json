@@ -283,6 +283,17 @@
       "description": "jhgf",
       "userId": "112a",
       "createdAt": "2025-07-29 15:36:57"
+    },
+    {
+      "id": "32ea",
+      "category": "Gifts",
+      "type": "Income",
+      "medium": "",
+      "date": "2025-07-28",
+      "amount": 200,
+      "description": "fsfs",
+      "userId": "7b18",
+      "createdAt": "2025-07-29 16:51:19"
     }
   ]
 }

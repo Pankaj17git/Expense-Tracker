@@ -11,6 +11,7 @@ import {
   Tooltip,
   Avatar,
   Menu,
+  Button,
 } from '@mui/material';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
@@ -150,6 +151,7 @@ const ExpenseList = () => {
             <Typography variant="h6" sx={{ color: '#000000ff', m: 2 }} flex={1} textAlign={'right'}>
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
+                  <Button style={{borderRadius:0}}> + Add Expense</Button>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <FilterListIcon />
                     <Typography>{selectedFilter}</Typography>

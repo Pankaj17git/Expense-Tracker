@@ -47,7 +47,7 @@ const Header = () => {
   const handleUserNavigation = (setting) => {
     if (setting == 'Logout') {
       localStorage.removeItem("user");
-      navigate("/");
+      navigate('/');
       return;
     }
     navigate(`/main/${setting.toLowerCase()}`);
