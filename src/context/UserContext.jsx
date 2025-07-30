@@ -1,6 +1,6 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
-
+import { createContext, useContext, useEffect, useState, useMemo } from "react";
+import dayjs from "dayjs";
 // Create a new context to share user and transaction-related data across components
 const UserContext = createContext();
 
@@ -17,6 +17,7 @@ const UserContextProvider = ({ children }) => {
   const [totalExpense, setTotalExpense] = useState(0);
   const [totalBalance, setTotalBalance] = useState(0);
   const [totalTransactions, setTotalTransaction] = useState([]);
+  const [totalExpTansactions, setTotalExpTransactions] = useState([])
 
   // Transaction API URL from environment variables
   const TURL = import.meta.env.VITE_USER_TRANSACTIONS;
@@ -40,6 +41,12 @@ const UserContextProvider = ({ children }) => {
     setTotalBalance(income - expense);
   };
 
+  const getTotalExpense = (data = totalTransactions) => {
+    const expenses = data.filter(txn => txn.type === 'Expense');
+    setTotalExpTransactions(expenses); // Not appending to existing state
+  }
+
+
   // Fetch all transactions for the current user
   const getTotalTransactions = async () => {
     if (!user) return;
@@ -52,10 +59,12 @@ const UserContextProvider = ({ children }) => {
       // Save transactions and update totals
       setTotalTransaction(res.data);
       updateBalance(res.data);
+      getTotalExpense(res.data);
     } catch (error) {
       console.error('Failed to fetch Transaction:', error);
     }
   };
+
 
   // Utility to calculate total amount for a specific type and category (e.g., 'Expense' + 'Food')
   const getTotalByCategory = (data, type, category) => {
@@ -63,6 +72,41 @@ const UserContextProvider = ({ children }) => {
       .filter(txn => txn.type === type && txn.category === category)
       .reduce((sum, txn) => sum + txn.amount, 0);
   };
+
+
+  //Total by month
+  const today = dayjs();
+  const date = new Date(today);
+  const month = date.getMonth()
+
+  const filteredData = useMemo(() => {
+    return totalTransactions.filter(txn => {
+      const date = new Date(txn.date);
+      return date.getMonth() === month
+    })
+  })
+
+  const monthlyExpense = useMemo(() => {
+    return filteredData.filter(txn => txn.type === 'Expense')
+  }, [totalTransactions]);
+
+  const monthlyExpenseAmount = useMemo(() => {
+    return monthlyExpense.reduce((sum, txn) => sum + txn.amount, 0);
+  }, [monthlyExpense]);
+
+
+  const monthlyIncome = useMemo(() => {
+    return filteredData.filter(txn => txn.type === 'Income')
+  }, [totalTransactions]);
+
+  const monthlyIncomeAmount = useMemo(() => {
+    return monthlyIncome.reduce((sum, txn) => sum + txn.amount, 0);
+  }, [monthlyIncome]);
+
+
+  const remainingBalance = useMemo(() => {
+    return monthlyIncomeAmount - monthlyExpenseAmount;
+  }, [monthlyIncome, monthlyExpense]);
 
   // When `user` changes (e.g., login), fetch their transactions
   useEffect(() => {
@@ -75,7 +119,9 @@ const UserContextProvider = ({ children }) => {
   return (
     <UserContext.Provider
       value={{
-        user, setUser, totalTransactions,
+        user, setUser, totalTransactions, totalExpTansactions,
+        getTotalExpense, remainingBalance, monthlyExpense, monthlyIncome,
+        monthlyExpenseAmount, monthlyIncomeAmount,filteredData,
         totalBalance, totalExpense, getTotalByCategory,
         totalIncome, updateBalance, getTotalTransactions
       }}

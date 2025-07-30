@@ -6,11 +6,15 @@ import BarsDataset from '../components/BarChart';
 import { useUserContext } from '../context/UserContext';
 import ExpensePieChart from '../components/RechartPie';
 
+
 const DashBoard = () => {
   const {
     totalExpense,
     totalBalance,
-    totalIncome,
+    filteredData,
+    remainingBalance,
+    monthlyIncomeAmount,
+    monthlyExpenseAmount,
     getTotalByCategory,
     totalTransactions,
     getTotalTransactions
@@ -20,18 +24,22 @@ const DashBoard = () => {
 
   // Prepare data for balance donut chart (Spent vs Remaining)
   const balanceChartData = useMemo(() => ([
-    { label: 'Spent', value: totalExpense, color: '#ff6384' },
-    { label: 'Remaining', value: totalBalance, color: '#36a2eb' },
+    { label: 'Spent', value: monthlyExpenseAmount, color: '#ff6384' },
+    { label: 'Remaining', value: remainingBalance , color: '#36a2eb' },
   ]), [totalBalance, totalExpense]);
+
+
 
   // Calculate total amount spent in each category
   const totalByCategory = useMemo(() => {
     const result = {};
     categories.forEach((cat) => {
-      result[cat] = getTotalByCategory(totalTransactions, 'Expense', cat);
+      result[cat] = getTotalByCategory(filteredData, 'Expense', cat);
     });
     return result;
   }, [totalTransactions]);
+
+
 
   // Color mapping for each category in pie charts
   const categoryColorMap = {
@@ -47,6 +55,10 @@ const DashBoard = () => {
     getTotalTransactions();
   }, []);
 
+ 
+  
+  
+
   // Get color for a category or return fallback
   const getColorForCategory = (category) => categoryColorMap[category] || '#888';
 
@@ -55,7 +67,7 @@ const DashBoard = () => {
       {/* Root container */}
       <Box sx={{ flexGrow: 1, padding: 1, background: '#e3e3e3' }}>
         <Grid container spacing={1}>
-          
+
           {/* Left side - Expense Form */}
           <Grid size={6} sx={{ margin: 0 }}>
             <ExpenseForm />
@@ -72,15 +84,15 @@ const DashBoard = () => {
               <Grid container sx={{ justifyContent: 'space-evenly' }}>
                 <Box>
                   <Typography variant='h5'>Total</Typography>
-                  <Typography>&#8377;{totalIncome}</Typography>
+                  <Typography>&#8377;{monthlyIncomeAmount}</Typography>
                 </Box>
                 <Box>
                   <Typography variant='h5'>Remaining</Typography>
-                  <Typography>&#8377;{totalBalance}</Typography>
+                  <Typography>&#8377;{remainingBalance}</Typography>
                 </Box>
                 <Box>
                   <Typography variant='h5'>Spent</Typography>
-                  <Typography>&#8377;{totalExpense}</Typography>
+                  <Typography>&#8377;{monthlyExpenseAmount}</Typography>
                 </Box>
               </Grid>
             </Paper>
@@ -100,7 +112,7 @@ const DashBoard = () => {
                       data={[
                         {
                           label: 'Income',
-                          value: totalIncome,
+                          value: monthlyIncomeAmount,
                           color: '#d3d3d3ff',
                         },
                         {
@@ -123,7 +135,7 @@ const DashBoard = () => {
                 Breakdown (Current Year)
               </Typography>
               <Grid container sx={{ justifyContent: 'space-evenly' }} display={'flex'}>
-                
+
                 {/* Bar Chart - Monthly Expense Trend */}
                 <Box sx={{ width: '50%' }}>
                   <Typography variant="h6" sx={{ textAlign: 'center' }}>

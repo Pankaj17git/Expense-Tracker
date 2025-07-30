@@ -1,7 +1,7 @@
 
 export const dataset = [
   {
-    month: 'Jan',
+    month: 'jhgf',
     generalExpense: 300,
     shopping: 200,
     travel: 250,

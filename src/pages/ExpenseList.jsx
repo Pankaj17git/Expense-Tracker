@@ -181,11 +181,11 @@ const ExpenseList = () => {
             <TableHead>
               <TableRow>
                 <StyledTableCell>Amount</StyledTableCell>
-                <StyledTableCell align="right">Date</StyledTableCell>
-                <StyledTableCell align="right">Category</StyledTableCell>
-                <StyledTableCell align="right">Type</StyledTableCell>
-                <StyledTableCell align="right">Discription</StyledTableCell>
-                <StyledTableCell align="right">Action</StyledTableCell>
+                <StyledTableCell>Date</StyledTableCell>
+                <StyledTableCell>Category</StyledTableCell>
+                <StyledTableCell>Type</StyledTableCell>
+                <StyledTableCell>Discription</StyledTableCell>
+                <StyledTableCell>Action</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -197,11 +197,11 @@ const ExpenseList = () => {
                   <StyledTableCell component="th" scope="row">
                     &#8377;{row.amount}
                   </StyledTableCell>
-                  <StyledTableCell align="right">{row.date}</StyledTableCell>
-                  <StyledTableCell align="right">{row.category}</StyledTableCell>
-                  <StyledTableCell align="right">{row.type}</StyledTableCell>
-                  <StyledTableCell align="right">{row.description}</StyledTableCell>
-                  <StyledTableCell align="right">action</StyledTableCell>
+                  <StyledTableCell>{row.date}</StyledTableCell>
+                  <StyledTableCell>{row.category}</StyledTableCell>
+                  <StyledTableCell>{row.type}</StyledTableCell>
+                  <StyledTableCell>{row.description}</StyledTableCell>
+                  <StyledTableCell>action</StyledTableCell>
                 </StyledTableRow>
               ))}
               {emptyRows > 0 && (

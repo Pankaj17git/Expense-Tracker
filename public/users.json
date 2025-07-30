@@ -294,6 +294,217 @@
       "description": "fsfs",
       "userId": "7b18",
       "createdAt": "2025-07-29 16:51:19"
+    },
+    {
+      "id": "a1b2",
+      "category": "Food",
+      "type": "Expense",
+      "date": "2025-01-15",
+      "amount": 1200,
+      "description": "Restaurant bill",
+      "userId": "112a",
+      "createdAt": "2025-01-15 14:20:11"
+    },
+    {
+      "id": "a1b3",
+      "category": "Transport",
+      "type": "Expense",
+      "date": "2025-01-22",
+      "amount": 500,
+      "description": "Bus fare",
+      "userId": "112a",
+      "createdAt": "2025-01-22 10:15:30"
+    },
+    {
+      "id": "b2c3",
+      "category": "Salary",
+      "type": "Income",
+      "date": "2024-03-05",
+      "amount": 50000,
+      "description": "Monthly salary",
+      "userId": "112a",
+      "createdAt": "2024-03-05 09:00:00"
+    },
+    {
+      "id": "b2c4",
+      "category": "Bonus",
+      "type": "Income",
+      "date": "2024-03-25",
+      "amount": 7000,
+      "description": "Quarterly bonus",
+      "userId": "112a",
+      "createdAt": "2024-03-25 15:45:22"
+    },
+    {
+      "id": "c3d4",
+      "category": "Groceries",
+      "type": "Expense",
+      "date": "2025-07-02",
+      "amount": 2500,
+      "description": "Walmart groceries",
+      "userId": "112a",
+      "createdAt": "2025-07-02 18:32:11"
+    },
+    {
+      "id": "c3d5",
+      "category": "Groceries",
+      "type": "Expense",
+      "date": "2025-07-18",
+      "amount": 1800,
+      "description": "Weekly groceries",
+      "userId": "112a",
+      "createdAt": "2025-07-18 11:12:45"
+    },
+    {
+      "id": "d4e5",
+      "category": "Rent",
+      "type": "Expense",
+      "date": "2023-11-01",
+      "amount": 15000,
+      "description": "Monthly apartment rent",
+      "userId": "112a",
+      "createdAt": "2023-11-01 08:00:00"
+    },
+    {
+      "id": "d4e6",
+      "category": "Internet",
+      "type": "Expense",
+      "date": "2023-11-10",
+      "amount": 999,
+      "description": "Broadband bill",
+      "userId": "112a",
+      "createdAt": "2023-11-10 12:30:00"
+    },
+    {
+      "id": "e5f6",
+      "category": "Investment",
+      "type": "Income",
+      "date": "2022-06-20",
+      "amount": 2000,
+      "description": "Dividend payout",
+      "userId": "112a",
+      "createdAt": "2022-06-20 13:50:33"
+    },
+    {
+      "id": "e5f7",
+      "category": "Freelance",
+      "type": "Income",
+      "date": "2022-06-28",
+      "amount": 8000,
+      "description": "Freelance payment",
+      "userId": "112a",
+      "createdAt": "2022-06-28 17:22:05"
+    },
+    {
+      "id": "a1b2",
+      "category": "Food",
+      "type": "Expense",
+      "date": "2021-01-15",
+      "amount": 450,
+      "description": "Groceries at market",
+      "userid": "112a",
+      "createdAt": "2021-01-15 09:45:00"
+    },
+    {
+      "id": "c3d4",
+      "category": "Travel",
+      "type": "Expense",
+      "date": "2021-02-20",
+      "amount": 1200,
+      "description": "Cab to airport",
+      "userid": "112a",
+      "createdAt": "2021-02-20 11:30:00"
+    },
+    {
+      "id": "e5f6",
+      "category": "Shopping",
+      "type": "Expense",
+      "date": "2021-03-12",
+      "amount": 3000,
+      "description": "Bought new shoes",
+      "userid": "112a",
+      "createdAt": "2021-03-12 14:10:00"
+    },
+    {
+      "id": "g7h8",
+      "category": "Miscellaneous",
+      "type": "Expense",
+      "date": "2021-04-07",
+      "amount": 800,
+      "description": "Gift for friend",
+      "userid": "112a",
+      "createdAt": "2021-04-07 10:05:00"
+    },
+    {
+      "id": "i9j0",
+      "category": "Utilities",
+      "type": "Expense",
+      "date": "2021-05-25",
+      "amount": 1500,
+      "description": "Electricity bill",
+      "userid": "112a",
+      "createdAt": "2021-05-25 08:50:00"
+    },
+    {
+      "id": "k1l2",
+      "category": "Food",
+      "type": "Expense",
+      "date": "2021-06-10",
+      "amount": 670,
+      "description": "Dinner with family",
+      "userid": "112a",
+      "createdAt": "2021-06-10 20:00:00"
+    },
+    {
+      "id": "m3n4",
+      "category": "Travel",
+      "type": "Expense",
+      "date": "2021-07-18",
+      "amount": 2500,
+      "description": "Bus ticket and snacks",
+      "userid": "112a",
+      "createdAt": "2021-07-18 07:30:00"
+    },
+    {
+      "id": "o5p6",
+      "category": "Shopping",
+      "type": "Expense",
+      "date": "2021-08-05",
+      "amount": 4200,
+      "description": "Bought clothes",
+      "userid": "112a",
+      "createdAt": "2021-08-05 13:20:00"
+    },
+    {
+      "id": "q7r8",
+      "category": "Miscellaneous",
+      "type": "Expense",
+      "date": "2021-09-23",
+      "amount": 550,
+      "description": "Stationery",
+      "userid": "112a",
+      "createdAt": "2021-09-23 12:00:00"
+    },
+    {
+      "id": "s9t0",
+      "category": "Utilities",
+      "type": "Expense",
+      "date": "2021-10-30",
+      "amount": 1300,
+      "description": "Gas refill",
+      "userid": "112a",
+      "createdAt": "2021-10-30 16:40:00"
+    },
+    {
+      "id": "5723",
+      "category": "Shopping",
+      "type": "Expense",
+      "medium": "Cheque",
+      "date": "2025-07-28",
+      "amount": 8765,
+      "description": "jkhgfh",
+      "userId": "112a",
+      "createdAt": "2025-07-30 16:25:09"
     }
   ]
 }
