@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Grid,
@@ -19,7 +19,7 @@ import dayjs from 'dayjs';
 const incomeCategories = ["Salary", "Freelancing", "Investments", "Gifts"];
 const expenseCategories = ["Food", "Travel", "Shopping", "Miscellaneous", "Utilities"];
 const expenseMedium = ['Debit Card', 'Credit Card', 'Cheque', 'Cash'];
-const ExpenseForm = () => {
+const ExpenseForm = ({editData, onClose}) => {
 
   const [formData, setFormData] = useState({
     category: '',
@@ -31,7 +31,13 @@ const ExpenseForm = () => {
   });
   const [errors, setErrors] = useState({});
 
-  const { updateBalance, totalBalance } = useUserContext();
+  const { updateBalance, totalBalance, getTotalTransactions } = useUserContext();
+
+  useEffect(() => {
+    if (editData) {
+      setFormData(editData); // Pre-fill form if editing
+    }
+  }, [editData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -84,7 +90,13 @@ const ExpenseForm = () => {
     };
 
     try {
-      await axios.post('http://localhost:4001/transactions', newTransaction)
+      if (editData) {
+        await axios.patch(`http://localhost:4001/transactions/${editData.id}`, newTransaction);
+      } else {
+        await axios.post('http://localhost:4001/transactions', newTransaction)
+      }
+
+      await getTotalTransactions();
       updateBalance();
       setFormData({
         category: '',
@@ -94,6 +106,7 @@ const ExpenseForm = () => {
         amount: '',
         description: ''
       })
+      onClose();              
     } catch (error) {
       console.error('Error adding tarnsition:', error);
       alert('failed to add transition.')
@@ -165,7 +178,7 @@ const ExpenseForm = () => {
                     }
                   </Select>
                 </FormControl>
-              </Grid> 
+              </Grid>
             )}
 
             {/* Date */}

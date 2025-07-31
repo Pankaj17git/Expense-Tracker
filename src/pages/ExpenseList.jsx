@@ -1,9 +1,10 @@
 
 import { styled, useTheme } from '@mui/material/styles';
+import axios from 'axios';
 import {
   Table, TableBody, TableCell, tableCellClasses,
   TableHead, TableRow, Paper, Typography,
-  Box,
+  Box, Dialog, DialogTitle, DialogContent,
   IconButton,
   TableFooter,
   TablePagination,
@@ -13,6 +14,10 @@ import {
   Menu,
   Button,
 } from '@mui/material';
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -21,6 +26,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useUserContext } from '../context/UserContext';
 import { useEffect, useState } from 'react';
 import { filterDateByTimeFrame, sortByDateDesc } from '../utils/dateFilters';
+import ExpenseForm from '../components/ExpenseForm';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -103,6 +109,8 @@ const ExpenseList = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState('monthly')
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [editData, setEditData] = useState(null);
   const { getTotalTransactions, totalTransactions } = useUserContext()
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -140,6 +148,50 @@ const ExpenseList = () => {
     setPage(0);
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this transaction?")) {
+      try {
+        await axios.delete(`http://localhost:4001/transactions/${id}`);
+        getTotalTransactions(); // refresh list
+      } catch (error) {
+        console.error("Delete failed:", error);
+      }
+    }
+  };
+
+  const generatePDF = (data = []) => {
+    console.log(data);
+    
+    const doc = new jsPDF();
+
+    // You can customize these as needed
+    const selectedType = data[0]?.type || "report"; // fallback to "report"
+    const firstDate = data[0]?.date ? new Date(data[0].date) : null;
+    const reportPeriod = firstDate
+      ? firstDate.toLocaleString("default", { month: "long", year: "numeric" })
+      : "Unknown Period";
+
+    // Header
+    doc.setFontSize(14);
+    doc.text(`${selectedType.toUpperCase()} REPORT (${reportPeriod.toUpperCase()})`, 10, 10);
+
+    // Table
+    autoTable(doc, {
+      startY: 20,
+      head: [['Title', 'Amount', 'Date', 'Category']],
+      body: data.map(item => [
+        item.type,
+        `₹${item.amount}`,
+        new Date(item.date).toLocaleDateString('en-GB'),
+        item.category || 'N/A',
+      ]),
+    });
+
+    // Save the PDF
+    doc.save(`${selectedType}_${reportPeriod}_report.pdf`);
+  };
+
+
   return (
     <>
       <Box sx={{ height: '100vh', padding: 5, background: '#eae8e8' }}>
@@ -151,11 +203,10 @@ const ExpenseList = () => {
             <Typography variant="h6" sx={{ color: '#000000ff', m: 2 }} flex={1} textAlign={'right'}>
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
-                  <Button style={{borderRadius:0}}> + Add Expense</Button>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <FilterListIcon />
                     <Typography>{selectedFilter}</Typography>
-                  </IconButton> 
+                  </IconButton>
                 </Tooltip>
                 <Menu
                   sx={{ mt: '45px' }}
@@ -201,7 +252,18 @@ const ExpenseList = () => {
                   <StyledTableCell>{row.category}</StyledTableCell>
                   <StyledTableCell>{row.type}</StyledTableCell>
                   <StyledTableCell>{row.description}</StyledTableCell>
-                  <StyledTableCell>action</StyledTableCell>
+                  <StyledTableCell>
+                    <IconButton onClick={() => {
+                      setEditData(row);    // set selected row to be edited
+                      setOpenEdit(true);   // open the dialog
+                    }}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleDelete(row.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </StyledTableCell>
+
                 </StyledTableRow>
               ))}
               {emptyRows > 0 && (
@@ -211,6 +273,16 @@ const ExpenseList = () => {
               )}
             </TableBody>
             <TableFooter>
+              <Dialog open={openEdit} onClose={() => setOpenEdit(false)} maxWidth="sm" fullWidth>
+                <DialogTitle>Edit Transaction</DialogTitle>
+                <DialogContent>
+                  <ExpenseForm
+                    editData={editData} // pass data to form
+                    onClose={() => setOpenEdit(false)} // close dialog after save
+                  />
+                </DialogContent>
+              </Dialog>
+
               <TableRow>
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
@@ -234,7 +306,10 @@ const ExpenseList = () => {
               </TableRow>
             </TableFooter>
           </Table>
+          <Button onClick={() => generatePDF(sorted)}>Download PDF</Button>
         </Paper>
+
+
 
       </Box>
     </>

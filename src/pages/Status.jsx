@@ -12,7 +12,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import BarsDataset from '../components/BarChart'
 import { BarChart } from '@mui/x-charts/BarChart';
 import { useUserContext } from '../context/UserContext';
-import ExpensePieChart from '../components/RechartPie';
+import ReactECharts from 'echarts-for-react';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -123,20 +123,44 @@ const categories = ["Food", "Travel", "Shopping", "Miscellaneous", "Utilities"];
 const Status = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(null);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [pagination, setPagination] = useState({
+    expense: { page: 0, rowsPerPage: 5 },
+    category: { page: 0, rowsPerPage: 5 },
+    type: { page: 0, rowsPerPage: 5 },
+  });
+
+  const { getTotalTransactions, monthlyExpenseAmount, totalTransactions, totalExpense, getTotalByCategory, totalExpTansactions } = useUserContext();
+
+  // Color mapping for each category in pie charts
+  const categoryColorMap = {
+    Food: '#ff6384',
+    Travel: '#bacf66ff',
+    Shopping: '#ffcd56',
+    Miscellaneous: '#4bc0c0',
+    Utilities: '#9966ff',
+  };
+  const getColorForCategory = (category) => categoryColorMap[category] || '#888';
 
 
-  const { getTotalTransactions, totalTransactions, totalExpense, getTotalByCategory, totalExpTansactions } = useUserContext();
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handleChangePage = (tableKey, newPage) => {
+    setPagination((prev) => ({
+      ...prev,
+      [tableKey]: { ...prev[tableKey], page: newPage },
+    }));
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handleChangeRowsPerPage = (tableKey, event) => {
+    setPagination((prev) => ({
+      ...prev,
+      [tableKey]: {
+        ...prev[tableKey],
+        rowsPerPage: parseInt(event.target.value, 10),
+        page: 0,
+      },
+    }));
   };
+
 
 
 
@@ -151,7 +175,9 @@ const Status = () => {
     });
   }, [totalTransactions, selectedYear, selectedMonth]);
 
-  console.log(filteredTransactions);
+  const { page, rowsPerPage } = pagination.expense;
+  filteredTransactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
 
 
   const monthlyData = useMemo(() => {
@@ -177,18 +203,51 @@ const Status = () => {
     return Object.values(grouped);
   }, [filteredTransactions]);
 
-  console.log("month", monthlyData);
-
-
 
   // Calculate total amount spent in each category
   const totalByCategory = useMemo(() => {
     const result = {};
     categories.forEach((cat) => {
-      result[cat] = getTotalByCategory(totalTransactions, 'Expense', cat);
+      result[cat] = getTotalByCategory(filteredTransactions, 'Expense', cat);
     });
     return result;
-  }, [totalTransactions]);
+  }, [filteredTransactions]);
+
+  const option = {
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b}: {c} ({d}%)'
+    },
+    series: [
+      {
+        name: 'Expenses',
+        type: 'pie',
+        radius: ['10%', '70%'],
+        center: ['50%', '50%'],
+        roseType: 'radius',
+        label: {
+          color: 'black',
+          fontSize: 14,
+          formatter: '{b}'
+        },
+        labelLine: {
+          lineStyle: {
+            color: 'black'
+          },
+          length: 10,
+          length2: 20
+        },
+        data: categories.map((cat) => ({
+          name: cat,
+          value: totalByCategory[cat],
+          itemStyle: {
+            color: getColorForCategory(cat),
+          },
+        })),
+      },
+    ],
+  };
+
 
   const { category: highestExpenseCategory, amount: highestAmount } = Object.entries(totalByCategory).reduce((maxExpense, [category, amount]) => {
     return amount > maxExpense.amount ? { category, amount } : maxExpense;
@@ -209,28 +268,28 @@ const Status = () => {
       <Box p={3} sx={{ flexGrow: 1, background: '#e3e3e3' }}>
         {/* Top Cards */}
         <Grid container spacing={2} mb={3}>
-          <Grid item xs={3}>
+          <Grid >
             <Paper elevation={2} sx={{ p: 2 }}>
               <Typography variant="subtitle2" color="textSecondary"> SPENT THIS MONTH</Typography>
-              <Typography variant="h6" color="primary">&#8377;{totalExpense}</Typography>
+              <Typography variant="h6" color="primary">&#8377;{monthlyExpenseAmount}</Typography>
             </Paper>
           </Grid>
-          <Grid item xs={3}>
+          <Grid >
             <Paper elevation={2} sx={{ p: 2 }}>
               <Typography variant="subtitle2" color="textSecondary">MOST SPENT BY</Typography>
               <Typography variant="h6" color="primary">Debit Card</Typography>
             </Paper>
           </Grid>
-          <Grid item xs={3}>
+          <Grid >
             <Paper elevation={2} sx={{ p: 2 }}>
               <Typography variant="subtitle2" color="textSecondary">MOST SPENT ON</Typography>
               <Typography variant="h6" color="primary">{highestExpenseCategory}</Typography>
             </Paper>
           </Grid>
-          <Grid item xs={3}>
+          <Grid >
             <Paper elevation={2} sx={{ p: 2 }}>
               <Typography variant="subtitle2" color="textSecondary">SPENT THIS YEAR</Typography>
-              <Typography variant="h6" color="primary">£ 19,054.49</Typography>
+              <Typography variant="h6" color="primary">&#8377;{totalExpense}</Typography>
             </Paper>
           </Grid>
         </Grid>
@@ -243,7 +302,7 @@ const Status = () => {
           mb: 2,
           boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
         }}>
-          <Grid item xs={6}>
+          <Grid >
             <Typography variant="h6" mb={1}>Expenses Breakdown</Typography>
             <Box display="flex" alignItems="center" mb={2}>
               <Typography variant="subtitle1" mr={1}>Year</Typography>
@@ -291,23 +350,13 @@ const Status = () => {
                   <TableRow>
                     <TablePagination
                       rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                      colSpan={3}
                       count={filteredTransactions.length}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      slotProps={{
-                        select: {
-                          inputProps: {
-                            'aria-label': 'rows per page',
-                          },
-                          native: true,
-                        },
-                      }}
-                      onPageChange={handleChangePage}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
+                      rowsPerPage={pagination.expense.rowsPerPage}
+                      page={pagination.expense.page}
+                      onPageChange={(e, newPage) => handleChangePage('expense', newPage)}
+                      onRowsPerPageChange={(e) => handleChangeRowsPerPage('expense', e)}
                       ActionsComponent={TablePaginationActions}
-                    >
-                    </TablePagination>
+                    />
                   </TableRow>
                 </TableFooter>
               </Table>
@@ -331,6 +380,7 @@ const Status = () => {
           </Grid>
         </Grid>
 
+        {/* Category Breakdown */}
         <Grid container spacing={2} sx={{
           p: 3,
           background: 'white',
@@ -353,27 +403,25 @@ const Status = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell>Category</TableCell>
-                    <TableCell>Category</TableCell>
-                    <TableCell>Category</TableCell>
                     <TableCell>Date</TableCell>
+                    <TableCell>Discription</TableCell>
                     <TableCell>Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {(
                     rowsPerPage > 0
-                      ? totalTransactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      : totalTransactions
+                      ? filteredTransactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      : filteredTransactions
                   ).map((row, id) => (
                     <StyledTableRow key={id}>
+
+                      <StyledTableCell >{row.category}</StyledTableCell>
+                      <StyledTableCell >{row.date}</StyledTableCell>
+                      <StyledTableCell >{row.description}</StyledTableCell>
                       <StyledTableCell component="th" scope="row">
                         &#8377;{row.amount}
                       </StyledTableCell>
-                      <StyledTableCell align="right">{row.date}</StyledTableCell>
-                      <StyledTableCell align="right">{row.category}</StyledTableCell>
-                      <StyledTableCell align="right">{row.type}</StyledTableCell>
-                      <StyledTableCell align="right">{row.description}</StyledTableCell>
-                      <StyledTableCell align="right">action</StyledTableCell>
                     </StyledTableRow>
                   ))}
                 </TableBody>
@@ -381,23 +429,13 @@ const Status = () => {
                   <TableRow>
                     <TablePagination
                       rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                      colSpan={3}
-                      count={totalTransactions.length}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      slotProps={{
-                        select: {
-                          inputProps: {
-                            'aria-label': 'rows per page',
-                          },
-                          native: true,
-                        },
-                      }}
-                      onPageChange={handleChangePage}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
+                      count={filteredTransactions.length}
+                      rowsPerPage={pagination.expense.rowsPerPage}
+                      page={pagination.expense.page}
+                      onPageChange={(e, newPage) => handleChangePage('category', newPage)}
+                      onRowsPerPageChange={(e) => handleChangeRowsPerPage('category', e)}
                       ActionsComponent={TablePaginationActions}
-                    >
-                    </TablePagination>
+                    />
                   </TableRow>
                 </TableFooter>
               </Table>
@@ -406,7 +444,7 @@ const Status = () => {
 
           {/* Chart */}
           <Grid display={'flex'} sx={{ justifyContent: 'center', alignItems: 'center' }} flex={1}>
-            <ExpensePieChart />
+            <ReactECharts option={option} style={{ height: '100%', width: '100%' }} />
           </Grid>
         </Grid>
 
@@ -417,7 +455,7 @@ const Status = () => {
           mb: 2,
           boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
         }}>
-          <Grid item xs={6}>
+          <Grid >
             <Typography variant="h6" mb={1}>Type Breakdown</Typography>
             <Box display="flex" alignItems="center" mb={2}>
               <Typography variant="subtitle1" mr={1}>Year</Typography>
@@ -458,23 +496,13 @@ const Status = () => {
                   <TableRow>
                     <TablePagination
                       rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                      colSpan={3}
-                      count={totalTransactions.length}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      slotProps={{
-                        select: {
-                          inputProps: {
-                            'aria-label': 'rows per page',
-                          },
-                          native: true,
-                        },
-                      }}
-                      onPageChange={handleChangePage}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
+                      count={filteredTransactions.length}
+                      rowsPerPage={pagination.expense.rowsPerPage}
+                      page={pagination.expense.page}
+                      onPageChange={(e, newPage) => handleChangePage('type', newPage)}
+                      onRowsPerPageChange={(e) => handleChangeRowsPerPage('type', e)}
                       ActionsComponent={TablePaginationActions}
-                    >
-                    </TablePagination>
+                    />
                   </TableRow>
                 </TableFooter>
               </Table>
@@ -482,7 +510,7 @@ const Status = () => {
           </Grid>
 
           {/* Chart */}
-          <Grid item xs={6}>
+          <Grid >
             <BarsDataset />
           </Grid>
         </Grid>

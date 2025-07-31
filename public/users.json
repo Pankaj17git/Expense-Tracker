@@ -505,6 +505,66 @@
       "description": "jkhgfh",
       "userId": "112a",
       "createdAt": "2025-07-30 16:25:09"
+    },
+    {
+      "id": "071f",
+      "category": "Freelancing",
+      "type": "Income",
+      "medium": "",
+      "date": "2025-07-31",
+      "amount": 10000,
+      "description": "ljljljlj",
+      "userId": "112a",
+      "createdAt": "2025-07-31 10:47:02"
+    },
+    {
+      "id": "0846",
+      "category": "Salary",
+      "type": "Income",
+      "medium": "",
+      "date": "2025-07-31",
+      "amount": 10000,
+      "description": "gjhjgj",
+      "userId": "112a",
+      "createdAt": "2025-07-31 10:49:48"
+    },
+    {
+      "id": "f689",
+      "category": "Gifts",
+      "type": "Income",
+      "medium": "",
+      "date": "2025-07-31",
+      "amount": 9997,
+      "description": "bjhgf",
+      "userId": "112a",
+      "createdAt": "2025-07-31 10:54:44"
+    },
+    {
+      "id": "46f7",
+      "category": "Gifts",
+      "type": "Income",
+      "medium": "",
+      "date": "2025-07-31",
+      "amount": 2000,
+      "description": "njbhvgcf",
+      "userId": "112a",
+      "createdAt": "2025-07-31 11:36:29"
+    }
+  ],
+  "beneficiaries": [
+    {
+      "id": "b1c2",
+      "name": "John Doe",
+      "accountNumber": "1234567890",
+      "ifscCode": "IFSC0001",
+      "userId": "112a"
+    },
+    {
+      "id": "d3e4",
+      "name": "Jane Smith",
+      "accountNumber": "0987654321",
+      "ifscCode": "IFSC0002",
+      "userId": "112a"
     }
   ]
 }

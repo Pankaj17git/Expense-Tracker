@@ -9,14 +9,11 @@ import ExpensePieChart from '../components/RechartPie';
 
 const DashBoard = () => {
   const {
-    totalExpense,
-    totalBalance,
     filteredData,
     remainingBalance,
     monthlyIncomeAmount,
     monthlyExpenseAmount,
     getTotalByCategory,
-    totalTransactions,
     getTotalTransactions
   } = useUserContext();
 
@@ -25,8 +22,8 @@ const DashBoard = () => {
   // Prepare data for balance donut chart (Spent vs Remaining)
   const balanceChartData = useMemo(() => ([
     { label: 'Spent', value: monthlyExpenseAmount, color: '#ff6384' },
-    { label: 'Remaining', value: remainingBalance , color: '#36a2eb' },
-  ]), [totalBalance, totalExpense]);
+    { label: 'Remaining', value: remainingBalance, color: '#36a2eb' },
+  ]), [filteredData]);
 
 
 
@@ -37,7 +34,7 @@ const DashBoard = () => {
       result[cat] = getTotalByCategory(filteredData, 'Expense', cat);
     });
     return result;
-  }, [totalTransactions]);
+  }, [filteredData]);
 
 
 
@@ -55,9 +52,6 @@ const DashBoard = () => {
     getTotalTransactions();
   }, []);
 
- 
-  
-  
 
   // Get color for a category or return fallback
   const getColorForCategory = (category) => categoryColorMap[category] || '#888';
@@ -102,31 +96,99 @@ const DashBoard = () => {
           <Grid size={12}>
             <Paper elevation={3} sx={{ p: 3, borderRadius: 1, boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
               <Typography variant="h6" sx={{ color: '#007bff', mb: 5, borderBottom: '1px solid gray' }}>
-                Budget (Current Month)
+                Category-wise Expense Distribution
               </Typography>
-              <Grid container sx={{ justifyContent: 'space-evenly' }}>
-                {categories.map((item, index) => (
-                  <Box key={index}>
-                    <DonutChart
-                      title={`${item} Breakdown`}
-                      data={[
-                        {
-                          label: 'Income',
-                          value: monthlyIncomeAmount,
-                          color: '#d3d3d3ff',
-                        },
-                        {
-                          label: item,
-                          value: totalByCategory[item],
-                          color: getColorForCategory(item),
-                        },
-                      ]}
-                    />
+
+              <Grid container spacing={2} display={'flex'}>
+                {/* Pie Chart */}
+                <Grid flex={1}>
+                  <DonutChart
+                    title="Expense by Category"
+                    data={categories.map((cat) => ({
+                      label: cat,
+                      value: totalByCategory[cat],
+                      color: getColorForCategory(cat),
+                    }))}
+                  />
+                </Grid>
+
+                {/* Mini Statement */}
+                <Grid flex={1}>
+                  <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 600, color: '#333' }}>
+                    Recent Transactions
+                  </Typography>
+                  <Box sx={{ maxHeight: 280, overflowY: 'auto', pr: 1 }}>
+                    {filteredData
+                      .slice()
+                      .sort((a, b) => new Date(b.date) - new Date(a.date))
+                      .slice(0, 5)
+                      .map((tx, idx) => (
+                        <Box
+                          key={idx}
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: 2,
+                            mb: 1.5,
+                            p: 1.5,
+                            borderRadius: 2,
+                            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.05)',
+                            backgroundColor: tx.type === 'Income' ? '#f0fff0' : '#fff0f0',
+                            transition: 'transform 0.2s ease-in-out',
+                            '&:hover': {
+                              transform: 'scale(1.01)',
+                              boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+                              cursor: 'pointer',
+                            },
+                          }}
+                        >
+                          {/* Avatar or Icon Placeholder */}
+                          <Box
+                            sx={{
+                              width: 36,
+                              height: 36,
+                              borderRadius: '50%',
+                              backgroundColor: tx.type === 'Income' ? '#b6f2b6' : '#f7baba',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontWeight: 700,
+                              fontSize: 16,
+                              color: '#444',
+                            }}
+                          >
+                            {tx.category[0]}
+                          </Box>
+
+                          {/* Category and Date */}
+                          <Box sx={{ flex: 1 }}>
+                            <Typography sx={{ fontWeight: 600, color: '#333' }}>{tx.category}</Typography>
+                            <Typography sx={{ fontSize: 13, color: '#666' }}>{tx.date}</Typography>
+                          </Box>
+
+                          {/* Amount */}
+                          <Box>
+                            <Typography
+                              title={tx.type}
+                              sx={{
+                                color: tx.type === 'Income' ? 'green' : 'red',
+                                fontWeight: 600,
+                                fontSize: 15,
+                              }}
+                            >
+                              {tx.type === 'Income' ? '+' : '-'}₹{tx.amount}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      ))}
                   </Box>
-                ))}
+                </Grid>
+
               </Grid>
             </Paper>
           </Grid>
+
 
           {/* Yearly breakdown with bar chart and pie chart */}
           <Grid size={12} sx={{ mt: 1 }}>

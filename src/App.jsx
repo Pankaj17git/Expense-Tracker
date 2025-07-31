@@ -9,6 +9,7 @@ import MainLayout from './layout/MainLayout'
 import AuthForm from './pages/Login'
 import PrivateRoute from './routes/Protected'
 import UserProfile from './pages/UserProfile'
+import BeneficialAccountForm from './pages/Beneficiar'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
             <Route path='dashboard' element={<DashBoard />} />
             <Route path='expense' element={<ExpenseList />} />
             <Route path='status' element={<Status />} />
+            <Route path='transfermoney' element={<BeneficialAccountForm />} />
             <Route path='profile' element={<UserProfile />} />
           </Route>
         </Routes>
