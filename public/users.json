@@ -466,16 +466,6 @@
       "createdAt": "2021-07-18 07:30:00"
     },
     {
-      "id": "o5p6",
-      "category": "Shopping",
-      "type": "Expense",
-      "date": "2021-08-05",
-      "amount": 4200,
-      "description": "Bought clothes",
-      "userid": "112a",
-      "createdAt": "2021-08-05 13:20:00"
-    },
-    {
       "id": "q7r8",
       "category": "Miscellaneous",
       "type": "Expense",
@@ -549,22 +539,100 @@
       "description": "njbhvgcf",
       "userId": "112a",
       "createdAt": "2025-07-31 11:36:29"
+    },
+    {
+      "id": "9d0db41b-c8b3-4aea-9b6d-8d072abc5b3f",
+      "category": "Transfer",
+      "type": "Expense",
+      "amount": 76,
+      "date": "2025-07-31",
+      "description": "Sent to undefined",
+      "userId": "112a",
+      "createdAt": "31/07/2025, 17:25:19"
+    },
+    {
+      "id": "ec60",
+      "category": "Salary",
+      "type": "Income",
+      "medium": "",
+      "date": "2025-08-01",
+      "amount": 10000,
+      "description": "hgf",
+      "userId": "112a",
+      "createdAt": "2025-08-01 14:22:12"
+    },
+    {
+      "id": "187c",
+      "category": "Food",
+      "type": "Expense",
+      "medium": "Cash",
+      "date": "2025-08-01",
+      "amount": 994,
+      "description": "hhhj",
+      "userId": "112a",
+      "createdAt": "2025-08-01 14:25:25"
+    },
+    {
+      "id": "1fb4",
+      "category": "Miscellaneous",
+      "type": "Expense",
+      "date": "2025-08-01",
+      "medium": "Cash",
+      "amount": 1000,
+      "description": "ghgj",
+      "userId": "112a",
+      "createdAt": "2025-08-01 14:30:06"
+    },
+    {
+      "id": "6cd89f0d-84ef-4f67-a6fc-836cb45215d1",
+      "category": "Transfer",
+      "type": "Expense",
+      "amount": 1000,
+      "date": "2025-08-01",
+      "description": "Sent to undefined",
+      "userId": "112a",
+      "createdAt": "01/08/2025, 14:36:46"
+    },
+    {
+      "id": "e57525b9-58c2-4327-a44c-df6278e2c3ab",
+      "category": "Transfer",
+      "type": "Expense",
+      "amount": 200,
+      "date": "2025-08-01",
+      "description": "Sent to undefined",
+      "userId": "112a",
+      "createdAt": "01/08/2025, 14:38:13"
+    },
+    {
+      "id": "6a6a297a-dae6-4498-bf18-b259e18a2de2",
+      "category": "Transfer",
+      "type": "Expense",
+      "amount": 1000,
+      "date": "2025-08-01",
+      "description": "Sent to undefined",
+      "userId": "112a",
+      "createdAt": "01/08/2025, 14:41:34"
+    },
+    {
+      "id": "6b532815-c844-4ec4-b623-1248a61b5b19",
+      "category": "Transfer",
+      "type": "Expense",
+      "amount": 1000,
+      "date": "2025-08-01",
+      "description": "Sent to undefined",
+      "userId": "112a",
+      "createdAt": "01/08/2025, 14:58:22"
     }
   ],
   "beneficiaries": [
     {
-      "id": "b1c2",
-      "name": "John Doe",
-      "accountNumber": "1234567890",
-      "ifscCode": "IFSC0001",
-      "userId": "112a"
-    },
-    {
-      "id": "d3e4",
-      "name": "Jane Smith",
-      "accountNumber": "0987654321",
-      "ifscCode": "IFSC0002",
-      "userId": "112a"
+      "id": "c77fca34-f191-4794-953e-93416102456d",
+      "userId": "112a",
+      "bankName": "HDFC Bank",
+      "ifsc": "HGF4646",
+      "accountNumber": "99056465646",
+      "nickname": "Elton Mendoza",
+      "accountType": "Current"
     }
   ]
 }

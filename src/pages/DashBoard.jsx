@@ -64,7 +64,7 @@ const DashBoard = () => {
 
           {/* Left side - Expense Form */}
           <Grid size={6} sx={{ margin: 0 }}>
-            <ExpenseForm />
+            <ExpenseForm onClose={() => alert('Transaction successful!')}/>
           </Grid>
 
           {/* Right side - Budget summary (Donut Chart) */}
