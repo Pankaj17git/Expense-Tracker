@@ -7,7 +7,6 @@ import {
   Typography,
   Paper
 } from "@mui/material";
-import SendMoneyForm from "./MoneyTransferForm";
 import axios from "axios";
 
 const BeneficialAccountForm = ({userId, onCreated }) => {
@@ -55,7 +54,7 @@ const BeneficialAccountForm = ({userId, onCreated }) => {
 
   return (
     <>
-      <Box sx={{ maxWidth: 400, mx: "auto", mt: 4 }}>
+      <Box sx={{ maxWidth: 400, mx: "auto", mt: 4}}>
         <Paper
           sx={{
             p: 3,

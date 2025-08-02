@@ -622,6 +622,46 @@
       "description": "Sent to undefined",
       "userId": "112a",
       "createdAt": "01/08/2025, 14:58:22"
+    },
+    {
+      "id": "7da20579-cf19-4461-b743-8757e7e61457",
+      "category": "Transfer",
+      "type": "Expense",
+      "amount": 93,
+      "date": "2025-08-01",
+      "description": "Sent to undefined",
+      "userId": "112a",
+      "createdAt": "2025-08-01 15:28:20"
+    },
+    {
+      "id": "3b4a866b-e749-40eb-bba7-4c81261b88e3",
+      "category": "Transfer",
+      "type": "Expense",
+      "amount": 195,
+      "date": "2025-08-01",
+      "description": "Sent to Elton Mendoza",
+      "userId": "112a",
+      "createdAt": "2025-08-01 16:18:30"
+    },
+    {
+      "id": "1177bf0f-5f8d-40f2-aa6e-b93919bca80b",
+      "category": "Transfer",
+      "type": "Expense",
+      "amount": 10,
+      "date": "2025-08-01",
+      "description": "Sent to Elton Mendoza",
+      "userId": "112a",
+      "createdAt": "2025-08-01 16:21:49"
+    },
+    {
+      "id": "4fe559bf-f64d-4e13-a2bd-303c95a8fab4",
+      "category": "Transfer",
+      "type": "Expense",
+      "amount": 2000,
+      "date": "2025-08-01",
+      "description": "Sent to Elton Mendoza",
+      "userId": "112a",
+      "createdAt": "2025-08-01 16:44:28"
     }
   ],
   "beneficiaries": [
@@ -632,6 +672,15 @@
       "ifsc": "HGF4646",
       "accountNumber": "99056465646",
       "nickname": "Elton Mendoza",
+      "accountType": "Current"
+    },
+    {
+      "id": "41be440d-4380-4656-b541-4a63c8157758",
+      "userId": "112a",
+      "bankName": "HDFC Bank",
+      "ifsc": "gjg43",
+      "accountNumber": "10122212",
+      "nickname": "nick",
       "accountType": "Current"
     }
   ]

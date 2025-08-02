@@ -1,24 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import { Box, TextField, MenuItem, Button, Typography } from '@mui/material';
+import dayjs from 'dayjs';
 import axios from 'axios';
+import { useUserContext } from '../context/UserContext';
 
-const SendMoneyForm = ({ userId }) => {
-  const [beneficiaries, setBeneficiaries] = useState([]);
-  const [selectedId, setSelectedId] = useState('');
+const SendMoneyForm = ({ userId, onClose, beneficiary }) => {
   const [amount, setAmount] = useState('');
+  const {totalBalance, getTotalTransactions} = useUserContext();
 
   useEffect(() => {
-    const fetchBeneficiaries = async () => {
-      const res = await axios.get(`http://localhost:4001/transactions?userId=${userId}`);
-      setBeneficiaries(res.data);
-    };
-    fetchBeneficiaries();
-  }, [userId]);
+    getTotalTransactions();
+  },[amount])
+
+  console.log(totalBalance);
+  
 
   const handleTransfer = async (e) => {
     e.preventDefault();
-    const beneficiary = beneficiaries.find(b => b.id === selectedId);
     if (!beneficiary) return;
+
+    if (!amount || Number(amount) <= 0) {
+      alert ('Enter a valid amount');
+    }
+
+    if (amount >= totalBalance) {
+      alert('Insufficient balance');
+      return;
+    }
 
     const transaction = {
       id: crypto.randomUUID(),
@@ -28,14 +36,15 @@ const SendMoneyForm = ({ userId }) => {
       date: new Date().toISOString().split('T')[0],
       description: `Sent to ${beneficiary.nickname}`,
       userId,
-      createdAt: new Date().toLocaleString()
+      createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
     };
 
     await axios.post('http://localhost:4001/transactions', transaction);
     alert('Money transferred!');
-    setSelectedId('');
     setAmount('');
+    onClose();
   };
+  
 
   return (
     <>
@@ -48,24 +57,14 @@ const SendMoneyForm = ({ userId }) => {
 
         {/* Beneficiary Select Dropdown */}
         <TextField
-          select
-          label="Select Beneficiary"
+          label="Beneficiary"
+          value={beneficiary.nickname}
           fullWidth
-          value={selectedId}
-          onChange={(e) => setSelectedId(e.target.value)}
           margin="normal"
-          required
-        >
-          {beneficiaries.length === 0 ? (
-            <MenuItem disabled>No beneficiaries found</MenuItem>
-          ) : (
-            beneficiaries.map((b) => (
-              <MenuItem key={b.id} value={b.id}>
-                {b.nickname} — {b.accountNumber}
-              </MenuItem>
-            ))
-          )}
-        </TextField>
+          InputProps={{
+            readOnly: true,
+          }}
+        />
 
         {/* Amount Input */}
         <TextField
@@ -83,7 +82,7 @@ const SendMoneyForm = ({ userId }) => {
           variant="contained"
           fullWidth
           sx={{ mt: 2 }}
-          disabled={!selectedId || !amount}
+          disabled={!amount}
         >
           Send
         </Button>

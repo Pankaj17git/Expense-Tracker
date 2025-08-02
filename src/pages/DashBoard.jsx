@@ -2,9 +2,11 @@ import React, { useEffect, useMemo } from 'react';
 import { Box, Paper, Grid, Typography } from '@mui/material';
 import ExpenseForm from '../components/ExpenseForm';
 import DonutChart from '../components/PieChart';
-import BarsDataset from '../components/BarChart';
+import { BarChart } from '@mui/x-charts';
 import { useUserContext } from '../context/UserContext';
-import ExpensePieChart from '../components/RechartPie';
+import ReactECharts from 'echarts-for-react';
+import dayjs from 'dayjs';
+import { monthNames,chartSetting } from '../data/chart-data';
 
 
 const DashBoard = () => {
@@ -12,7 +14,9 @@ const DashBoard = () => {
     filteredData,
     remainingBalance,
     monthlyIncomeAmount,
+    totalTransactions,
     monthlyExpenseAmount,
+    totalExpTansactions,
     getTotalByCategory,
     getTotalTransactions
   } = useUserContext();
@@ -26,6 +30,40 @@ const DashBoard = () => {
   ]), [filteredData]);
 
 
+  const Year = dayjs().year();
+
+  const yearFilter = useMemo(() => {
+    return totalExpTansactions.filter((txn) => {
+      const date = new Date(txn.date);
+      const yearMatches = Year ? date.getFullYear() === Year : true;
+      return yearMatches
+    });
+  }, [totalExpTansactions]);
+
+
+  const YearlyData = useMemo(() => {
+    const grouped = {};
+
+    yearFilter.forEach(tx => {
+      if (tx.type !== 'Expense') return;
+
+      const date = new Date(tx.date);
+      const month = monthNames[date.getMonth()];
+
+      if (!grouped[month]) {
+        grouped[month] = { month };
+      }
+
+      if (!grouped[month][tx.category]) {
+        grouped[month][tx.category] = 0;
+      }
+
+      grouped[month][tx.category] += tx.amount;
+    });
+
+    return Object.values(grouped);
+  }, [yearFilter]);
+
 
   // Calculate total amount spent in each category
   const totalByCategory = useMemo(() => {
@@ -35,6 +73,14 @@ const DashBoard = () => {
     });
     return result;
   }, [filteredData]);
+
+  const totalYearlyCategoryExp = useMemo(() => {
+    const result = {};
+    categories.forEach((cat) => {
+      result[cat] = getTotalByCategory(totalTransactions, 'Expense', cat);
+    });
+    return result;
+  }, [totalTransactions])
 
 
 
@@ -56,6 +102,41 @@ const DashBoard = () => {
   // Get color for a category or return fallback
   const getColorForCategory = (category) => categoryColorMap[category] || '#888';
 
+  const option = {
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b}: {c} ({d}%)'
+    },
+    series: [
+      {
+        name: 'Expenses',
+        type: 'pie',
+        radius: ['10%', '70%'],
+        center: ['50%', '50%'],
+        roseType: 'radius',
+        label: {
+          color: 'black',
+          fontSize: 14,
+          formatter: '{b}'
+        },
+        labelLine: {
+          lineStyle: {
+            color: 'black'
+          },
+          length: 10,
+          length2: 20
+        },
+        data: categories.map((cat) => ({
+          name: cat,
+          value: totalYearlyCategoryExp[cat],
+          itemStyle: {
+            color: getColorForCategory(cat),
+          },
+        })),
+      },
+    ],
+  };
+
   return (
     <>
       {/* Root container */}
@@ -64,7 +145,7 @@ const DashBoard = () => {
 
           {/* Left side - Expense Form */}
           <Grid size={6} sx={{ margin: 0 }}>
-            <ExpenseForm onClose={() => alert('Transaction successful!')}/>
+            <ExpenseForm onClose={() => alert('Transaction successful!')} />
           </Grid>
 
           {/* Right side - Budget summary (Donut Chart) */}
@@ -120,7 +201,7 @@ const DashBoard = () => {
                   <Box sx={{ maxHeight: 280, overflowY: 'auto', pr: 1 }}>
                     {filteredData
                       .slice()
-                      .sort((a, b) => new Date(b.date) - new Date(a.date))
+                      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                       .slice(0, 5)
                       .map((tx, idx) => (
                         <Box
@@ -203,17 +284,27 @@ const DashBoard = () => {
                   <Typography variant="h6" sx={{ textAlign: 'center' }}>
                     Expenses
                   </Typography>
-                  <BarsDataset />
+                  <BarChart
+                    dataset={YearlyData}
+                    xAxis={[{ dataKey: 'month' }]}
+                    series={[
+                      { dataKey: 'Food', label: 'Food' },
+                      { dataKey: 'Shopping', label: 'Shopping' },
+                      { dataKey: 'Travel', label: 'Travel' },
+                      { dataKey: 'Miscellaneous', label: 'Miscellaneous' },
+                      { dataKey: 'Utilities', label: 'Utilities' },
+                    ]}
+                      {...chartSetting}
+                  />
                 </Box>
 
                 {/* Pie Chart - Category Distribution */}
-                <Grid display={'flex'} sx={{ justifyContent: 'center', alignItems: 'center' }} flex={1}>
-                  <Typography variant="h6" sx={{ textAlign: 'center', mb: 10 }}>
+                <Grid display={'flex'} sx={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} flex={1}>
+                  <Typography variant="h6" sx={{ textAlign: 'center', mb: 5}}>
                     Categories
                   </Typography>
-                  <ExpensePieChart />
+                  <ReactECharts option={option} style={{ height: '100%', width: '100%' }} />
                 </Grid>
-
               </Grid>
             </Paper>
           </Grid>
