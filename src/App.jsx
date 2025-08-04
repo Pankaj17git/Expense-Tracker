@@ -10,6 +10,7 @@ import AuthForm from './pages/Login'
 import PrivateRoute from './routes/Protected'
 import UserProfile from './pages/UserProfile'
 import BeneficiaryDashboard from './pages/BeneficiaryDashboard'
+import LoanDashBoard from './pages/LoanDashBoard'
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path='status' element={<Status />} />
             <Route path='transfermoney' element={<BeneficiaryDashboard />} />
             <Route path='profile' element={<UserProfile />} />
+            <Route path='loan' element={<LoanDashBoard />} />
           </Route>
         </Routes>
       </BrowserRouter>

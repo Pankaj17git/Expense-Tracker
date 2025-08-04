@@ -16,7 +16,7 @@ import { Menu as MenuIcon } from '@mui/icons-material';
 import './style/header.css'
 import { useNavigate } from 'react-router';
 
-const pages = ['Dashboard', 'Expense', 'Status', 'TransferMoney'];
+const pages = ['Dashboard', 'Expense', 'Status', 'TransferMoney', 'Loan'];
 const settings = ['Profile', 'Account', 'Logout'];
 
 const Header = () => {

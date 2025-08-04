@@ -624,44 +624,24 @@
       "createdAt": "01/08/2025, 14:58:22"
     },
     {
-      "id": "7da20579-cf19-4461-b743-8757e7e61457",
+      "id": "a7756243-05fa-4cec-ad08-7c6e7e9237ed",
       "category": "Transfer",
       "type": "Expense",
-      "amount": 93,
-      "date": "2025-08-01",
-      "description": "Sent to undefined",
+      "amount": 600,
+      "date": "2025-08-02",
+      "description": "Sent to jack",
       "userId": "112a",
-      "createdAt": "2025-08-01 15:28:20"
+      "createdAt": "2025-08-02 21:43:39"
     },
     {
-      "id": "3b4a866b-e749-40eb-bba7-4c81261b88e3",
+      "id": "4f54aaf9-a154-4418-8d79-ded3b59532ea",
       "category": "Transfer",
       "type": "Expense",
-      "amount": 195,
-      "date": "2025-08-01",
-      "description": "Sent to Elton Mendoza",
+      "amount": 9000,
+      "date": "2025-08-04",
+      "description": "Sent to honey",
       "userId": "112a",
-      "createdAt": "2025-08-01 16:18:30"
-    },
-    {
-      "id": "1177bf0f-5f8d-40f2-aa6e-b93919bca80b",
-      "category": "Transfer",
-      "type": "Expense",
-      "amount": 10,
-      "date": "2025-08-01",
-      "description": "Sent to Elton Mendoza",
-      "userId": "112a",
-      "createdAt": "2025-08-01 16:21:49"
-    },
-    {
-      "id": "4fe559bf-f64d-4e13-a2bd-303c95a8fab4",
-      "category": "Transfer",
-      "type": "Expense",
-      "amount": 2000,
-      "date": "2025-08-01",
-      "description": "Sent to Elton Mendoza",
-      "userId": "112a",
-      "createdAt": "2025-08-01 16:44:28"
+      "createdAt": "2025-08-04 11:40:04"
     }
   ],
   "beneficiaries": [
@@ -675,13 +655,26 @@
       "accountType": "Current"
     },
     {
-      "id": "41be440d-4380-4656-b541-4a63c8157758",
+      "id": "14a95c6d-aedf-420e-a652-7a43a85dfe1e",
+      "userId": "112a",
+      "bankName": "State Bank of India",
+      "ifsc": "sfsfe434",
+      "accountNumber": "364755432",
+      "nickname": "honey",
+      "accountType": "Current"
+    },
+    {
+      "id": "dae99e51-9d80-4cb7-b477-2082c1d43f8c",
       "userId": "112a",
       "bankName": "HDFC Bank",
-      "ifsc": "gjg43",
-      "accountNumber": "10122212",
-      "nickname": "nick",
-      "accountType": "Current"
+      "ifsc": "bgf56757",
+      "accountNumber": "987658",
+      "nickname": "jack",
+      "accountType": "Salary"
     }
+  ],
+  "loan": [
+    
   ]
+
 }

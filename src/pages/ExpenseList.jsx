@@ -159,9 +159,7 @@ const ExpenseList = () => {
     }
   };
 
-  const generatePDF = (data = []) => {
-    console.log(data);
-    
+  const generatePDF = (data = []) => {    
     const doc = new jsPDF();
 
     // You can customize these as needed

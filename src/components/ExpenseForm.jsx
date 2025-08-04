@@ -223,7 +223,7 @@ const ExpenseForm = ({editData, onClose}) => {
             </Grid>
 
             {/* Submit */}
-            <Grid textAlign="center" mt={2}>
+            <Grid textAlign="center"  mt={formData.type === 'Expense' ? 0 : 3} mb={2.59}  >
               <Button
                 type="submit"
                 variant="outlined"

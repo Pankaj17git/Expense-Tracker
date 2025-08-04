@@ -13,7 +13,7 @@ import BarsDataset from '../components/BarChart'
 import { BarChart } from '@mui/x-charts/BarChart';
 import { useUserContext } from '../context/UserContext';
 import ReactECharts from 'echarts-for-react';
-import { years, months, monthNames, chartSetting } from '../data/chart-data';
+import { years, months, monthNames, chartSetting, categories } from '../data/chart-data';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -89,7 +89,6 @@ function TablePaginationActions(props) {
   );
 }
 
-const categories = ["Food", "Travel", "Shopping", "Miscellaneous", "Utilities"];
 
 const Status = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -109,6 +108,7 @@ const Status = () => {
     Shopping: '#ffcd56',
     Miscellaneous: '#4bc0c0',
     Utilities: '#9966ff',
+    Transfer: '#ff66f7ff'
   };
   const getColorForCategory = (category) => categoryColorMap[category] || '#888';
 
@@ -345,6 +345,7 @@ const Status = () => {
                 { dataKey: 'Travel', label: 'Travel' },
                 { dataKey: 'Miscellaneous', label: 'Miscellaneous' },
                 { dataKey: 'Utilities', label: 'Utilities' },
+                { dataKey: 'Transfer', label: 'Transfer' },
               ]}
               {...chartSetting}
             />

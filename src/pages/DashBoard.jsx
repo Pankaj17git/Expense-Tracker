@@ -6,7 +6,7 @@ import { BarChart } from '@mui/x-charts';
 import { useUserContext } from '../context/UserContext';
 import ReactECharts from 'echarts-for-react';
 import dayjs from 'dayjs';
-import { monthNames,chartSetting } from '../data/chart-data';
+import { monthNames, chartSetting, categories } from '../data/chart-data';
 
 
 const DashBoard = () => {
@@ -15,13 +15,12 @@ const DashBoard = () => {
     remainingBalance,
     monthlyIncomeAmount,
     totalTransactions,
+    totalBalance,
     monthlyExpenseAmount,
     totalExpTansactions,
     getTotalByCategory,
     getTotalTransactions
   } = useUserContext();
-
-  const categories = ["Food", "Travel", "Shopping", "Miscellaneous", "Utilities"];
 
   // Prepare data for balance donut chart (Spent vs Remaining)
   const balanceChartData = useMemo(() => ([
@@ -91,6 +90,7 @@ const DashBoard = () => {
     Shopping: '#ffcd56',
     Miscellaneous: '#4bc0c0',
     Utilities: '#9966ff',
+    Transfer: '#ff66f7ff',
   };
 
   // Fetch all transactions when the component mounts
@@ -162,8 +162,12 @@ const DashBoard = () => {
                   <Typography>&#8377;{monthlyIncomeAmount}</Typography>
                 </Box>
                 <Box>
-                  <Typography variant='h5'>Remaining</Typography>
-                  <Typography>&#8377;{remainingBalance}</Typography>
+                  <Typography variant='h5'>Monthly Remaining</Typography>
+                  <Typography textAlign={'center'}>&#8377;{remainingBalance}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant='h5'>Overall Remaining</Typography>
+                  <Typography textAlign={'center'}>&#8377;{totalBalance}</Typography>
                 </Box>
                 <Box>
                   <Typography variant='h5'>Spent</Typography>
@@ -293,14 +297,15 @@ const DashBoard = () => {
                       { dataKey: 'Travel', label: 'Travel' },
                       { dataKey: 'Miscellaneous', label: 'Miscellaneous' },
                       { dataKey: 'Utilities', label: 'Utilities' },
+                      { dataKey: 'Transfer', label: 'Transfer' },
                     ]}
-                      {...chartSetting}
+                    {...chartSetting}
                   />
                 </Box>
 
                 {/* Pie Chart - Category Distribution */}
                 <Grid display={'flex'} sx={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} flex={1}>
-                  <Typography variant="h6" sx={{ textAlign: 'center', mb: 5}}>
+                  <Typography variant="h6" sx={{ textAlign: 'center', mb: 5 }}>
                     Categories
                   </Typography>
                   <ReactECharts option={option} style={{ height: '100%', width: '100%' }} />
