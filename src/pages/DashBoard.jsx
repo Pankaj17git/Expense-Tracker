@@ -219,7 +219,7 @@ const DashBoard = () => {
                             p: 1.5,
                             borderRadius: 2,
                             boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.05)',
-                            backgroundColor: tx.type === 'Income' ? '#f0fff0' : '#fff0f0',
+                            backgroundColor: tx.type === 'Income' || tx.type === 'Loan' ? '#f0fff0' : '#fff0f0',
                             transition: 'transform 0.2s ease-in-out',
                             '&:hover': {
                               transform: 'scale(1.01)',
@@ -234,7 +234,7 @@ const DashBoard = () => {
                               width: 36,
                               height: 36,
                               borderRadius: '50%',
-                              backgroundColor: tx.type === 'Income' ? '#b6f2b6' : '#f7baba',
+                              backgroundColor: tx.type === 'Income' || tx.type === 'Loan' ? '#b6f2b6' : '#f7baba',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
@@ -257,12 +257,12 @@ const DashBoard = () => {
                             <Typography
                               title={tx.type}
                               sx={{
-                                color: tx.type === 'Income' ? 'green' : 'red',
+                                color: tx.type === 'Income' || tx.type === 'Loan' ? 'green' : 'red',
                                 fontWeight: 600,
                                 fontSize: 15,
                               }}
                             >
-                              {tx.type === 'Income' ? '+' : '-'}₹{tx.amount}
+                              {tx.type === 'Income' || tx.type === 'Loan' ? '+' : '-'}₹{tx.amount}
                             </Typography>
                           </Box>
                         </Box>

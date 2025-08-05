@@ -1,29 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import axios from 'axios';
 
 const LoanList = () => {
-  const [loans, setLoans] = useState([
-    {
-      id: '1',
-      type: 'Personal',
-      amount: '100000',
-      term: '12',
-      rate: '10',
-      monthlyEMI: '8792',
-      startDate: '2025-08-01',
-      endDate: '2026-07-31',
-    },
-    {
-      id: '2',
-      type: 'Home',
-      amount: '500000',
-      term: '60',
-      rate: '7.5',
-      monthlyEMI: '10019',
-      startDate: '2025-07-15',
-      endDate: '2030-07-15',
-    },
-  ]);
+  const [loans, setLoans] = useState([]);
+
+  useEffect(() => {
+    gettotalLoans();
+  }, [loans])
+console.log(loans);
+
+
+  const gettotalLoans = async () => {
+    const res = await axios.get('http://localhost:4001/loan');
+    setLoans(res.data);
+  }
+
 
   const handlePayEMI = (id) => {
     alert(`EMI Paid for Loan ID: ${id}`);
@@ -35,7 +27,7 @@ const LoanList = () => {
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
-            <TableRow sx={{background: '#838383de'}}>
+            <TableRow sx={{ background: '#838383de' }}>
               <TableCell>Type</TableCell>
               <TableCell>Amount</TableCell>
               <TableCell>Term (Months)</TableCell>
@@ -53,7 +45,7 @@ const LoanList = () => {
                 <TableCell>{loan.amount}</TableCell>
                 <TableCell>{loan.term}</TableCell>
                 <TableCell>{loan.rate}</TableCell>
-                <TableCell>{loan.monthlyEMI}</TableCell>
+                <TableCell>{loan.EMI}</TableCell>
                 <TableCell>{loan.startDate}</TableCell>
                 <TableCell>{loan.endDate}</TableCell>
                 <TableCell>

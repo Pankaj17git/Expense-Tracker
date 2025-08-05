@@ -642,6 +642,27 @@
       "description": "Sent to honey",
       "userId": "112a",
       "createdAt": "2025-08-04 11:40:04"
+    },
+    {
+      "id": "06c4",
+      "category": "Salary",
+      "type": "Income",
+      "medium": "",
+      "date": "2025-08-05",
+      "amount": 10000,
+      "description": "hjgjgh",
+      "userId": "112a",
+      "createdAt": "2025-08-05 10:37:16"
+    },
+    {
+      "id": "0cebf781-5a9f-47a8-9129-4edf6f3f1a13",
+      "category": "Car",
+      "type": "Loan",
+      "amount": 10000,
+      "date": "2025-08-05",
+      "description": "Get a Car loan",
+      "userId": "112a",
+      "createdAt": "2025-08-05 12:56:46"
     }
   ],
   "beneficiaries": [
@@ -674,7 +695,17 @@
     }
   ],
   "loan": [
-    
+    {
+      "id": "8577",
+      "type": "Car",
+      "amount": 10000,
+      "term": "6",
+      "rate": "9",
+      "EMI": 1741.67,
+      "startDate": "2025-08-05",
+      "endDate": "2026-02-05",
+      "userId": "112a",
+      "createdAt": "2025-08-05 12:56:46"
+    }
   ]
-
 }

@@ -10,7 +10,7 @@ const LoanDashBoard = () => {
         <Grid
           sx={{padding: 5, border: '1px solid 1976d242', borderRadius: 2, background:"#1976d287", mb:4}}
         >
-          <Typography color='#0f31f1ff' variant="h3" textAlign={'center'}>
+          <Typography color='#0f31f1ff' variant="h4" textAlign={'center'}>
             Loan Manager
           </Typography>
         </Grid>

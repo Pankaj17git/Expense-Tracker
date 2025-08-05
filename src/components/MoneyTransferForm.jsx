@@ -12,7 +12,7 @@ const SendMoneyForm = ({ userId, onClose, beneficiary }) => {
     getTotalTransactions();
   },[amount])
 
-  console.log(totalBalance);
+ 
   
 
   const handleTransfer = async (e) => {

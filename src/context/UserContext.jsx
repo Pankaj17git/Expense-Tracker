@@ -26,20 +26,24 @@ const UserContextProvider = ({ children }) => {
   const updateBalance = async (data = totalTransactions) => {
     let income = 0;
     let expense = 0;
+    let loan = 0;
 
     data.forEach(txn => {
-      if (txn.type.toLowerCase() === 'income') {
+      const type = txn.type.toLowerCase();
+      if (type === 'income') {
         income += txn.amount ?? 0;
-      } else {
+      } else if (type === 'expense') {
         expense += txn.amount ?? 0;
+      } else if (type === 'loan') {
+        loan += txn.amount ?? 0;
       }
     });
 
-    // Update state
     setTotalIncome(income);
     setTotalExpense(expense);
-    setTotalBalance(income - expense);
+    setTotalBalance(income - expense + loan);
   };
+
 
   const getTotalExpense = (data = totalTransactions) => {
     const expenses = data.filter(txn => txn.type === 'Expense');
@@ -119,9 +123,9 @@ const UserContextProvider = ({ children }) => {
   return (
     <UserContext.Provider
       value={{
-        user, setUser, totalTransactions, totalExpTansactions,
+        user, setUser, setTotalBalance, totalTransactions, totalExpTansactions,
         getTotalExpense, remainingBalance, monthlyExpense, monthlyIncome,
-        monthlyExpenseAmount, monthlyIncomeAmount,filteredData,
+        monthlyExpenseAmount, monthlyIncomeAmount, filteredData,
         totalBalance, totalExpense, getTotalByCategory,
         totalIncome, updateBalance, getTotalTransactions
       }}
