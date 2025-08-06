@@ -26,6 +26,7 @@ const ExpenseForm = ({editData, onClose}) => {
     type: '',
     medium: '',
     date: '',
+    balance: '',
     amount: '',
     description: ''
   });
@@ -85,6 +86,7 @@ const ExpenseForm = ({editData, onClose}) => {
       ...formData,
       userId: user.id,
       amount: parseFloat(formData.amount),
+      balance: totalBalance,
       date: new Date(formData.date).toISOString().split("T")[0],
       createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
     };

@@ -163,15 +163,15 @@ const DashBoard = () => {
                 </Box>
                 <Box>
                   <Typography variant='h5'>Monthly Remaining</Typography>
-                  <Typography textAlign={'center'}>&#8377;{remainingBalance}</Typography>
+                  <Typography textAlign={'center'}>&#8377;{Math.round(remainingBalance)}</Typography>
                 </Box>
                 <Box>
                   <Typography variant='h5'>Overall Remaining</Typography>
-                  <Typography textAlign={'center'}>&#8377;{totalBalance}</Typography>
+                  <Typography textAlign={'center'}>&#8377;{Math.round(totalBalance)}</Typography>
                 </Box>
                 <Box>
                   <Typography variant='h5'>Spent</Typography>
-                  <Typography>&#8377;{monthlyExpenseAmount}</Typography>
+                  <Typography>&#8377;{Math.round(monthlyExpenseAmount)}</Typography>
                 </Box>
               </Grid>
             </Paper>

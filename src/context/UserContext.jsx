@@ -35,7 +35,7 @@ const UserContextProvider = ({ children }) => {
       } else if (type === 'expense') {
         expense += txn.amount ?? 0;
       } else if (type === 'loan') {
-        loan += txn.amount ?? 0;
+        loan += Math.round(txn.amount) ?? 0;
       }
     });
 
@@ -112,6 +112,16 @@ const UserContextProvider = ({ children }) => {
     return monthlyIncomeAmount - monthlyExpenseAmount;
   }, [monthlyIncome, monthlyExpense]);
 
+
+  //Loan contexts 
+
+  const getTotalLoanTransactions = () => {
+    return totalExpTansactions.filter(txn => txn.type === 'Expense' && txn.category === 'EMI')
+  }
+
+  const loantransaction = getTotalLoanTransactions();
+
+
   // When `user` changes (e.g., login), fetch their transactions
   useEffect(() => {
     if (user) {
@@ -126,7 +136,7 @@ const UserContextProvider = ({ children }) => {
         user, setUser, setTotalBalance, totalTransactions, totalExpTansactions,
         getTotalExpense, remainingBalance, monthlyExpense, monthlyIncome,
         monthlyExpenseAmount, monthlyIncomeAmount, filteredData,
-        totalBalance, totalExpense, getTotalByCategory,
+        totalBalance, totalExpense, getTotalByCategory,loantransaction,
         totalIncome, updateBalance, getTotalTransactions
       }}
     >

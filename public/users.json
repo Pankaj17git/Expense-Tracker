@@ -655,14 +655,110 @@
       "createdAt": "2025-08-05 10:37:16"
     },
     {
-      "id": "0cebf781-5a9f-47a8-9129-4edf6f3f1a13",
+      "id": "8a81",
       "category": "Car",
       "type": "Loan",
       "amount": 10000,
-      "date": "2025-08-05",
+      "balance": 175938,
+      "date": "2025-08-06",
       "description": "Get a Car loan",
       "userId": "112a",
-      "createdAt": "2025-08-05 12:56:46"
+      "createdAt": "2025-08-06 12:49:34"
+    },
+    {
+      "id": "366a",
+      "category": "Personal",
+      "type": "Loan",
+      "amount": 10000,
+      "balance": 182488,
+      "date": "2025-08-06",
+      "description": "Get a Personal loan",
+      "userId": "112a",
+      "createdAt": "2025-08-06 12:50:50"
+    },
+    {
+      "id": "79c9",
+      "category": "EMI",
+      "type": "Expense",
+      "amount": 1725,
+      "date": "2025-08-06",
+      "balance": 195938,
+      "description": "EMI payment for Car loan",
+      "loanId": "bc35",
+      "userId": "112a",
+      "createdAt": "2025-08-06 14:15:36"
+    },
+    {
+      "id": "8493",
+      "category": "EMI",
+      "type": "Expense",
+      "amount": 1504,
+      "date": "2025-08-06",
+      "balance": 194213,
+      "description": "EMI payment for Personal loan",
+      "loanId": "91de",
+      "userId": "112a",
+      "createdAt": "2025-08-06 14:17:02"
+    },
+    {
+      "id": "6da5",
+      "category": "EMI",
+      "type": "Expense",
+      "amount": 1725,
+      "date": "2025-08-06",
+      "balance": 192709,
+      "description": "EMI payment for Car loan",
+      "loanId": "bc35",
+      "userId": "112a",
+      "createdAt": "2025-08-06 14:21:05"
+    },
+    {
+      "id": "27ae",
+      "category": "EMI",
+      "type": "Expense",
+      "amount": 1725,
+      "date": "2025-08-06",
+      "balance": 192709,
+      "description": "EMI payment for Car loan",
+      "loanId": "bc35",
+      "userId": "112a",
+      "createdAt": "2025-08-06 14:21:08"
+    },
+    {
+      "id": "4af8",
+      "category": "EMI",
+      "type": "Expense",
+      "amount": 1725,
+      "date": "2025-08-06",
+      "balance": 192709,
+      "description": "EMI payment for Car loan",
+      "loanId": "bc35",
+      "userId": "112a",
+      "createdAt": "2025-08-06 14:21:11"
+    },
+    {
+      "id": "553d",
+      "category": "EMI",
+      "type": "Expense",
+      "amount": 1725,
+      "date": "2025-08-06",
+      "balance": 192709,
+      "description": "EMI payment for Car loan",
+      "loanId": "bc35",
+      "userId": "112a",
+      "createdAt": "2025-08-06 14:21:14"
+    },
+    {
+      "id": "caf3",
+      "category": "EMI",
+      "type": "Expense",
+      "amount": 1725,
+      "date": "2025-08-06",
+      "balance": 192709,
+      "description": "EMI payment for Car loan",
+      "loanId": "bc35",
+      "userId": "112a",
+      "createdAt": "2025-08-06 14:21:16"
     }
   ],
   "beneficiaries": [
@@ -696,16 +792,30 @@
   ],
   "loan": [
     {
-      "id": "8577",
+      "id": "bc35",
       "type": "Car",
       "amount": 10000,
       "term": "6",
-      "rate": "9",
-      "EMI": 1741.67,
-      "startDate": "2025-08-05",
-      "endDate": "2026-02-05",
+      "rate": "7",
+      "EMI": 1725,
+      "startDate": "2025-08-06",
+      "endDate": "2026-02-06",
       "userId": "112a",
-      "createdAt": "2025-08-05 12:56:46"
+      "createdAt": "2025-08-06 12:49:34",
+      "emiPaidCount": 6
+    },
+    {
+      "id": "91de",
+      "type": "Personal",
+      "amount": 10000,
+      "term": "7",
+      "rate": "9",
+      "EMI": 1504,
+      "startDate": "2025-08-06",
+      "endDate": "2026-03-06",
+      "userId": "112a",
+      "createdAt": "2025-08-06 12:50:50",
+      "emiPaidCount": 1
     }
   ]
 }

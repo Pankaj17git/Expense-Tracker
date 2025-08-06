@@ -19,7 +19,7 @@ const LoanForm = () => {
     endDate: '',
   });
 
-  const { user, setTotalBalance, getTotalTransactions } = useUserContext()
+  const { user, setTotalBalance, getTotalTransactions, totalBalance } = useUserContext()
 
   useEffect(() => {
     const newEndDate = calculateEndDate(loanData.startDate, loanData.term);
@@ -51,10 +51,10 @@ const LoanForm = () => {
     }
 
     const transaction = {
-      id: crypto.randomUUID(),
       category: loanData.type,
       type: `Loan`,
       amount: parseFloat(loanData.amount),
+      balance : totalBalance,
       date: new Date().toISOString().split('T')[0],
       description: `Get a ${loanData.type} loan`,
       userId: user.id,
@@ -100,7 +100,7 @@ const LoanForm = () => {
     const totalAmount = amount + totalInterest;
     const emi = totalAmount / term;
 
-    return Math.round(emi * 100) / 100; // 2 decimals
+    return Math.round(emi);
   };
 
 

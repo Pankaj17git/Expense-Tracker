@@ -111,7 +111,7 @@ const ExpenseList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState(null);
-  const { getTotalTransactions, totalTransactions, totalBalance } = useUserContext()
+  const { getTotalTransactions, totalTransactions } = useUserContext()
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -231,9 +231,9 @@ const ExpenseList = () => {
               <TableRow>
                 <StyledTableCell>Amount</StyledTableCell>
                 <StyledTableCell>Date</StyledTableCell>
-                <StyledTableCell>Category</StyledTableCell>
-                <StyledTableCell>Overall Balance</StyledTableCell>
                 <StyledTableCell>Type</StyledTableCell>
+                <StyledTableCell>Overall Balance</StyledTableCell>
+                <StyledTableCell>Category</StyledTableCell>
                 <StyledTableCell>Discription</StyledTableCell>
                 <StyledTableCell>Action</StyledTableCell>
               </TableRow>
@@ -248,9 +248,9 @@ const ExpenseList = () => {
                     &#8377;{row.amount}
                   </StyledTableCell>
                   <StyledTableCell>{row.date}</StyledTableCell>
-                  <StyledTableCell>{row.category}</StyledTableCell>
-                  <StyledTableCell>{totalBalance}</StyledTableCell>
                   <StyledTableCell>{row.type}</StyledTableCell>
+                  <StyledTableCell>&#8377; {row.balance}</StyledTableCell>
+                  <StyledTableCell>{row.category}</StyledTableCell>
                   <StyledTableCell>{row.description}</StyledTableCell>
 
                   <StyledTableCell>
