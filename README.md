@@ -32,31 +32,31 @@ A simple and user-friendly expense tracking application built with **React.js**,
 
 ### 📊 Dashboard
 
-<img src="/assets/images/dashboard0.png" alt="dashboard" width="100%" />
+<img src="public/assets/images/dashboard0.png" alt="dashboard" width="100%" />
 
 ---
 
 ### 🧾 List of Transactions
 
-<img src="/assets/images/list.png" alt="transactions" width="100%" />
+<img src="public/assets/images/list.png" alt="transactions" width="100%" />
 
 ---
 
 ### 📈 Status Overview
 
-<img src="/assets/images/status.png" alt="status" width="100%" />
+<img src="public/assets/images/status.png" alt="status" width="100%" />
 
 ---
 
 ### 👥 Beneficiaries
 
-<img src="/assets/images/beneficeries.png" alt="beneficiaries" width="100%" />
+<img src="public/assets/images/beneficeries.png" alt="beneficiaries" width="100%" />
 
 ---
 
 ### 🏦 Loan Section
 
-<img src="/assets/images/loan.png" alt="loan" width="100%" />
+<img src="public/assets/images/loan.png" alt="loan" width="100%" />
 
 ---
 
