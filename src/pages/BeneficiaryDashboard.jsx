@@ -3,6 +3,7 @@ import BeneficialAccountForm from "../components/Beneficiar";
 import SendMoneyForm from "../components/MoneyTransferForm";
 import { Grid, Box, Typography, Button, Paper, Dialog, DialogContent } from '@mui/material';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 
 const BeneficiaryDashboard = () => {
   const [beneficiaries, setBeneficiaries] = useState([]);
@@ -33,6 +34,9 @@ const BeneficiaryDashboard = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Beneficiaries</title>
+      </Helmet>
       <Box sx={{ flexGrow: 1, padding: 1, background: '#e3e3e3' }}>
         <Grid container spacing={2} style={{ padding: 20 }}>
           {/* Left: Form to add beneficiary */}
@@ -41,12 +45,12 @@ const BeneficiaryDashboard = () => {
           </Grid>
 
           {/* Right: List of beneficiaries */}
-          <Grid  flex={1}>
+          <Grid flex={1}>
             <Typography variant="h6">Saved Beneficiaries</Typography>
             {beneficiaries.length === 0 ? (
               <Typography>No beneficiaries added yet.</Typography>
             ) : (
-              <Box style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',gap: '10px'}}>
+              <Box style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
                 {beneficiaries.map((b) => (
                   <Paper key={b.id} style={{ padding: 16, marginTop: 10 }}>
                     <Typography><strong>Nickname:</strong> {b.nickname}</Typography>

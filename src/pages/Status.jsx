@@ -14,6 +14,8 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { useUserContext } from '../context/UserContext';
 import ReactECharts from 'echarts-for-react';
 import { years, months, monthNames, chartSetting, categories } from '../data/chart-data';
+import { Helmet } from 'react-helmet';
+import usePaginationReducer from '../hooks/usePagination';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -93,11 +95,13 @@ function TablePaginationActions(props) {
 const Status = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(null);
-  const [pagination, setPagination] = useState({
+  const [pagination, dispatch] = usePaginationReducer({
     expense: { page: 0, rowsPerPage: 5 },
     category: { page: 0, rowsPerPage: 5 },
-    type: { page: 0, rowsPerPage: 5 },
+    type: { page: 0, rowsPerPage: 5 }
   });
+
+
 
   const { getTotalTransactions, monthlyExpenseAmount, totalTransactions, totalExpense, getTotalByCategory, totalExpTansactions } = useUserContext();
 
@@ -115,25 +119,16 @@ const Status = () => {
 
 
   const handleChangePage = (tableKey, newPage) => {
-    setPagination((prev) => ({
-      ...prev,
-      [tableKey]: { ...prev[tableKey], page: newPage },
-    }));
+    dispatch({ type: 'CHANGE_PAGE', tableKey, value: newPage });
   };
 
   const handleChangeRowsPerPage = (tableKey, event) => {
-    setPagination((prev) => ({
-      ...prev,
-      [tableKey]: {
-        ...prev[tableKey],
-        rowsPerPage: parseInt(event.target.value, 10),
-        page: 0,
-      },
-    }));
+    dispatch({
+      type: 'CHANGE_ROWS_PER_PAGE',
+      tableKey,
+      value: parseInt(event.target.value, 10)
+    });
   };
-
-
-
 
 
   //Filtered data to display in the table
@@ -146,8 +141,12 @@ const Status = () => {
     });
   }, [totalTransactions, selectedYear, selectedMonth]);
 
-  const { page, rowsPerPage } = pagination.expense;
-  filteredTransactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+
+  const getPaginationFor = (key) => pagination[key] || { page: 0, rowsPerPage: 5 };
+  const { page: expensePage, rowsPerPage: expenseRowsPerPage } = getPaginationFor('expense');
+  const { page: categoryPage, rowsPerPage: categoryRowsPerPage } = getPaginationFor('category');
+  const { page: typePage, rowsPerPage: typeRowsPerPage } = getPaginationFor('type');
 
 
 
@@ -173,6 +172,31 @@ const Status = () => {
 
     return Object.values(grouped);
   }, [filteredTransactions]);
+  // console.log(monthlyData);
+
+  const expenseMedium = useMemo(() => {
+    const grouped = {};
+
+    filteredTransactions.forEach(txn => {
+      if (txn.type !== 'Expense') return;
+
+      const date = new Date(txn.date);
+      const month = monthNames[date.getMonth()];
+
+      if (!grouped[month]) {
+        grouped[month] = { month };
+      }
+
+      if (!grouped[month][txn.medium]) {
+        grouped[month][txn.medium] = 0;
+      }
+
+      grouped[month][txn.medium] += txn.amount;
+    });
+
+    return Object.values(grouped); // Or Object.entries(grouped) if needed as key-value array
+  }, [filteredTransactions]);
+  
 
 
   // Calculate total amount spent in each category
@@ -236,6 +260,9 @@ const Status = () => {
   return (
     <>
 
+      <Helmet>
+        <title>Status</title>
+      </Helmet>
       <Box p={3} sx={{ flexGrow: 1, background: '#e3e3e3' }}>
         {/* Top Cards */}
         <Grid container spacing={2} mb={3}>
@@ -302,9 +329,8 @@ const Status = () => {
                 </TableHead>
                 <TableBody>
                   {(
-                    rowsPerPage > 0
-                      ? filteredTransactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      : filteredTransactions
+                    filteredTransactions.slice(expensePage * expenseRowsPerPage, expensePage * expenseRowsPerPage + expenseRowsPerPage)
+
                   ).map((row, id) => (
                     <StyledTableRow key={id}>
 
@@ -382,9 +408,8 @@ const Status = () => {
                 </TableHead>
                 <TableBody>
                   {(
-                    rowsPerPage > 0
-                      ? filteredTransactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      : filteredTransactions
+                    filteredTransactions.slice(categoryPage * categoryRowsPerPage, categoryPage * categoryRowsPerPage + categoryRowsPerPage)
+
                   ).map((row, id) => (
                     <StyledTableRow key={id}>
 
@@ -441,26 +466,22 @@ const Status = () => {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Category</TableCell>
+                    <TableCell>Medium</TableCell>
                     <TableCell>Date</TableCell>
                     <TableCell>Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {(
-                    rowsPerPage > 0
-                      ? totalTransactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      : totalTransactions
+                    totalTransactions.slice(typePage * typeRowsPerPage, typePage * typeRowsPerPage + typeRowsPerPage)
+
                   ).map((row, id) => (
                     <StyledTableRow key={id}>
                       <StyledTableCell component="th" scope="row">
-                        &#8377;{row.amount}
+                        {row.medium}
                       </StyledTableCell>
                       <StyledTableCell align="right">{row.date}</StyledTableCell>
-                      <StyledTableCell align="right">{row.category}</StyledTableCell>
-                      <StyledTableCell align="right">{row.type}</StyledTableCell>
-                      <StyledTableCell align="right">{row.description}</StyledTableCell>
-                      <StyledTableCell align="right">action</StyledTableCell>
+                      <StyledTableCell align="right">&#8377;{row.amount}</StyledTableCell>
                     </StyledTableRow>
                   ))}
                 </TableBody>
@@ -482,8 +503,19 @@ const Status = () => {
           </Grid>
 
           {/* Chart */}
-          <Grid >
-            <BarsDataset />
+          <Grid display={'flex'} flex={1} justifyContent={'center'} alignItems={'center'}>
+            <BarChart
+              dataset={expenseMedium}
+              xAxis={[{ dataKey: 'month' }]}
+              series={[
+                { dataKey: 'Debit Card', label: 'Debit Card' },
+                { dataKey: 'Credit Card', label: 'Credit Card' },
+                { dataKey: 'Cheque', label: 'Cheque' },
+                { dataKey: 'Cash', label: 'Cash' },
+                { dataKey: 'netBanking', label: 'netBanking' },
+              ]}
+              {...chartSetting}
+            />
           </Grid>
         </Grid>
       </Box>

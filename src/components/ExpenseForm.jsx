@@ -18,7 +18,7 @@ import dayjs from 'dayjs';
 
 const incomeCategories = ["Salary", "Freelancing", "Investments", "Gifts"];
 const expenseCategories = ["Food", "Travel", "Shopping", "Miscellaneous", "Utilities"];
-const expenseMedium = ['Debit Card', 'Credit Card', 'Cheque', 'Cash'];
+const expenseMedium = ['Debit Card', 'Credit Card', 'Cheque', 'Cash', 'netBanking'];
 const ExpenseForm = ({editData, onClose}) => {
 
   const [formData, setFormData] = useState({
@@ -31,6 +31,7 @@ const ExpenseForm = ({editData, onClose}) => {
     description: ''
   });
   const [errors, setErrors] = useState({});
+  const TXRURL = import.meta.env.VITE_USER_TRANSACTIONS;
 
   const { updateBalance, totalBalance, getTotalTransactions } = useUserContext();
 
@@ -93,9 +94,9 @@ const ExpenseForm = ({editData, onClose}) => {
 
     try {
       if (editData) {
-        await axios.patch(`http://localhost:4001/transactions/${editData.id}`, newTransaction);
+        await axios.patch(`${TXRURL}/${editData.id}`, newTransaction);
       } else {
-        await axios.post('http://localhost:4001/transactions', newTransaction)
+        await axios.post(TXRURL, newTransaction)
       }
 
       await getTotalTransactions();

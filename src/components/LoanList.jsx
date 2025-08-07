@@ -8,13 +8,16 @@ const LoanList = () => {
   const [loans, setLoans] = useState([]);
   const { totalBalance } = useUserContext();
 
+  const TXRURL = import.meta.env.VITE_USER_TRANSACTIONS;
+  const LOANURL = import.meta.env.VITE_USER_LOAN;
+
   useEffect(() => {
     gettotalLoans();
   }, [totalBalance]);
 
 
   const gettotalLoans = async () => {
-    const res = await axios.get('http://localhost:4001/loan');
+    const res = await axios.get(LOANURL);
     setLoans(res.data);
   };
 
@@ -28,6 +31,7 @@ const LoanList = () => {
       amount: parseFloat(loan.EMI),
       date: new Date().toISOString().split('T')[0],
       balance: totalBalance,
+      medium: 'netBanking',
       description: `EMI payment for ${loan.type} loan`,
       loanId,
       userId: loan.userId,
@@ -35,8 +39,8 @@ const LoanList = () => {
     };
 
     try {
-      await axios.post('http://localhost:4001/transactions', transaction);
-      await axios.patch(`http://localhost:4001/loan/${loanId}`, {
+      await axios.post(TXRURL, transaction);
+      await axios.patch(`${LOANURL}/${loanId}`, {
         emiPaidCount: (loan.emiPaidCount || 0) + 1,
       })
 
@@ -101,8 +105,8 @@ const LoanList = () => {
                 <TableCell>{status.emiRemaining}</TableCell>
                 <TableCell>{status.nextDueDate}</TableCell>
                 <TableCell>
-                  <Typography color={status.isOverdue ? 'red' : 'green'}>
-                    {status.isOverdue ? 'Overdue' : 'Upcoming'}
+                  <Typography color={status.emiRemaining === 0 ? 'green' : status.isOverdue ? 'red' : 'green'}>
+                    {status.emiRemaining === 0 ? 'Compeleted' : status.isOverdue ? 'Overdue' : 'Upcoming'}
                   </Typography>
                 </TableCell>
                 <TableCell>

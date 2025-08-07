@@ -7,6 +7,7 @@ import { useUserContext } from '../context/UserContext';
 import ReactECharts from 'echarts-for-react';
 import dayjs from 'dayjs';
 import { monthNames, chartSetting, categories } from '../data/chart-data';
+import { Helmet } from 'react-helmet';
 
 
 const DashBoard = () => {
@@ -140,6 +141,9 @@ const DashBoard = () => {
   return (
     <>
       {/* Root container */}
+      <Helmet>
+        <title>Dashboard</title>
+      </Helmet>
       <Box sx={{ flexGrow: 1, padding: 1, background: '#e3e3e3' }}>
         <Grid container spacing={1}>
 

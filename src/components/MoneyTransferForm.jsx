@@ -1,5 +1,5 @@
 import React, {  useEffect, useState } from 'react';
-import { Box, TextField, MenuItem, Button, Typography } from '@mui/material';
+import { Box, TextField, Button, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import { useUserContext } from '../context/UserContext';
@@ -8,12 +8,12 @@ const SendMoneyForm = ({ userId, onClose, beneficiary }) => {
   const [amount, setAmount] = useState('');
   const {totalBalance, getTotalTransactions} = useUserContext();
 
+  const TXRURL = import.meta.env.VITE_USER_TRANSACTIONS;
+
   useEffect(() => {
     getTotalTransactions();
   },[amount])
 
- 
-  
 
   const handleTransfer = async (e) => {
     e.preventDefault();
@@ -33,13 +33,14 @@ const SendMoneyForm = ({ userId, onClose, beneficiary }) => {
       category: 'Transfer',
       type: 'Expense',
       amount: parseFloat(amount),
+      medium: 'netBanking',
       date: new Date().toISOString().split('T')[0],
       description: `Sent to ${beneficiary.nickname}`,
       userId,
       createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
     };
 
-    await axios.post('http://localhost:4001/transactions', transaction);
+    await axios.post(TXRURL, transaction);
     alert('Money transferred!');
     setAmount('');
     onClose();

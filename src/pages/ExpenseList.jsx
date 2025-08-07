@@ -27,6 +27,7 @@ import { useUserContext } from '../context/UserContext';
 import { useEffect, useState } from 'react';
 import { filterDateByTimeFrame, sortByDateDesc } from '../utils/dateFilters';
 import ExpenseForm from '../components/ExpenseForm';
+import { Helmet } from 'react-helmet';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -113,6 +114,8 @@ const ExpenseList = () => {
   const [editData, setEditData] = useState(null);
   const { getTotalTransactions, totalTransactions } = useUserContext()
 
+  const TXRURL = import.meta.env.VITE_USER_TRANSACTIONS;
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - totalTransactions.length) : 0;
@@ -151,7 +154,7 @@ const ExpenseList = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this transaction?")) {
       try {
-        await axios.delete(`http://localhost:4001/transactions/${id}`);
+        await axios.delete(`${TXRURL}/${id}`);
         getTotalTransactions(); // refresh list
       } catch (error) {
         console.error("Delete failed:", error);
@@ -159,7 +162,7 @@ const ExpenseList = () => {
     }
   };
 
-  const generatePDF = (data = []) => {    
+  const generatePDF = (data = []) => {
     const doc = new jsPDF();
 
     // You can customize these as needed
@@ -192,6 +195,9 @@ const ExpenseList = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Expense List</title>
+      </Helmet>
       <Box sx={{ height: '100vh', padding: 5, background: '#eae8e8' }}>
         <Paper sx={{ paddingTop: 0.5 }}>
           <Grid display={'flex'} flexDirection={'row'}>

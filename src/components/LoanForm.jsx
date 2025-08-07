@@ -18,6 +18,8 @@ const LoanForm = () => {
     startDate: '',
     endDate: '',
   });
+  const TXRURL = import.meta.env.VITE_USER_TRANSACTIONS;
+  const LOANURL = import.meta.env.VITE_USER_LOAN;
 
   const { user, setTotalBalance, getTotalTransactions, totalBalance } = useUserContext()
 
@@ -37,49 +39,94 @@ const LoanForm = () => {
     setLoanData((prev) => ({ ...prev, [name]: value }))
   }
 
+  const validateLoanData = (data) => {
+    const errors = {};
+
+    if (!data.type.trim()) {
+      errors.type = 'Loan type is required.';
+    }
+
+    if (!data.amount || isNaN(data.amount) || Number(data.amount) <= 0) {
+      errors.amount = 'Valid loan amount is required.';
+    }
+
+    if (!data.term || isNaN(data.term) || Number(data.term) <= 0) {
+      errors.term = 'Valid loan term (in months/years) is required.';
+    }
+
+    if (!data.rate || isNaN(data.rate) || Number(data.rate) <= 0) {
+      errors.rate = 'Valid interest rate is required.';
+    }
+
+    if (!data.EMI || isNaN(data.EMI) || Number(data.EMI) <= 0) {
+      errors.EMI = 'Calculated EMI is required.';
+    }
+
+    if (!data.startDate) {
+      errors.startDate = 'Start date is required.';
+    }
+
+    if (!data.endDate) {
+      errors.endDate = 'End date is required.';
+    }
+
+    if (data.startDate && data.endDate && new Date(data.endDate) < new Date(data.startDate)) {
+      errors.endDate = 'End date must be after start date.';
+    }
+
+    return errors;
+  };
+
+
+  const errors = validateLoanData(loanData)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) return alert('please login!');
 
-    const newLoan = {
-      ...loanData,
-      userId: user.id,
-      amount: parseFloat(loanData.amount),
-      startDate: new Date(loanData.startDate).toISOString().split("T")[0],
-      endDate: loanData.endDate,
-      createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-    }
+    if (Object.keys(errors).length === 0) {
+      const newLoan = {
+        ...loanData,
+        userId: user.id,
+        amount: parseFloat(loanData.amount),
+        startDate: new Date(loanData.startDate).toISOString().split("T")[0],
+        endDate: loanData.endDate,
+        createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      }
 
-    const transaction = {
-      category: loanData.type,
-      type: `Loan`,
-      amount: parseFloat(loanData.amount),
-      balance : totalBalance,
-      date: new Date().toISOString().split('T')[0],
-      description: `Get a ${loanData.type} loan`,
-      userId: user.id,
-      createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-    };
+      const transaction = {
+        category: loanData.type,
+        type: `Loan`,
+        amount: parseFloat(loanData.amount),
+        balance: totalBalance,
+        date: new Date().toISOString().split('T')[0],
+        description: `Get a ${loanData.type} loan`,
+        userId: user.id,
+        createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      };
 
-    try {
-      await axios.post('http://localhost:4001/transactions', transaction)
-      await axios.post(`http://localhost:4001/loan`, newLoan);
-      await getTotalTransactions();
+      try {
+        await axios.post(TXRURL, transaction)
+        await axios.post(LOANURL, newLoan);
+        await getTotalTransactions();
 
-      // Update total balance after loan submission
-      setTotalBalance(prev => prev + parseFloat(loanData.amount));
+        // Update total balance after loan submission
+        setTotalBalance(prev => prev + parseFloat(loanData.amount));
 
-      setLoanData({
-        type: '',
-        amount: '',
-        term: '',
-        rate: '',
-        EMI: '',
-        startDate: '',
-        endDate: '',
-      })
-    } catch (error) {
-      console.error('Something went wrong!0', error);
+        setLoanData({
+          type: '',
+          amount: '',
+          term: '',
+          rate: '',
+          EMI: '',
+          startDate: '',
+          endDate: '',
+        })
+      } catch (error) {
+        console.error('Something went wrong!0', error);
+      }
+    } else {
+      alert('Validation errors:', errors);
     }
   }
 
