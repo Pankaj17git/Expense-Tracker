@@ -32,7 +32,7 @@ A simple and user-friendly expense tracking application built with **React.js**,
 
 ### 📊 Dashboard
 
-<img src="public/assets/images/dashboard0.png" alt="dashboard" width="100%" />
+<img src="public/images/dashboard0.png" alt="dashboard" width="100%" />
 
 ---
 
