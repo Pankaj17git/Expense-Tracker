@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+.env.*          # Covers files like .env.local, .env.development, etc.
+
+# JSON Server data file (optional)
+users.json         # If it contains development/test data that shouldn’t go to GitHub

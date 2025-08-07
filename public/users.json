@@ -56,8 +56,7 @@
       "amount": 10000,
       "description": "slfslfsjf",
       "userId": "7b18",
-      "createdAt": "2025-07-28 11:56:49",
-      "medium": "Cash"
+      "createdAt": "2025-07-28 11:56:49"
     },
     {
       "id": "7a90",
@@ -67,8 +66,7 @@
       "amount": 5000,
       "description": "jhvc",
       "userId": "7b18",
-      "createdAt": "2025-07-28 11:56:49",
-      "medium": "Debit Card"
+      "createdAt": "2025-07-28 11:56:49"
     },
     {
       "id": "29d5",
@@ -88,8 +86,7 @@
       "amount": 10000,
       "description": "kjhgfd",
       "userId": "112a",
-      "createdAt": "2025-07-28 12:10:11",
-      "medium": "Credit Card"
+      "createdAt": "2025-07-28 12:10:11"
     },
     {
       "id": "a1b2",
@@ -109,8 +106,7 @@
       "amount": 2500,
       "description": "Walmart groceries",
       "userId": "112a",
-      "createdAt": "2025-07-02 18:32:11",
-      "medium": "Cheque"
+      "createdAt": "2025-07-02 18:32:11"
     },
     {
       "id": "e5f6",
@@ -120,8 +116,7 @@
       "amount": 20000,
       "description": "Monthly rent payment",
       "userId": "112a",
-      "createdAt": "2025-07-03 10:15:22",
-      "medium": "netBanking"
+      "createdAt": "2025-07-03 10:15:22"
     },
     {
       "id": "g7h8",
@@ -141,8 +136,7 @@
       "amount": 1800,
       "description": "Dinner out",
       "userId": "112a",
-      "createdAt": "2025-07-05 20:11:08",
-      "medium": "Cash"
+      "createdAt": "2025-07-05 20:11:08"
     },
     {
       "id": "k1l2",
@@ -152,8 +146,7 @@
       "amount": 3500,
       "description": "Electricity bill",
       "userId": "112a",
-      "createdAt": "2025-07-06 15:33:27",
-      "medium": "Debit Card"
+      "createdAt": "2025-07-06 15:33:27"
     },
     {
       "id": "m3n4",
@@ -173,8 +166,7 @@
       "amount": 600,
       "description": "Metro card recharge",
       "userId": "112a",
-      "createdAt": "2025-07-08 08:55:10",
-      "medium": "Credit Card"
+      "createdAt": "2025-07-08 08:55:10"
     },
     {
       "id": "q7r8",
@@ -184,8 +176,7 @@
       "amount": 1500,
       "description": "Movie night",
       "userId": "112a",
-      "createdAt": "2025-07-09 21:45:02",
-      "medium": "Cheque"
+      "createdAt": "2025-07-09 21:45:02"
     },
     {
       "id": "s9t0",
@@ -722,99 +713,76 @@
       "createdAt": "2025-08-06 14:21:05"
     },
     {
-      "id": "e8f3",
-      "category": "EMI",
-      "type": "Expense",
-      "amount": 1504,
-      "date": "2025-08-06",
-      "balance": 190984,
-      "description": "EMI payment for Personal loan",
-      "loanId": "91de",
-      "userId": "112a",
-      "createdAt": "2025-08-06 14:32:57"
-    },
-    {
-      "id": "795c",
+      "id": "27ae",
       "category": "EMI",
       "type": "Expense",
       "amount": 1725,
       "date": "2025-08-06",
-      "balance": 189480,
+      "balance": 192709,
       "description": "EMI payment for Car loan",
       "loanId": "bc35",
       "userId": "112a",
-      "createdAt": "2025-08-06 14:33:37"
+      "createdAt": "2025-08-06 14:21:08"
     },
     {
-      "id": "1657",
+      "id": "4af8",
       "category": "EMI",
       "type": "Expense",
       "amount": 1725,
       "date": "2025-08-06",
-      "balance": 187755,
+      "balance": 192709,
       "description": "EMI payment for Car loan",
       "loanId": "bc35",
       "userId": "112a",
-      "createdAt": "2025-08-06 14:33:52"
+      "createdAt": "2025-08-06 14:21:11"
     },
     {
-      "id": "9a6b",
+      "id": "553d",
       "category": "EMI",
       "type": "Expense",
       "amount": 1725,
       "date": "2025-08-06",
-      "balance": 186030,
+      "balance": 192709,
       "description": "EMI payment for Car loan",
       "loanId": "bc35",
       "userId": "112a",
-      "createdAt": "2025-08-06 14:33:59"
+      "createdAt": "2025-08-06 14:21:14"
     },
     {
-      "id": "9f97",
+      "id": "caf3",
       "category": "EMI",
       "type": "Expense",
       "amount": 1725,
       "date": "2025-08-06",
-      "balance": 184305,
+      "balance": 192709,
       "description": "EMI payment for Car loan",
       "loanId": "bc35",
       "userId": "112a",
-      "createdAt": "2025-08-06 14:34:06"
+      "createdAt": "2025-08-06 14:21:16"
     },
     {
-      "id": "ab3c",
-      "category": "Investments",
-      "type": "Income",
-      "medium": "",
-      "date": "2025-08-06",
-      "balance": 182580,
-      "amount": 20000,
-      "description": "mnbjv",
-      "userId": "112a",
-      "createdAt": "2025-08-06 15:04:19"
-    },
-    {
-      "id": "8d36",
-      "category": "Business",
+      "id": "d73b",
+      "category": "Home",
       "type": "Loan",
       "amount": 10000,
-      "balance": 202580,
-      "date": "2025-08-06",
-      "description": "Get a Business loan",
+      "balance": 184084,
+      "date": "2025-08-07",
+      "description": "Get a Home loan",
       "userId": "112a",
-      "createdAt": "2025-08-06 15:05:28"
+      "createdAt": "2025-08-07 14:48:24"
     },
     {
-      "id": "6cfd",
-      "category": "Utilities",
+      "id": "0a4d",
+      "category": "EMI",
       "type": "Expense",
-      "medium": "Cash",
-      "date": "2025-08-06",
-      "balance": 212580,
-      "amount": 3000,
-      "description": "hgfhj",
+      "amount": 1733,
+      "date": "2025-08-07",
+      "balance": 204084,
+      "medium": "netBanking",
+      "description": "EMI payment for Home loan",
+      "loanId": "556c",
       "userId": "112a",
-      "createdAt": "2025-08-06 23:30:06"
+      "createdAt": "2025-08-07 14:49:06"
     }
   ],
   "beneficiaries": [
@@ -871,11 +839,11 @@
       "endDate": "2026-03-06",
       "userId": "112a",
       "createdAt": "2025-08-06 12:50:50",
-      "emiPaidCount": 2
+      "emiPaidCount": 1
     },
     {
-      "id": "a172",
-      "type": "Business",
+      "id": "556c",
+      "type": "Home",
       "amount": 10000,
       "term": "6",
       "rate": "8",
@@ -883,7 +851,8 @@
       "startDate": "2025-08-06",
       "endDate": "2026-02-06",
       "userId": "112a",
-      "createdAt": "2025-08-06 15:05:28"
+      "createdAt": "2025-08-07 14:48:24",
+      "emiPaidCount": 1
     }
   ]
 }
