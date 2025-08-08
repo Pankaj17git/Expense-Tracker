@@ -18,6 +18,8 @@ const BeneficialAccountForm = ({userId, onCreated }) => {
     accountType: ""
   });
 
+  const BURL = import.meta.env.VITE_USER_beneficiaries;
+
   const banks = [
     "State Bank of India",
     "HDFC Bank",
@@ -41,7 +43,7 @@ const BeneficialAccountForm = ({userId, onCreated }) => {
       ...form,
     };
 
-    await axios.post('http://localhost:4001/beneficiaries ', newBeneficialAccount)
+    await axios.post(BURL, newBeneficialAccount)
     onCreated();
     setForm({
       bankName: "",

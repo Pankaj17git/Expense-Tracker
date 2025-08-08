@@ -11,6 +11,8 @@ const BeneficiaryDashboard = () => {
   const [showTransferForm, setShowTransferForm] = useState(false);
   const [openForm, setOpenForm] = useState(false)
 
+  const BURL = import.meta.env.VITE_USER_beneficiaries;
+
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?.id;
 
@@ -18,7 +20,7 @@ const BeneficiaryDashboard = () => {
   // Fetch beneficiary list
   useEffect(() => {
     if (userId) {
-      axios.get(`http://localhost:4001/beneficiaries?userId=${userId}`)
+      axios.get(`${BURL}?userId=${userId}`)
         .then(res => setBeneficiaries(res.data))
         .catch(err => console.error(err));
     }
@@ -26,7 +28,7 @@ const BeneficiaryDashboard = () => {
 
   const handleBeneficiaryCreated = () => {
     alert('Beneficiary saved!');
-    axios.get(`http://localhost:4001/beneficiaries?userId=${userId}`)
+    axios.get(`${BURL}?userId=${userId}`)
       .then(res => setBeneficiaries(res.data));
   };
 
