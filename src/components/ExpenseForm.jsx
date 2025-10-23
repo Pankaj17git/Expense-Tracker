@@ -34,6 +34,8 @@ const ExpenseForm = ({editData, onClose}) => {
   const TXRURL = import.meta.env.VITE_USER_TRANSACTIONS;
 
   const { updateBalance, totalBalance, getTotalTransactions } = useUserContext();
+  console.log(totalBalance);
+  
 
   useEffect(() => {
     if (editData) {
@@ -48,6 +50,7 @@ const ExpenseForm = ({editData, onClose}) => {
   };
 
   const validate = () => {
+    debugger
     const newErrors = {};
     const today = dayjs();
     const selectedDate = dayjs(formData.date);
@@ -75,6 +78,7 @@ const ExpenseForm = ({editData, onClose}) => {
   }
 
   const handleSubmit = async (e) => {
+    debugger
     e.preventDefault();
 
     const user = JSON.parse(localStorage.getItem('user'));

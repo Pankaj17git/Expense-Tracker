@@ -24,6 +24,7 @@ const UserContextProvider = ({ children }) => {
 
   // Utility function to calculate and update income, expense, and balance
   const updateBalance = async (data = totalTransactions) => {
+    // debugger
     let income = 0;
     let expense = 0;
     let loan = 0;
