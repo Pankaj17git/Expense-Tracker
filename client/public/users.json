@@ -9,178 +9,18 @@
   ],
   "transactions": [
     {
-      "id": "50b0",
-      "category": "Salary",
-      "type": "Income",
-      "medium": "",
-      "date": "2025-09-20",
-      "balance": 0,
-      "amount": 10000,
-      "description": "lsfjsljfis",
-      "userId": "3532",
-      "createdAt": "2025-09-20 17:48:06"
-    },
-    {
-      "id": "5c53",
-      "category": "Shopping",
-      "type": "Expense",
-      "medium": "Cash",
-      "date": "2025-09-20",
-      "balance": 10000,
-      "amount": 1000,
-      "description": "kldjf",
-      "userId": "3532",
-      "createdAt": "2025-09-20 17:55:18"
-    },
-    {
-      "id": "3043",
+      "id": "73ff",
       "category": "Freelancing",
       "type": "Income",
       "medium": "",
-      "date": "2025-10-01",
-      "balance": 9000,
-      "amount": 876567,
-      "description": "kjhgfcxdcghj",
-      "userId": "3532",
-      "createdAt": "2025-10-08 16:24:29"
-    },
-    {
-      "id": "1883",
-      "category": "Travel",
-      "type": "Expense",
-      "date": "2025-10-01",
-      "medium": "Cash",
-      "amount": 6868,
-      "description": "kjgfdghb",
-      "userId": "3532",
-      "balance": 9000,
-      "createdAt": "2025-10-08 16:25:03"
-    },
-    {
-      "id": "760f4910-4ad6-458d-9fae-a9aba47672ce",
-      "category": "Transfer",
-      "type": "Expense",
-      "amount": 87659,
-      "medium": "netBanking",
-      "date": "2025-10-08",
-      "description": "Sent to mhgcfxchj",
-      "userId": "3532",
-      "createdAt": "2025-10-08 16:29:06"
-    },
-    {
-      "id": "1dfa",
-      "category": "Personal",
-      "type": "Loan",
+      "date": "2026-01-02",
+      "balance": 0,
       "amount": 10000,
-      "balance": 791040,
-      "date": "2025-10-08",
-      "description": "Get a Personal loan",
+      "description": "sjfhksfh",
       "userId": "3532",
-      "createdAt": "2025-10-08 16:30:01"
-    },
-    {
-      "id": "6f69",
-      "category": "EMI",
-      "type": "Expense",
-      "amount": 1708,
-      "date": "2025-10-08",
-      "balance": 811040,
-      "medium": "netBanking",
-      "description": "EMI payment for Personal loan",
-      "loanId": "d980",
-      "userId": "3532",
-      "createdAt": "2025-10-08 16:30:04"
-    },
-    {
-      "id": "9596",
-      "category": "EMI",
-      "type": "Expense",
-      "amount": 1708,
-      "date": "2025-10-08",
-      "balance": 811040,
-      "medium": "netBanking",
-      "description": "EMI payment for Personal loan",
-      "loanId": "d980",
-      "userId": "3532",
-      "createdAt": "2025-10-08 16:30:11"
-    },
-    {
-      "id": "b26d",
-      "category": "EMI",
-      "type": "Expense",
-      "amount": 1708,
-      "date": "2025-10-08",
-      "balance": 811040,
-      "medium": "netBanking",
-      "description": "EMI payment for Personal loan",
-      "loanId": "d980",
-      "userId": "3532",
-      "createdAt": "2025-10-08 16:30:15"
-    },
-    {
-      "id": "4fc0",
-      "category": "EMI",
-      "type": "Expense",
-      "amount": 1708,
-      "date": "2025-10-08",
-      "balance": 811040,
-      "medium": "netBanking",
-      "description": "EMI payment for Personal loan",
-      "loanId": "d980",
-      "userId": "3532",
-      "createdAt": "2025-10-08 16:30:18"
-    },
-    {
-      "id": "84fd",
-      "category": "EMI",
-      "type": "Expense",
-      "amount": 1708,
-      "date": "2025-10-08",
-      "balance": 811040,
-      "medium": "netBanking",
-      "description": "EMI payment for Personal loan",
-      "loanId": "d980",
-      "userId": "3532",
-      "createdAt": "2025-10-08 16:30:20"
-    },
-    {
-      "id": "48a5",
-      "category": "EMI",
-      "type": "Expense",
-      "amount": 1708,
-      "date": "2025-10-08",
-      "balance": 811040,
-      "medium": "netBanking",
-      "description": "EMI payment for Personal loan",
-      "loanId": "d980",
-      "userId": "3532",
-      "createdAt": "2025-10-08 16:30:22"
+      "createdAt": "2026-01-06 20:52:24"
     }
   ],
-  "beneficiaries": [
-    {
-      "id": "8e8498c4-090c-4bb3-a1ff-d77d402fac1a",
-      "userId": "3532",
-      "bankName": "State Bank of India",
-      "ifsc": "78654fy",
-      "accountNumber": "8976543567890",
-      "nickname": "mhgcfxchj",
-      "accountType": "Salary"
-    }
-  ],
-  "loan": [
-    {
-      "id": "d980",
-      "type": "Personal",
-      "amount": 10000,
-      "term": "6",
-      "rate": "5",
-      "EMI": 1708,
-      "startDate": "2025-10-10",
-      "endDate": "2026-04-10",
-      "userId": "3532",
-      "createdAt": "2025-10-08 16:30:01",
-      "emiPaidCount": 6
-    }
-  ]
+  "beneficiaries": [],
+  "loan": []
 }
