@@ -27,7 +27,7 @@ const DashBoard = () => {
   const balanceChartData = useMemo(() => ([
     { label: 'Spent', value: monthlyExpenseAmount, color: '#ff6384' },
     { label: 'Remaining', value: remainingBalance, color: '#36a2eb' },
-  ]), [filteredData]);
+  ]), [monthlyExpenseAmount, remainingBalance]);
 
 
   const Year = dayjs().year();
@@ -45,7 +45,7 @@ const DashBoard = () => {
     const grouped = {};
 
     yearFilter.forEach(tx => {
-      if (tx.type !== 'Expense') return;
+      if (tx.type !== 'expense') return;
 
       const date = new Date(tx.date);
       const month = monthNames[date.getMonth()];
@@ -66,21 +66,23 @@ const DashBoard = () => {
 
 
   // Calculate total amount spent in each category
-  const totalByCategory = useMemo(() => {
-    const result = {};
-    categories.forEach((cat) => {
-      result[cat] = getTotalByCategory(filteredData, 'Expense', cat);
-    });
-    return result;
-  }, [filteredData]);
+const totalByCategory = useMemo(() => {
+  const result = {};
+  categories.forEach((cat) => {
+    result[cat] = getTotalByCategory(filteredData, 'expense', cat);
+  });
+  return result;
+}, [filteredData]);
 
-  const totalYearlyCategoryExp = useMemo(() => {
-    const result = {};
-    categories.forEach((cat) => {
-      result[cat] = getTotalByCategory(totalTransactions, 'Expense', cat);
-    });
-    return result;
-  }, [totalTransactions])
+
+const totalYearlyCategoryExp = useMemo(() => {
+  const result = {};
+  categories.forEach((cat) => {
+    result[cat] = getTotalByCategory(totalTransactions, 'expense', cat);
+  });
+  return result;
+}, [totalTransactions]);
+
 
 
 
@@ -154,7 +156,7 @@ const DashBoard = () => {
 
           {/* Right side - Budget summary (Donut Chart) */}
           <Grid size={6}>
-            <Paper elevation={3} sx={{ p: 3, maxWidth: 750, borderRadius: 1, boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
+            <Paper elevation={3} sx={{ p: 3, height: "100%", maxWidth: 750, borderRadius: 1, boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
               <Typography variant="h6" sx={{ color: '#007bff', mb: 5, borderBottom: '1px solid gray' }}>
                 Budget (Current Month)
               </Typography>
@@ -223,7 +225,7 @@ const DashBoard = () => {
                             p: 1.5,
                             borderRadius: 2,
                             boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.05)',
-                            backgroundColor: tx.type === 'Income' || tx.type === 'Loan' ? '#f0fff0' : '#fff0f0',
+                            backgroundColor: tx.type === 'income'  || tx.type === 'Loan' ? '#f0fff0' : '#fff0f0',
                             transition: 'transform 0.2s ease-in-out',
                             '&:hover': {
                               transform: 'scale(1.01)',
@@ -238,7 +240,7 @@ const DashBoard = () => {
                               width: 36,
                               height: 36,
                               borderRadius: '50%',
-                              backgroundColor: tx.type === 'Income' || tx.type === 'Loan' ? '#b6f2b6' : '#f7baba',
+                              backgroundColor: tx.type === 'income' || tx.type === 'Loan' ? '#b6f2b6' : '#f7baba',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
@@ -261,12 +263,12 @@ const DashBoard = () => {
                             <Typography
                               title={tx.type}
                               sx={{
-                                color: tx.type === 'Income' || tx.type === 'Loan' ? 'green' : 'red',
+                                color: tx.type === 'income' || tx.type === 'Loan' ? 'green' : 'red',
                                 fontWeight: 600,
                                 fontSize: 15,
                               }}
                             >
-                              {tx.type === 'Income' || tx.type === 'Loan' ? '+' : '-'}₹{tx.amount}
+                              {tx.type === 'income' || tx.type === 'Loan' ? '+' : '-'}₹{tx.amount}
                             </Typography>
                           </Box>
                         </Box>

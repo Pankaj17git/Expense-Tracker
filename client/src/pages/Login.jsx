@@ -10,9 +10,9 @@ import {
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import axios from "axios";
 import './styles/login.css'
 import { useNavigate } from "react-router";
+import axiosInstance from "../api/axiosInstance";
 
 
 const AuthForm = () => {
@@ -24,7 +24,6 @@ const AuthForm = () => {
     password: ''
   })
 
-  const UserUrl = import.meta.env.VITE_REGISTERED_USER;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,10 +31,11 @@ const AuthForm = () => {
 
     if (storedUser?.token) {
       navigate("/main");
-      return;
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
-  }, []);
+  }, [navigate]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,73 +45,56 @@ const AuthForm = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
 
-    const res = await axios.get(UserUrl, {
-      params: {
-        email: user.email,
-      }
-    });
-
-    if (res.data.length > 0) {
-      alert('Please enter different email')
-      return;
-    }
-
     try {
-      const response = await axios.post(UserUrl, user);
-      console.log(response.data);
-      alert('user registeration successfull')
-      setUser({
-        name: '',
-        email: '',
-        password: ''
+      await axiosInstance.post("/api/register", {
+        name: user.name,
+        email: user.email,
+        password: user.password,
       });
+
+      alert("Registration successful. Please login.");
+
+      setUser({
+        name: "",
+        email: "",
+        password: "",
+      });
+
+      setIsSignUpActive(false);
     } catch (error) {
-      console.error('Sign in error:', error);
+      console.error("Signup error:", error);
+      alert(error.response?.data?.message || "Signup failed");
     }
   };
-
-  const generateToken = () => {
-    return Math.random().toString(36) + Date.now().toString(36);
-  };
-
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    try {
 
-      const response = await axios.get(UserUrl, {
-        params: {
-          email: user.email,
-          password: user.password
-        }
+    try {
+      const response = await axiosInstance.post("/api/login", {
+        email: user.email,
+        password: user.password,
       });
 
-      if (response.data.length > 0) {
-        // User found
-        const user = response.data[0];
-        const token = generateToken();
+      const { user: loggedUser, token } = response.data;
 
-        const loggedInUser = {
-          ...user,
-          token
-        };
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...loggedUser, token })
+      );
 
-        localStorage.setItem("user", JSON.stringify(loggedInUser));
-        console.log(loggedInUser);
-        window.location.href = '/main';
-      } else {
-        alert("Invalid email or password.");
-      }
+      navigate("/main");
     } catch (error) {
-      console.error("Error during sign-in:", error);
-      alert("Something went wrong!");
+      console.error("Login error:", error);
+      alert(error.response?.data?.message || "Invalid credentials");
     }
   };
+
 
 
 
   return (
-    <> 
+    <>
       {loading ? (
         <h1>Loading</h1>
       ) : (

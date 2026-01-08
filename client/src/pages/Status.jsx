@@ -9,7 +9,6 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import BarsDataset from '../components/BarChart'
 import { BarChart } from '@mui/x-charts/BarChart';
 import { useUserContext } from '../context/UserContext';
 import ReactECharts from 'echarts-for-react';
@@ -101,9 +100,28 @@ const Status = () => {
     type: { page: 0, rowsPerPage: 5 }
   });
 
+  useEffect(() => {
+    // Reset all paginations when filters change
+    dispatch({ type: 'CHANGE_PAGE', tableKey: 'expense', value: 0 });
+    dispatch({ type: 'CHANGE_PAGE', tableKey: 'category', value: 0 });
+    dispatch({ type: 'CHANGE_PAGE', tableKey: 'type', value: 0 });
+  }, [selectedYear, selectedMonth]);  
+
+  useEffect(() => {
+    dispatch({ type: 'CHANGE_ROWS_PER_PAGE', tableKey: 'expense', value: 5 });
+    dispatch({ type: 'CHANGE_ROWS_PER_PAGE', tableKey: 'category', value: 5 });
+    dispatch({ type: 'CHANGE_ROWS_PER_PAGE', tableKey: 'type', value: 5 });
+  }, [selectedYear, selectedMonth]);
 
 
-  const { getTotalTransactions, monthlyExpenseAmount, totalTransactions, totalExpense, getTotalByCategory, totalExpTansactions } = useUserContext();
+
+
+
+  const { monthlyExpenseAmount, totalTransactions, totalExpense, getTotalByCategory, totalExpTansactions, getTotalTransactions, availableYears } = useUserContext();
+  
+  useEffect(() => {
+    getTotalTransactions();
+  },[])
 
   // Color mapping for each category in pie charts
   const categoryColorMap = {
@@ -134,12 +152,21 @@ const Status = () => {
   //Filtered data to display in the table
   const filteredTransactions = useMemo(() => {
     return totalExpTansactions.filter((txn) => {
+      if (txn.type !== "expense") return false;
+
       const date = new Date(txn.date);
-      const yearMatches = selectedYear ? date.getFullYear() === selectedYear : true;
-      const monthMatches = selectedMonth ? date.getMonth() + 1 === selectedMonth : true; // getMonth is 0-indexed
+
+      const yearMatches =
+        selectedYear ? date.getFullYear() === selectedYear : true;
+
+      const monthMatches =
+        selectedMonth ? date.getMonth() + 1 === selectedMonth : true;
+
       return yearMatches && monthMatches;
     });
-  }, [totalTransactions, selectedYear, selectedMonth]);
+  }, [totalExpTansactions, selectedYear, selectedMonth]);
+
+
 
 
 
@@ -154,61 +181,53 @@ const Status = () => {
     const grouped = {};
 
     filteredTransactions.forEach(tx => {
-      if (tx.type !== 'Expense') return;
-
       const date = new Date(tx.date);
       const month = monthNames[date.getMonth()];
 
-      if (!grouped[month]) {
-        grouped[month] = { month };
-      }
+      if (!grouped[month]) grouped[month] = { month };
 
-      if (!grouped[month][tx.category]) {
-        grouped[month][tx.category] = 0;
-      }
-
-      grouped[month][tx.category] += tx.amount;
+      grouped[month][tx.category] =
+        (grouped[month][tx.category] || 0) + tx.amount;
     });
 
     return Object.values(grouped);
   }, [filteredTransactions]);
+
   // console.log(monthlyData);
 
   const expenseMedium = useMemo(() => {
     const grouped = {};
 
-    filteredTransactions.forEach(txn => {
-      if (txn.type !== 'Expense') return;
-
+    filteredTransactions.forEach((txn) => {
       const date = new Date(txn.date);
       const month = monthNames[date.getMonth()];
 
-      if (!grouped[month]) {
-        grouped[month] = { month };
-      }
+      if (!grouped[month]) grouped[month] = { month };
 
-      if (!grouped[month][txn.medium]) {
-        grouped[month][txn.medium] = 0;
-      }
-
-      grouped[month][txn.medium] += txn.amount;
+      grouped[month][txn.mode] =
+        (grouped[month][txn.mode] || 0) + txn.amount;
     });
 
-    return Object.values(grouped); // Or Object.entries(grouped) if needed as key-value array
+    return Object.values(grouped);
   }, [filteredTransactions]);
-  
+
+  console.log("expenseMedium", expenseMedium)
+
+
+
 
 
   // Calculate total amount spent in each category
   const totalByCategory = useMemo(() => {
     const result = {};
     categories.forEach((cat) => {
-      result[cat] = getTotalByCategory(filteredTransactions, 'Expense', cat);
+      result[cat] = getTotalByCategory(filteredTransactions, "expense", cat);
     });
     return result;
   }, [filteredTransactions]);
 
-  const option = {
+
+  const option = useMemo(() => ({
     tooltip: {
       trigger: 'item',
       formatter: '{b}: {c} ({d}%)'
@@ -225,13 +244,6 @@ const Status = () => {
           fontSize: 14,
           formatter: '{b}'
         },
-        labelLine: {
-          lineStyle: {
-            color: 'black'
-          },
-          length: 10,
-          length2: 20
-        },
         data: categories.map((cat) => ({
           name: cat,
           value: totalByCategory[cat],
@@ -241,7 +253,8 @@ const Status = () => {
         })),
       },
     ],
-  };
+  }), [totalByCategory]);
+
 
 
   const { category: highestExpenseCategory, amount: highestAmount } = Object.entries(totalByCategory).reduce((maxExpense, [category, amount]) => {
@@ -249,12 +262,6 @@ const Status = () => {
   },
     { category: '', amount: -Infinity }
   );
-
-
-
-  useEffect(() => {
-    getTotalTransactions();
-  }, []);
 
 
   return (
@@ -305,17 +312,27 @@ const Status = () => {
             <Box display="flex" alignItems="center" mb={2}>
               <Typography variant="subtitle1" mr={1}>Year</Typography>
               <Select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} size="small">
-                {years.map((y) => (
+                {availableYears.map((y) => (
                   <MenuItem key={y} value={y}>{y}</MenuItem>
                 ))}
               </Select>
 
               <Typography variant="subtitle1" ml={2} mr={1}>Month</Typography>
-              <Select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} size="small">
+              <Select
+                value={selectedMonth ?? ""}
+                onChange={(e) =>
+                  setSelectedMonth(e.target.value || null)
+                }
+                size="small"
+              >
+                <MenuItem value="">All</MenuItem>
                 {months.map((m) => (
-                  <MenuItem key={m.name} value={m.value}>{m.name}</MenuItem>
+                  <MenuItem key={m.name} value={m.value}>
+                    {m.name}
+                  </MenuItem>
                 ))}
               </Select>
+
             </Box>
             <TableContainer component={Paper}>
               <Table size="small">
@@ -348,8 +365,8 @@ const Status = () => {
                     <TablePagination
                       rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                       count={filteredTransactions.length}
-                      rowsPerPage={pagination.expense.rowsPerPage}
-                      page={pagination.expense.page}
+                      rowsPerPage={expenseRowsPerPage}
+                      page={expensePage}
                       onPageChange={(e, newPage) => handleChangePage('expense', newPage)}
                       onRowsPerPageChange={(e) => handleChangeRowsPerPage('expense', e)}
                       ActionsComponent={TablePaginationActions}
@@ -391,7 +408,7 @@ const Status = () => {
             <Box display="flex" alignItems="center" mb={2}>
               <Typography variant="subtitle1" mr={1}>Year</Typography>
               <Select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} size="small">
-                {years.map((y) => (
+                {availableYears.map((y) => (
                   <MenuItem key={y} value={y}>{y}</MenuItem>
                 ))}
               </Select>
@@ -427,8 +444,8 @@ const Status = () => {
                     <TablePagination
                       rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                       count={filteredTransactions.length}
-                      rowsPerPage={pagination.expense.rowsPerPage}
-                      page={pagination.expense.page}
+                      rowsPerPage={categoryRowsPerPage}
+                      page={categoryPage}
                       onPageChange={(e, newPage) => handleChangePage('category', newPage)}
                       onRowsPerPageChange={(e) => handleChangeRowsPerPage('category', e)}
                       ActionsComponent={TablePaginationActions}
@@ -441,7 +458,7 @@ const Status = () => {
 
           {/* Chart */}
           <Grid display={'flex'} sx={{ justifyContent: 'center', alignItems: 'center' }} flex={1}>
-            <ReactECharts option={option} style={{ height: '100%', width: '100%' }} />
+            <ReactECharts key={`${selectedYear}-${selectedMonth}`} option={option} style={{ height: '100%', width: '100%' }} />
           </Grid>
         </Grid>
 
@@ -457,7 +474,7 @@ const Status = () => {
             <Box display="flex" alignItems="center" mb={2}>
               <Typography variant="subtitle1" mr={1}>Year</Typography>
               <Select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} size="small">
-                {years.map((y) => (
+                {availableYears .map((y) => (
                   <MenuItem key={y} value={y}>{y}</MenuItem>
                 ))}
               </Select>
@@ -466,19 +483,19 @@ const Status = () => {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Medium</TableCell>
+                    <TableCell>Mode</TableCell>
                     <TableCell>Date</TableCell>
                     <TableCell>Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {(
-                    totalTransactions.slice(typePage * typeRowsPerPage, typePage * typeRowsPerPage + typeRowsPerPage)
+                    totalExpTansactions.slice(typePage * typeRowsPerPage, typePage * typeRowsPerPage + typeRowsPerPage)
 
                   ).map((row, id) => (
                     <StyledTableRow key={id}>
                       <StyledTableCell component="th" scope="row">
-                        {row.medium}
+                        {row.mode}
                       </StyledTableCell>
                       <StyledTableCell align="right">{row.date}</StyledTableCell>
                       <StyledTableCell align="right">&#8377;{row.amount}</StyledTableCell>
@@ -489,9 +506,9 @@ const Status = () => {
                   <TableRow>
                     <TablePagination
                       rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                      count={filteredTransactions.length}
-                      rowsPerPage={pagination.expense.rowsPerPage}
-                      page={pagination.expense.page}
+                      count={totalTransactions.length}
+                      rowsPerPage={typeRowsPerPage}
+                      page={typePage}
                       onPageChange={(e, newPage) => handleChangePage('type', newPage)}
                       onRowsPerPageChange={(e) => handleChangeRowsPerPage('type', e)}
                       ActionsComponent={TablePaginationActions}

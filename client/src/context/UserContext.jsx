@@ -1,4 +1,5 @@
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
+
 import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import dayjs from "dayjs";
 // Create a new context to share user and transaction-related data across components
@@ -23,33 +24,30 @@ const UserContextProvider = ({ children }) => {
   const TURL = import.meta.env.VITE_USER_TRANSACTIONS;
 
   // Utility function to calculate and update income, expense, and balance
-  const updateBalance = async (data = totalTransactions) => {
-    // debugger
+  const updateBalance = (data = totalTransactions) => {
     let income = 0;
     let expense = 0;
-    let loan = 0;
 
     data.forEach(txn => {
-      const type = txn.type.toLowerCase();
-      if (type === 'income') {
+      if (txn.type === 'income') {
         income += txn.amount ?? 0;
-      } else if (type === 'expense') {
+      } else if (txn.type === 'expense') {
+        console.log("expense", txn)
         expense += txn.amount ?? 0;
-      } else if (type === 'loan') {
-        loan += Math.round(txn.amount) ?? 0;
       }
     });
 
     setTotalIncome(income);
     setTotalExpense(expense);
-    setTotalBalance(income - expense + loan);
   };
 
 
+
   const getTotalExpense = (data = totalTransactions) => {
-    const expenses = data.filter(txn => txn.type === 'Expense');
-    setTotalExpTransactions(expenses); // Not appending to existing state
-  }
+    const expenses = data.filter(txn => txn.type === 'expense');
+    setTotalExpTransactions(expenses);
+  };
+
 
 
   // Fetch all transactions for the current user
@@ -57,18 +55,25 @@ const UserContextProvider = ({ children }) => {
     if (!user) return;
 
     try {
-      const res = await axios.get(TURL, {
-        params: { userId: user.id }
-      });
+      const res = await axiosInstance.get("/api/transactions");
 
-      // Save transactions and update totals
-      setTotalTransaction(res.data);
-      updateBalance(res.data);
-      getTotalExpense(res.data);
+      const transactions = res.data.transactions || [];
+
+      setTotalTransaction(transactions);
+
+      // ✅ Balance comes from latest transaction
+      if (transactions.length > 0) {
+        setTotalBalance(transactions[0].balance);
+      } else {
+        setTotalBalance(0);
+      }
+
+      getTotalExpense(transactions);
     } catch (error) {
-      console.error('Failed to fetch Transaction:', error);
+      console.error("Failed to fetch transactions:", error);
     }
   };
+
 
 
   // Utility to calculate total amount for a specific type and category (e.g., 'Expense' + 'Food')
@@ -92,7 +97,7 @@ const UserContextProvider = ({ children }) => {
   })
 
   const monthlyExpense = useMemo(() => {
-    return filteredData.filter(txn => txn.type === 'Expense')
+    return filteredData.filter(txn => txn.type === 'expense')
   }, [totalTransactions]);
 
   const monthlyExpenseAmount = useMemo(() => {
@@ -101,7 +106,7 @@ const UserContextProvider = ({ children }) => {
 
 
   const monthlyIncome = useMemo(() => {
-    return filteredData.filter(txn => txn.type === 'Income')
+    return filteredData.filter(txn => txn.type === 'income')
   }, [totalTransactions]);
 
   const monthlyIncomeAmount = useMemo(() => {
@@ -117,10 +122,27 @@ const UserContextProvider = ({ children }) => {
   //Loan contexts 
 
   const getTotalLoanTransactions = () => {
-    return totalExpTansactions.filter(txn => txn.type === 'Expense' && txn.category === 'EMI')
-  }
+    return totalExpTansactions.filter(
+      txn => txn.type === "expense" && txn.category === "EMI"
+    );
+  };
+
 
   const loantransaction = getTotalLoanTransactions();
+
+  const availableYears = useMemo(() => {
+    const yearsSet = new Set();
+
+    totalTransactions.forEach(txn => {
+      if (!txn.date) return;
+      const year = new Date(txn.date).getFullYear();
+      yearsSet.add(year);
+    });
+
+    // Convert to array and sort descending
+    return Array.from(yearsSet).sort((a, b) => b - a);
+  }, [totalTransactions]);
+
 
 
   // When `user` changes (e.g., login), fetch their transactions
@@ -137,8 +159,8 @@ const UserContextProvider = ({ children }) => {
         user, setUser, setTotalBalance, totalTransactions, totalExpTansactions,
         getTotalExpense, remainingBalance, monthlyExpense, monthlyIncome,
         monthlyExpenseAmount, monthlyIncomeAmount, filteredData,
-        totalBalance, totalExpense, getTotalByCategory,loantransaction,
-        totalIncome, updateBalance, getTotalTransactions
+        totalBalance, totalExpense, getTotalByCategory, loantransaction,
+        totalIncome, updateBalance, getTotalTransactions, availableYears
       }}
     >
       {children}

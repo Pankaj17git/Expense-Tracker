@@ -7,6 +7,8 @@ const rateLimit = require('express-rate-limit');
 
 const loginRouter = require('./routes/auth/login');
 const registerRouter = require('./routes/auth/register');
+const newTransaction = require('./routes/transactions/transactions')
+const getTransactions = require('./routes/transactions/getTransactions')
 
 const app = express();
 
@@ -27,12 +29,12 @@ app.use(morgan('dev'));
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
 //  Rate limiter
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 200,
-    message: 'Too many requests from this IP, please try again after 15 minutes',
-});
-app.use(limiter);
+// const limiter = rateLimit({
+//     windowMs: 15 * 60 * 1000,
+//     max: 200,
+//     message: 'Too many requests from this IP, please try again after 15 minutes',
+// });
+// app.use(limiter);
 
 
 // Global error handler (should be last)
@@ -46,6 +48,8 @@ app.use((err, req, res, next) => {
 app.use(loginRouter);
 app.use(registerRouter);
 
-
+//TransactionRoutes
+app.use(newTransaction)
+app.use(getTransactions)
 
 module.exports = app;

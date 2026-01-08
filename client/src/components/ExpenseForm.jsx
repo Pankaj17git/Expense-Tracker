@@ -12,19 +12,19 @@ import {
   Paper
 } from '@mui/material';
 import './style/expense-form.css'
-import axios from 'axios';
+import axiosInstance from '../api/axiosInstance';
 import { useUserContext } from '../context/UserContext';
 import dayjs from 'dayjs';
 
 const incomeCategories = ["Salary", "Freelancing", "Investments", "Gifts"];
 const expenseCategories = ["Food", "Travel", "Shopping", "Miscellaneous", "Utilities"];
 const expenseMedium = ['Debit Card', 'Credit Card', 'Cheque', 'Cash', 'netBanking'];
-const ExpenseForm = ({editData, onClose}) => {
+const ExpenseForm = ({ editData, onClose }) => {
 
   const [formData, setFormData] = useState({
     category: '',
     type: '',
-    medium: '',
+    mode: '',
     date: '',
     balance: '',
     amount: '',
@@ -34,8 +34,7 @@ const ExpenseForm = ({editData, onClose}) => {
   const TXRURL = import.meta.env.VITE_USER_TRANSACTIONS;
 
   const { updateBalance, totalBalance, getTotalTransactions } = useUserContext();
-  console.log(totalBalance);
-  
+
 
   useEffect(() => {
     if (editData) {
@@ -50,13 +49,13 @@ const ExpenseForm = ({editData, onClose}) => {
   };
 
   const validate = () => {
-    debugger
+    // debugger
     const newErrors = {};
     const today = dayjs();
     const selectedDate = dayjs(formData.date);
 
 
-    if (formData.type === 'Expense' && formData.amount >= totalBalance) {
+    if (formData.type === 'expense' && formData.amount >= totalBalance) {
       alert('Insufficient balance');
       return;
     }
@@ -78,47 +77,41 @@ const ExpenseForm = ({editData, onClose}) => {
   }
 
   const handleSubmit = async (e) => {
-    debugger
     e.preventDefault();
 
-    const user = JSON.parse(localStorage.getItem('user'));
+    if (!validate()) return;
 
-    if (!validate()) {
-      return;
-    };
-
-    const newTransaction = {
-      ...formData,
-      userId: user.id,
-      amount: parseFloat(formData.amount),
-      balance: totalBalance,
-      date: new Date(formData.date).toISOString().split("T")[0],
-      createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+    const payload = {
+      type: formData.type,
+      category: formData.category,
+      mode: formData.mode,
+      amount: Number(formData.amount),
+      date: dayjs(formData.date).format("YYYY-MM-DD"),
+      description: formData.description,
     };
 
     try {
-      if (editData) {
-        await axios.patch(`${TXRURL}/${editData.id}`, newTransaction);
-      } else {
-        await axios.post(TXRURL, newTransaction)
-      }
+      await axiosInstance.post("/api/transactions", payload);
 
-      await getTotalTransactions();
-      updateBalance();
+      await getTotalTransactions(); // refresh list
+      updateBalance();              // refresh dashboard balance
+
       setFormData({
         category: '',
         type: '',
+        mode: '',
         date: '',
-        medium: '',
         amount: '',
         description: ''
-      })
-      onClose();              
+      });
+
+      onClose();
     } catch (error) {
-      console.error('Error adding tarnsition:', error);
-      alert('failed to add transition.')
+      console.error("Transaction error:", error);
+      alert(error.response?.data?.message || "Failed to add transaction");
     }
   };
+
 
   return (
     <>
@@ -140,13 +133,9 @@ const ExpenseForm = ({editData, onClose}) => {
             <Grid>
               <FormControl fullWidth variant="standard">
                 <InputLabel>Type</InputLabel>
-                <Select
-                  name="type"
-                  value={formData.type}
-                  onChange={handleChange}
-                >
-                  <MenuItem value="Expense">Expense</MenuItem>
-                  <MenuItem value="Income">Income</MenuItem>
+                <Select name="type" value={formData.type} onChange={handleChange}>
+                  <MenuItem value="expense">Expense</MenuItem>
+                  <MenuItem value="income">Income</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -161,23 +150,27 @@ const ExpenseForm = ({editData, onClose}) => {
                   value={formData.category}
                   onChange={handleChange}
                 >
-                  {formData.type.toLowerCase() === 'income' ? (
-                    incomeCategories.map((cat) => <MenuItem key={cat} value={cat}>{cat}</MenuItem>)
-                  ) : (
-                    expenseCategories.map((cat) => <MenuItem key={cat} value={cat}>{cat}</MenuItem>)
-                  )}
+                  {formData.type === 'income'
+                    ? incomeCategories.map((cat) => (
+                      <MenuItem key={cat} value={cat}>{cat}</MenuItem>
+                    ))
+                    : expenseCategories.map((cat) => (
+                      <MenuItem key={cat} value={cat}>{cat}</MenuItem>
+                    ))
+                  }
+
                 </Select>
               </FormControl>
             </Grid>
 
             {/* Expense Medium */}
-            {formData.type === 'Expense' && (
+            {/* {formData.type === 'Expense' && ( */}
               <Grid>
                 <FormControl fullWidth variant="standard">
-                  <InputLabel>Medium</InputLabel>
+                  <InputLabel>Mode</InputLabel>
                   <Select
-                    name="medium"
-                    value={formData.medium}
+                    name="mode"
+                    value={formData.mode}
                     onChange={handleChange}
                   >
                     {
@@ -186,7 +179,7 @@ const ExpenseForm = ({editData, onClose}) => {
                   </Select>
                 </FormControl>
               </Grid>
-            )}
+            {/* )} */}
 
             {/* Date */}
             <Grid>
@@ -230,7 +223,7 @@ const ExpenseForm = ({editData, onClose}) => {
             </Grid>
 
             {/* Submit */}
-            <Grid textAlign="center"  mt={formData.type === 'Expense' ? 0 : 3} mb={2.59}  >
+            <Grid textAlign="center" mt={formData.type === 'Expense' ? 0 : 3} mb={2.59}  >
               <Button
                 type="submit"
                 variant="outlined"
