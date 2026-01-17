@@ -28,7 +28,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://expense-tracker-8luc.onrender.com",
+      "https://expense-tracker-p2z2.onrender.com",
     ],
     credentials: true,
   })
