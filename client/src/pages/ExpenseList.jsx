@@ -163,34 +163,92 @@ const ExpenseList = () => {
   };
 
   const generatePDF = (data = []) => {
+    if (!data.length) return;
+
     const doc = new jsPDF();
 
-    // You can customize these as needed
-    const selectedType = data[0]?.type || "report"; // fallback to "report"
+    /* ================= METADATA ================= */
+    const reportType = data[0]?.type?.toUpperCase() || "REPORT";
     const firstDate = data[0]?.date ? new Date(data[0].date) : null;
     const reportPeriod = firstDate
       ? firstDate.toLocaleString("default", { month: "long", year: "numeric" })
-      : "Unknown Period";
+      : "UNKNOWN PERIOD";
 
-    // Header
-    doc.setFontSize(14);
-    doc.text(`${selectedType.toUpperCase()} REPORT (${reportPeriod.toUpperCase()})`, 10, 10);
+    const totalAmount = data.reduce((sum, d) => sum + Number(d.amount || 0), 0);
+    const generatedOn = new Date().toLocaleString("en-GB");
 
-    // Table
+    /* ================= HEADER ================= */
+    doc.setFillColor(25, 118, 210); // Blue bar
+    doc.rect(0, 0, 210, 22, "F");
+
+    doc.setTextColor(255);
+    doc.setFontSize(16);
+    doc.text(`${reportType} REPORT`, 105, 14, { align: "center" });
+
+    doc.setFontSize(10);
+    doc.text(`Period: ${reportPeriod}`, 105, 20, { align: "center" });
+
+    doc.setTextColor(0);
+
+    /* ================= SUMMARY BOX ================= */
+    doc.setFontSize(11);
+    doc.roundedRect(10, 28, 190, 20, 3, 3);
+
+    doc.text("SUMMARY", 14, 35);
+    doc.setFontSize(10);
+
+    doc.text(`Total Records: ${data.length}`, 14, 42);
+    // doc.text(`Total Amount: ₹${totalAmount.toLocaleString("en-IN")}`, 120, 42);
+
+    /* ================= TABLE ================= */
     autoTable(doc, {
-      startY: 20,
-      head: [['Title', 'Amount', 'Date', 'Category']],
-      body: data.map(item => [
-        item.type,
-        `₹${item.amount}`,
-        new Date(item.date).toLocaleDateString('en-GB'),
-        item.category || 'N/A',
+      startY: 55,
+      head: [["Type", "Category", "Amount (₹)", "Date"]],
+      body: data.map((item) => [
+        item.type || "-",
+        item.category || "-",
+        item.amount.toLocaleString("en-IN"),
+        new Date(item.date).toLocaleDateString("en-GB"),
       ]),
+      theme: "striped",
+      styles: {
+        fontSize: 10,
+        cellPadding: 4,
+      },
+      headStyles: {
+        fillColor: [25, 118, 210],
+        textColor: 255,
+        fontStyle: "bold",
+      },
+      columnStyles: {
+        2: { halign: "right" },
+        3: { halign: "center" },
+      },
     });
 
-    // Save the PDF
-    doc.save(`${selectedType}_${reportPeriod}_report.pdf`);
+    /* ================= FOOTER ================= */
+    const pageHeight = doc.internal.pageSize.height;
+    doc.setFontSize(9);
+    doc.setTextColor(100);
+
+    doc.text(
+      `Generated on: ${generatedOn}`,
+      10,
+      pageHeight - 10
+    );
+
+    doc.text(
+      "Expense Tracker Report",
+      200,
+      pageHeight - 10,
+      { align: "right" }
+    );
+
+    /* ================= SAVE ================= */
+    doc.save(`${reportType}_${reportPeriod.replace(" ", "_")}_report.pdf`);
   };
+
+
 
 
   return (
@@ -198,7 +256,7 @@ const ExpenseList = () => {
       <Helmet>
         <title>Expense List</title>
       </Helmet>
-      <Box sx={{ height: '100vh', padding: 5, background: '#eae8e8' }}>
+      <Box sx={{ padding: 5, background: '#eae8e8' }}>
         <Paper sx={{ paddingTop: 0.5 }}>
           <Grid display={'flex'} flexDirection={'row'}>
             <Typography variant="h6" sx={{ color: '#007bff', m: 2 }}>

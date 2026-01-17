@@ -25,9 +25,9 @@ function App() {
             </PrivateRoute>}>
             <Route index element={<DashBoard />} />
             <Route path='dashboard' element={<DashBoard />} />
-            <Route path='expense' element={<ExpenseList />} />
+            <Route path='transactions' element={<ExpenseList />} />
             <Route path='status' element={<Status />} />
-            <Route path='transfermoney' element={<BeneficiaryDashboard />} />
+            <Route path='beneficiaries' element={<BeneficiaryDashboard />} />
             <Route path='profile' element={<UserProfile />} />
             <Route path='loan' element={<LoanDashBoard />} />
           </Route>

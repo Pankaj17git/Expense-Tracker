@@ -1,7 +1,12 @@
 // server.js
-require('dotenv').config();
+const dotenv = require("dotenv");
 const connectToDb = require('./config/db');
 const app = require('./app')
+dotenv.config({
+    path: process.env.NODE_ENV === "production"
+        ? ".env.production"
+        : ".env"
+});
 
 const PORT = process.env.PORT || 5000;
 

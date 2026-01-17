@@ -11,8 +11,8 @@ const transactionSchema = new mongoose.Schema(
     type: {
       type: String,
       enum: {
-        values: ["income", "expense"],
-        message: "Type must be either income or expense",
+        values: ["income", "expense", "loan"],
+        message: "Type must be  income  expense, or loan",
       },
       required: [true, "Transaction type is required"],
     },

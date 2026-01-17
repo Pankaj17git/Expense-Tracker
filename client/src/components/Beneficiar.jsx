@@ -1,15 +1,8 @@
 import React, { useState } from "react";
-import {
-  Box,
-  TextField,
-  MenuItem,
-  Button,
-  Typography,
-  Paper
-} from "@mui/material";
-import axios from "axios";
+import { Box, TextField, MenuItem, Button, Typography, Paper } from "@mui/material";
+import axiosInstance from "../api/axiosInstance"; // ✅
 
-const BeneficialAccountForm = ({userId, onCreated }) => {
+const BeneficialAccountForm = ({ onCreated }) => {
   const [form, setForm] = useState({
     bankName: "",
     ifsc: "",
@@ -38,13 +31,9 @@ const BeneficialAccountForm = ({userId, onCreated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newBeneficialAccount = {
-      id: crypto.randomUUID(), userId,
-      ...form,
-    };
-
-    await axios.post(BURL, newBeneficialAccount)
+    await axiosInstance.post('/api/beneficiaries', form);
     onCreated();
+
     setForm({
       bankName: "",
       ifsc: "",
@@ -55,94 +44,40 @@ const BeneficialAccountForm = ({userId, onCreated }) => {
   };
 
   return (
-    <>
-      <Box sx={{ maxWidth: 400, mx: "auto", mt: 4}}>
-        <Paper
-          sx={{
-            p: 3,
-            maxWidth: 750,
-            borderRadius: 1,
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-          }}
-        >
-          <Typography variant="h6" gutterBottom>
-            Create Beneficial Account
-          </Typography>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              select
-              label="Bank Name"
-              name="bankName"
-              fullWidth
-              value={form.bankName}
-              onChange={handleChange}
-              margin="normal"
-              required
-            >
-              {banks.map((bank) => (
-                <MenuItem key={bank} value={bank}>
-                  {bank}
-                </MenuItem>
-              ))}
-            </TextField>
+    <Box sx={{ maxWidth: 400, mx: "auto", mt: 4 }}>
+      <Paper sx={{ p: 3, borderRadius: 1 }}>
+        <Typography variant="h6">Create Beneficial Account</Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField select label="Bank Name" name="bankName" fullWidth
+            value={form.bankName} onChange={handleChange} margin="normal">
+            {banks.map((bank) => (
+              <MenuItem key={bank} value={bank}>{bank}</MenuItem>
+            ))}
+          </TextField>
 
-            <TextField
-              label="IFSC Code"
-              name="ifsc"
-              fullWidth
-              value={form.ifsc}
-              onChange={handleChange}
-              margin="normal"
-              required
-            />
+          <TextField label="IFSC Code" name="ifsc" fullWidth
+            value={form.ifsc} onChange={handleChange} margin="normal" />
 
-            <TextField
-              label="Account Number"
-              name="accountNumber"
-              fullWidth
-              value={form.accountNumber}
-              onChange={handleChange}
-              margin="normal"
-              required
-            />
+          <TextField label="Account Number" name="accountNumber" fullWidth
+            value={form.accountNumber} onChange={handleChange} margin="normal" />
 
-            <TextField
-              label="Nickname"
-              name="nickname"
-              fullWidth
-              value={form.nickname}
-              onChange={handleChange}
-              margin="normal"
-              required
-            />
+          <TextField label="Nickname" name="nickname" fullWidth
+            value={form.nickname} onChange={handleChange} margin="normal" />
 
-            <TextField
-              select
-              label="Type of Account"
-              name="accountType"
-              fullWidth
-              value={form.accountType}
-              onChange={handleChange}
-              margin="normal"
-              required
-            >
-              {accountTypes.map((type) => (
-                <MenuItem key={type} value={type}>
-                  {type}
-                </MenuItem>
-              ))}
-            </TextField>
+          <TextField select label="Type of Account" name="accountType" fullWidth
+            value={form.accountType} onChange={handleChange} margin="normal">
+            {accountTypes.map((type) => (
+              <MenuItem key={type} value={type}>{type}</MenuItem>
+            ))}
+          </TextField>
 
-            <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-              Create Account
-            </Button>
-          </form>
-        </Paper>
-
-      </Box>
-    </>
+          <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
+            Create Account
+          </Button>
+        </form>
+      </Paper>
+    </Box>
   );
 };
 
 export default BeneficialAccountForm;
-

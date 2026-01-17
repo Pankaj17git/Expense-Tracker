@@ -34,6 +34,7 @@ Thumbs.db
 # -------------------------------------------------------------------
 # Sensitive environment variables (DO NOT COMMIT!)
 .env
+.env.production
 .env.*
 # VS Code settings (optional, but often good to ignore)
 .vscode/

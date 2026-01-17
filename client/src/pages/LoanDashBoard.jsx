@@ -11,7 +11,7 @@ const LoanDashBoard = () => {
         <title>Loan</title>
       </Helmet>
 
-      <Box sx={{ flexGrow: 1, padding: 5, background: '#e3e3e3', height: '100vh' }}>
+      <Box sx={{ flexGrow: 1, padding: 5, background: '#e3e3e3',  }}>
         <Grid
           sx={{padding: 5, border: '1px solid 1976d242', borderRadius: 2, background:"#1976d287", mb:4}}
         >

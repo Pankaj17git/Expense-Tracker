@@ -254,9 +254,7 @@ const Status = () => {
       },
     ],
   }), [totalByCategory]);
-
-
-
+  
   const { category: highestExpenseCategory, amount: highestAmount } = Object.entries(totalByCategory).reduce((maxExpense, [category, amount]) => {
     return amount > maxExpense.amount ? { category, amount } : maxExpense;
   },

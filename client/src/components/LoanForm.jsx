@@ -2,10 +2,10 @@ import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Te
 import dayjs from 'dayjs';
 import { useState, useEffect } from 'react'
 import { useUserContext } from '../context/UserContext';
-import axios from 'axios';
+import axiosInstance from "../api/axiosInstance"; // ✅ ONLY CHANGE
 
 
-const loanType = ['Personal', 'Car', 'Education', 'Home', 'Business',]
+const loanType = ['Personal', 'Car', 'Education', 'Home', 'Business']
 
 
 const LoanForm = () => {
@@ -18,6 +18,7 @@ const LoanForm = () => {
     startDate: '',
     endDate: '',
   });
+
   const TXRURL = import.meta.env.VITE_USER_TRANSACTIONS;
   const LOANURL = import.meta.env.VITE_USER_LOAN;
 
@@ -42,41 +43,20 @@ const LoanForm = () => {
   const validateLoanData = (data) => {
     const errors = {};
 
-    if (!data.type.trim()) {
-      errors.type = 'Loan type is required.';
-    }
-
-    if (!data.amount || isNaN(data.amount) || Number(data.amount) <= 0) {
+    if (!data.type.trim()) errors.type = 'Loan type is required.';
+    if (!data.amount || isNaN(data.amount) || Number(data.amount) <= 0)
       errors.amount = 'Valid loan amount is required.';
-    }
-
-    if (!data.term || isNaN(data.term) || Number(data.term) <= 0) {
-      errors.term = 'Valid loan term (in months/years) is required.';
-    }
-
-    if (!data.rate || isNaN(data.rate) || Number(data.rate) <= 0) {
+    if (!data.term || isNaN(data.term) || Number(data.term) <= 0)
+      errors.term = 'Valid loan term is required.';
+    if (!data.rate || isNaN(data.rate) || Number(data.rate) <= 0)
       errors.rate = 'Valid interest rate is required.';
-    }
-
-    if (!data.EMI || isNaN(data.EMI) || Number(data.EMI) <= 0) {
+    if (!data.EMI || isNaN(data.EMI) || Number(data.EMI) <= 0)
       errors.EMI = 'Calculated EMI is required.';
-    }
-
-    if (!data.startDate) {
-      errors.startDate = 'Start date is required.';
-    }
-
-    if (!data.endDate) {
-      errors.endDate = 'End date is required.';
-    }
-
-    if (data.startDate && data.endDate && new Date(data.endDate) < new Date(data.startDate)) {
-      errors.endDate = 'End date must be after start date.';
-    }
+    if (!data.startDate) errors.startDate = 'Start date is required.';
+    if (!data.endDate) errors.endDate = 'End date is required.';
 
     return errors;
   };
-
 
   const errors = validateLoanData(loanData)
 
@@ -85,9 +65,9 @@ const LoanForm = () => {
     if (!user) return alert('please login!');
 
     if (Object.keys(errors).length === 0) {
+
       const newLoan = {
         ...loanData,
-        userId: user.id,
         amount: parseFloat(loanData.amount),
         startDate: new Date(loanData.startDate).toISOString().split("T")[0],
         endDate: loanData.endDate,
@@ -96,21 +76,22 @@ const LoanForm = () => {
 
       const transaction = {
         category: loanData.type,
-        type: `Loan`,
+        type: `loan`,
         amount: parseFloat(loanData.amount),
         balance: totalBalance,
+        mode:"netBanking",
         date: new Date().toISOString().split('T')[0],
         description: `Get a ${loanData.type} loan`,
-        userId: user.id,
         createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
       };
 
       try {
-        await axios.post(TXRURL, transaction)
-        await axios.post(LOANURL, newLoan);
+        // ✅ Uses axiosInstance (token auto-attached)
+        await axiosInstance.post('/api/transactions', transaction);
+        await axiosInstance.post(`/api/loans`, newLoan);
+
         await getTotalTransactions();
 
-        // Update total balance after loan submission
         setTotalBalance(prev => prev + parseFloat(loanData.amount));
 
         setLoanData({
@@ -123,10 +104,10 @@ const LoanForm = () => {
           endDate: '',
         })
       } catch (error) {
-        console.error('Something went wrong!0', error);
+        console.error('Something went wrong!', error);
       }
     } else {
-      alert('Validation errors:', errors);
+      alert('Validation errors');
     }
   }
 
@@ -167,87 +148,50 @@ const LoanForm = () => {
             <Grid>
               <FormControl fullWidth variant="standard">
                 <InputLabel>Loan Type</InputLabel>
-                <Select
-                  name='type'
-                  value={loanData.type}
-                  onChange={handleChange}
-                >
+                <Select name='type' value={loanData.type} onChange={handleChange}>
                   {loanType.map((type) => (
-                    <MenuItem value={type}>{type}</MenuItem>
+                    <MenuItem key={type} value={type}>{type}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
             </Grid>
+
             <Grid>
-              <TextField
-                name='amount'
-                fullWidth
-                label="Amount"
-                variant="standard"
-                value={loanData.amount}
-                onChange={handleChange}
-              />
+              <TextField name='amount' fullWidth label="Amount" variant="standard"
+                value={loanData.amount} onChange={handleChange} />
             </Grid>
+
             <Grid>
-              <TextField
-                name='term'
-                variant="standard"
-                fullWidth
-                label="Term (in months)"
-                value={loanData.term}
-                onChange={handleChange}
-              />
+              <TextField name='term' variant="standard" fullWidth
+                label="Term (in months)" value={loanData.term} onChange={handleChange} />
             </Grid>
+
             <Grid>
-              <TextField
-                name='rate'
-                variant="standard"
-                fullWidth
-                label="Interst Rates (%)"
-                value={loanData.rate}
-                onChange={handleChange}
-              />
+              <TextField name='rate' variant="standard" fullWidth
+                label="Interst Rates (%)" value={loanData.rate} onChange={handleChange} />
             </Grid>
+
             <Grid>
-              <TextField
-                name='EMI'
-                variant="standard"
-                fullWidth
-                label="EMI"
-                value={loanData.EMI}
-                InputProps={{ readOnly: true }}
-              />
+              <TextField name='EMI' variant="standard" fullWidth label="EMI"
+                value={loanData.EMI} InputProps={{ readOnly: true }} />
             </Grid>
+
             <Grid>
-              <TextField
-                fullWidth
-                name='startDate'
-                label="Start Date"
-                variant='standard'
-                value={loanData.startDate}
-                InputLabelProps={{ shrink: true }}
-                type='date'
-                onChange={handleChange}
-              />
+              <TextField fullWidth name='startDate' label="Start Date"
+                variant='standard' value={loanData.startDate}
+                InputLabelProps={{ shrink: true }} type='date'
+                onChange={handleChange} />
             </Grid>
+
             <Grid>
-              <TextField
-                name='endDate'
-                variant="standard"
-                fullWidth
-                label="End Date"
-                type='date'
-                value={loanData.endDate}
-                InputLabelProps={{ shrink: true }}
-                InputProps={{ readOnly: true }}
-              />
+              <TextField name='endDate' variant="standard" fullWidth
+                label="End Date" type='date' value={loanData.endDate}
+                InputLabelProps={{ shrink: true }} InputProps={{ readOnly: true }} />
             </Grid>
-            <Grid textAlign="center" >
-              <Button
-                type="submit"
-                variant="outlined"
-                sx={{ textTransform: 'uppercase', borderRadius: 1, mt: 3 }}
-              >
+
+            <Grid textAlign="center">
+              <Button type="submit" variant="outlined"
+                sx={{ textTransform: 'uppercase', borderRadius: 1, mt: 3 }}>
                 Submit
               </Button>
             </Grid>
@@ -258,4 +202,4 @@ const LoanForm = () => {
   )
 }
 
-export default LoanForm
+export default LoanForm;

@@ -25,6 +25,8 @@ dist-ssr
 
 # Environment variables
 .env
+.env.production
+.env.development
 .env.* 
 
 # JSON Server data file (optional)
